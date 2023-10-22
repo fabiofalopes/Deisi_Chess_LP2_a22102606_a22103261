@@ -1,23 +1,37 @@
 # Notas do [video](https://www.youtube.com/watch?v=EMKTKl4lZXI)
 
-git pull
+## Git / Github workflow
 
-git checkout -b 'name-branch'
+$ git pull # Update current local main with remote 
 
-git checkout main 
+$ git checkout -b 'name-branch' # create a new local branch with name 'name-branch'
 
-git branch
+$ git checkout main # Change back 'main' branch
 
-git branch  
+$ git branch  # Show branches
 * alt-squares  
  main  
-fabio@eu:~/IdeaProjects/Deisi_Chess_LP2$ git merge main  
-Updating 5442450..7eda76d  
-Fast-forward  
-.../lp2/deisichess/ChessPiece.java        | 34 ++++++----------  
-1 file changed, 13 insertions(+), 21 deletions(-)
 
+$ git merge main  # Merge Current brach with main
+		
+	Updating 5442450..7eda76d  
+	Fast-forward  
+	.../lp2/deisichess/ChessPiece.java        | 34 ++++++----------  
+	1 file changed, 13 insertions(+), 21 deletions(-)
 
+-> No Github, open pull request -> Merge 
+
+-> Localmente novamente:
+$ git pull # para sync do remote com o main local
+
+##### Other Git commands
+
+$ git status # Check changes 
+$ git add . # add all files to commit 
+$ git commit -m "description"
+$ git push
+
+-------- 
 Importar a lib para a interface gráfica:
 - Run/Debug Configurations 
 	- Add new 
