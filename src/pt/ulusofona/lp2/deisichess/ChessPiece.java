@@ -2,38 +2,30 @@ package pt.ulusofona.lp2.deisichess;
 
 public class ChessPiece {
     int id;
-    int equipa; // Black Pieces - equipa : 0 | White Pieces equipa : 1
-    private String alcunha; // Alcunha
-    private String png;
-    private boolean white = false;
+    int team; // Black Pieces - team : 0 | White Pieces team : 1
+    private String nickname;
+    private String image;
 
-    public ChessPiece(int id, int equipa , String alcunha, String png, boolean white) {
+    public ChessPiece(int id, int team , String nickname, String image) {
         this.id = id;
-        this.equipa = equipa;
-        this.alcunha = alcunha;
-        this.png = png;
-        this.white = white;
+        this.team = team;
+        this.nickname = nickname;
+        this.image = image;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getEquipa() {
-        return equipa;
+    public int getTeam() {
+        return team;
     }
 
-    public String getAlcunha() {
-        return alcunha;
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getPng() {
-        return png;
+    public String getImage() {
+        return image;
     }
-
-    public boolean getIsWhite()
-    {
-        return this.white;
-    }
-
 }
