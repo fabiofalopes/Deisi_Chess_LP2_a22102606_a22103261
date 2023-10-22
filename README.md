@@ -5,7 +5,10 @@ Run/Debug Configurations -> Add new -> Applications
 	- Main Class: pt.ulusofona.lp2.guiSimulator.AppLauncher
 
 - Só usamos 1 tipo de peça na primeira parte: **Rei**
-	![](Pasted image 20231021181530.png?raw=true "img1")
+
+![](Pasted image 20231021181530.png?raw=true "img1")
+
+
 	Move-se para os lados e na diagonal 1 quadrado. 
 
 - A 2ª parte vai ter mais tipos 
