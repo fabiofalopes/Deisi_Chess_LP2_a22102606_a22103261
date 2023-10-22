@@ -5,7 +5,7 @@ Run/Debug Configurations -> Add new -> Applications
 	- Main Class: pt.ulusofona.lp2.guiSimulator.AppLauncher
 
 - Só usamos 1 tipo de peça na primeira parte: **Rei**
-	![[Pasted image 20231021181530.png]]
+	![](Pasted image 20231021181530.png?raw=true "img1")
 	Move-se para os lados e na diagonal 1 quadrado. 
 
 - A 2ª parte vai ter mais tipos 
@@ -13,7 +13,6 @@ Run/Debug Configurations -> Add new -> Applications
 - Deve prevenir moves inválidos:
 	- Em cada turno temos que alternar o jogador
 - Quando uma peça se move para cima da outra, 'come' ou captura a outra peça 
-- Ganha a equipa que tiver mais réis 
 
 ![[Pasted image 20231021182008.png]]
 
