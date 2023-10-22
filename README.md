@@ -1,15 +1,15 @@
-# Notas(mover isto e imagens para /notas/) do [video](https://www.youtube.com/watch?v=EMKTKl4lZXI)
+# Notas do [video](https://www.youtube.com/watch?v=EMKTKl4lZXI)
 
-Run/Debug Configurations -> Add new -> Applications 
-	- Name: AppLauncher
-	- Main Class: pt.ulusofona.lp2.guiSimulator.AppLauncher
+Importar a lib para a interface gráfica:
+- Run/Debug Configurations 
+	- Add new 
+		- Application
+			- Name: AppLauncher
+			- Main Class: pt.ulusofona.lp2.guiSimulator.AppLauncher
+
+------
 
 - Só usamos 1 tipo de peça na primeira parte: **Rei** - Move-se para os lados e na diagonal 1 quadrado.
-
-![](image_20231021181530.png?raw=true "img1")
-
-![[Pasted image 20231021181530.png]]
-
 - A 2ª parte vai ter mais tipos 
 - A peça preta é sempre a primeira a mover-se
 - Deve prevenir moves inválidos:
@@ -18,7 +18,7 @@ Run/Debug Configurations -> Add new -> Applications
 
 ![[Pasted image 20231021182008.png]]
 
-#### Classes:
+### Classes:
 
 GameManager
 
