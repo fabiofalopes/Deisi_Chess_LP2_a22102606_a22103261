@@ -88,6 +88,20 @@ Load do 4x4.txt
 
 ### boolean loadGame(File file)
 
+- Primeira linha do ficheiro contem a dimensão do tabuleiro
+- Segunda linha contem numero de peças no jogos
+- <numero de peças> linhas seguintes:
+	- id:tipo:equipa:alcunha 
+		- id : 1 - <numero de peças>
+		- tipo : 0 (Rei)
+		- equipa : 0 - preta , 1 - branca
+		- alcunha: string
+- <dimensão do tabuleiro> linhas seguintes do ficheiro são a representação do tabuleiro 4x4 com 0s, e com id da peça no square que tiver a peça com esse id.
+	0:1:0:2  
+	0:0:3:0  
+	0:6:0:0  
+	0:5:4:0
+
 O jogo quando inicia vai ler de um ficheiro .txt que nos vai indicar:
 - o tamanho do tabuleiro 
 - quais as peças e as posições delas 
