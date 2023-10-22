@@ -4,12 +4,11 @@ Run/Debug Configurations -> Add new -> Applications
 	- Name: AppLauncher
 	- Main Class: pt.ulusofona.lp2.guiSimulator.AppLauncher
 
-- Só usamos 1 tipo de peça na primeira parte: **Rei**
+- Só usamos 1 tipo de peça na primeira parte: **Rei** - Move-se para os lados e na diagonal 1 quadrado.
 
-![](Pasted image 20231021181530.png?raw=true "img1")
+![](image_20231021181530.png?raw=true "img1")
 
-
-	Move-se para os lados e na diagonal 1 quadrado. 
+![[Pasted image 20231021181530.png]]
 
 - A 2ª parte vai ter mais tipos 
 - A peça preta é sempre a primeira a mover-se
