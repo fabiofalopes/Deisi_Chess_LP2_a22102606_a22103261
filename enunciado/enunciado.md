@@ -1,1 +1,0 @@
-/home/fabio/UNI_OBS_NOTES/DEISI Chess, Primeira Parte V1.0.0.md
