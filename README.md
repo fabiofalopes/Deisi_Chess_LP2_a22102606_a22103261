@@ -1,5 +1,23 @@
 # Notas do [video](https://www.youtube.com/watch?v=EMKTKl4lZXI)
 
+git pull
+
+git checkout -b 'name-branch'
+
+git checkout main 
+
+git branch
+
+git branch  
+* alt-squares  
+ main  
+fabio@eu:~/IdeaProjects/Deisi_Chess_LP2$ git merge main  
+Updating 5442450..7eda76d  
+Fast-forward  
+.../lp2/deisichess/ChessPiece.java        | 34 ++++++----------  
+1 file changed, 13 insertions(+), 21 deletions(-)
+
+
 Importar a lib para a interface gráfica:
 - Run/Debug Configurations 
 	- Add new 
