@@ -3,7 +3,7 @@ package pt.ulusofona.lp2.deisichess;
 public class ChessPiece {
     int id;
     int equipa; // Black Pieces - equipa : 0 | White Pieces equipa : 1
-    private String alcunha; // Alcunha da peça
+    private String alcunha; // Alcunha
     private String png;
     private boolean white = false;
 
