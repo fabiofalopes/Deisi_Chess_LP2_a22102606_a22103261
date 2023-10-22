@@ -19,6 +19,10 @@ $ git merge main  # Merge Current brach with main
 	.../lp2/deisichess/ChessPiece.java        | 34 ++++++----------  
 	1 file changed, 13 insertions(+), 21 deletions(-)
 
+$ git push
+
+$ git push --set-upstream origin 'name-branch'
+
 -> No Github, open pull request -> Merge 
 
 -> Localmente novamente:
@@ -27,8 +31,11 @@ $ git pull # para sync do remote com o main local
 ##### Other Git commands
 
 $ git status # Check changes 
+
 $ git add . # add all files to commit 
+
 $ git commit -m "description"
+
 $ git push
 
 -------- 
