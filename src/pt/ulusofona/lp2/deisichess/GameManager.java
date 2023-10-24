@@ -1,146 +1,176 @@
 package pt.ulusofona.lp2.deisichess;
 
-import java.io.BufferedReader;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
-
-import java.io.FileReader;
-import java.io.IOException;
-
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import javax.swing.JPanel;
 
 public class GameManager {
-
     private ArrayList<Square> board;
-    private ArrayList<ChessPiece> pieces;
-    private int currentTeamID;
+    private HashMap<Integer, ChessPiece> chessPieces;
+    private HashSet<String> validBoardPositions;
+    private int moveCount = 0;
+    private int moveCountWithoutDeads = 0;
     private boolean gameOver;
     JPanel authorsPanel;
 
-    /*
-        ------------
-        MAIN METHODS
-        ------------
-    */
+    public GameManager(){
+        this.board = new ArrayList<>();
+        this.chessPieces = new HashMap<>();
+        this.validBoardPositions = new HashSet<>();
+        this.authorsPanel = new JPanel();
+    }
+
+    // region Methods
+    public boolean isValidBoardPosition(int coordX, int coordY){
+        String coord = coordX + "" + coordY;
+        return this.validBoardPositions.contains(coord);
+    }
+    // TODO: implement
+    public boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
+        return true;
+    }
+    // endregion
+
+    // region API
     public boolean loadGame(File file) {
-        try {
+        if(file == null){
+            return false;
+        }
+
+        final int PIECE_ROW_INFO_COLUMNS = 4;
+        final String COLUMNS_SEPARATOR = ":";
+
+        try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            // Check if the first line contains the board dimension (integer between 4 and 8)
+            int boardDimension = Integer.parseInt(reader.readLine().trim());
+            int numberOfChessPieces = Integer.parseInt(reader.readLine().trim());
 
-            //int boardDimension = Integer.parseInt(reader.readLine());
+            // read pieces info
+            for(int i = 0; i < numberOfChessPieces; i++){
+                String row = reader.readLine();
+                String[] columns = row.split(COLUMNS_SEPARATOR);
 
-            //read for dimension from fist line and ignore spaces
-            int boardDimension = Integer.parseInt(reader.readLine().replaceAll("\\s+", ""));
-
-            if (boardDimension < 4 || boardDimension > 8) {
-                System.err.println("Invalid board dimension.");
-                return false;
-            }
-
-            // Check if the second line contains the number of players
-            int numberOfPieces = Integer.parseInt(reader.readLine());
-
-            // Check if the following lines have the correct format for piece information (id:type:team:nickname)
-            pieces = new ArrayList<ChessPiece>();
-
-            for (int i = 0; i < numberOfPieces; i++) {
-                String line = reader.readLine();
-                String[] pieceData = line.split(":");
-                if (pieceData.length != 4) {
-                    System.err.println("Invalid piece information format: " + line);
+                if(columns.length != PIECE_ROW_INFO_COLUMNS){
                     return false;
                 }
-                int id = Integer.parseInt(pieceData[0]);
-                int type = Integer.parseInt(pieceData[1]);
-                int team = Integer.parseInt(pieceData[2]);
-                String nickname = pieceData[3];
-                ChessPiece piece = new ChessPiece(id, team, nickname, type);
-                pieces.add(piece); // Add the piece to the list of pieces
+
+                int chessPieceID = Integer.parseInt(columns[0].trim()),
+                    chessPieceType = Integer.parseInt(columns[1].trim()),
+                    chessPieceTeam = Integer.parseInt(columns[2].trim());
+                String chessPieceNickname = columns[3].trim();
+
+                ChessPiece piece = new ChessPiece(chessPieceID, chessPieceType, chessPieceTeam, chessPieceNickname);
+                this.chessPieces.put(chessPieceID, piece);
             }
 
-            // Check if the board representation matches the specified dimensions in the first line
-            board = new ArrayList<Square>();
+            // read board squares info
+            for(int rowIndex = 0; rowIndex < boardDimension; rowIndex++){
+                String row = reader.readLine().trim();
+                String[] columns = row.split(COLUMNS_SEPARATOR);
 
-            for (int i = 0; i < boardDimension; i++) {
-                String line = reader.readLine();
-                String[] squareData = line.split(":");
-                if (squareData.length != boardDimension) {
-                    System.err.println("Invalid board representation format: " + line);
+                if(columns.length != boardDimension){
                     return false;
                 }
-                for (int j = 0; j < boardDimension; j++) {
-                    int id = Integer.parseInt(squareData[j]);
-                    //if even -> white  |  if odd -> black
-                    boolean white = (id % 2 == 0);
-                    Square square = new Square(id, i, j, white);
-                    board.add(square); // Add the square to the list of squares
+
+                for(int columnIndex = 0; columnIndex < boardDimension; columnIndex++){
+                    // even -> white
+                    // odd -> black
+                    boolean isWhiteSquare = columnIndex % 2 == 0;
+
+                    int pieceID = Integer.parseInt(columns[columnIndex]);
+                    ChessPiece chessPiece = null;
+
+                    if(pieceID != 0){
+                        chessPiece = this.chessPieces.get(pieceID);
+                        if(chessPiece != null) {
+                            chessPiece.updateCoordinates(rowIndex, columnIndex);
+                        }
+                    }
+
+                    this.board.add(new Square(rowIndex, columnIndex, isWhiteSquare, chessPiece));
+                    this.validBoardPositions.add(rowIndex + "" + columnIndex);
                 }
             }
 
             reader.close();
-
-            // Was able to load the game successfully
             return true;
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            return false;
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid numeric format in the file.");
-            return false;
+            //System.err.println("Error reading file: " + e.getMessage());
         }
-    }
 
+        return false;
+    }
     public int getBoardSize() {
         return board.size();
     }
+    // TODO: review and finish
+    public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
+        if(!this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
+            return false;
+        }
 
-    public boolean move(int x0, int y0, int x1, int y1) {
+        if(!this.validMove(coordX0, coordY0, coordX1, coordY1)){
+            return false;
+        }
+
         //A interface gráfica carrega contem elementos:
         //  - De: (a,b)
         //  - Para: (c,d)
         //onde quando clicamos o botão **mover**, o programa chama a nossa classe
         // GameManager.move(a,b,c,d)
 
+        // if move válido incremente nr de jogadas
+        this.moveCount++;
+        
         return false;
     }
+    // expected format: { id, tipo, equipa, alcunha, png }
+    public String[] getSquareInfo(int coordX, int coordy) {
+        if(this.board.isEmpty() || !this.isValidBoardPosition(coordX, coordy)) {
+            return null;
+        }
 
-    public String[] getSquareInfo(int x, int y) {
-        // id | tipo | equipa | alcunha | png  |
-        return new String[]{"", ""};
+        for (Square square : board) {
+            if(square.equals(coordX, coordy)) {
+                ChessPiece piece = square.getPiece();
+                if(piece == null){ // means that has no piece on the requested square
+                    break;
+                }
+               return piece.getInfo();
+            }
+        }
+
+        return null;
     }
-
     public String[] getPieceInfo(int ID) {
-        /*
-            ID -> getPieceInfo() -> [id , tipo , equipa , alcunha , estado , x , y ]
-            Estado é uma string que pode conter os valores:
-                - em jogo
-                - capturado
-         */
-        return new String[]{"", ""};
+        ChessPiece piece = this.chessPieces.get(ID);
+        return piece == null ? null : piece.getInfoWithStatus();
     }
-
     public String getPieceInfoAsString(int ID) {
-        //Recebe ID da peça e retorna uma string com o seguinte formato:
-        //id | tipo | equipa | alcunha @(x,y)
-        //Exemplo: 1 | 0 | 0 | Chefe @(1,0)
-        return "";
-    }
+        ChessPiece piece = this.chessPieces.get(ID);
 
+        if(piece == null){
+            return "";
+        }
+
+        return piece.toString();
+    }
     public int getCurrentTeamID() {
-        return currentTeamID;
+        return this.moveCount % 2 == 0 ? 0 : 1;
     }
-
     public boolean gameOver() {
-        //Ten que analisar o tabuleiro e verificar se o jogo terminou
-        return gameOver;
+        return this.gameOver || this.moveCountWithoutDeads > 10;
     }
-
+    // TODO
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
         return authorsPanel;
     }
-
+    // TODO
     public ArrayList<String> getGameResults() {
         /*
             A ArrayList de Strings contem
@@ -189,33 +219,11 @@ public class GameManager {
 
         return results;
     }
+    // endregion
 
-    /**
-     * ----------------
-     * ----------------
-     * ----------------
-     * ----------------
-     * ----------------
-     * AUXILIARY METHODS
-     * ----------------
-     * ----------------
-     * ----------------
-     * ----------------
-     */
-
-    public ArrayList<Square> getBoard() {
-        return board;
-    }
-
-    public ArrayList<ChessPiece> getPieces() {
-        return pieces;
-    }
-
-    // print the pieces
     public void printPieces() {
-        for (ChessPiece piece : pieces) {
-            System.out.println("Piece " + piece.getId() + " - Team: " + piece.getTeam() + " Type: " + piece.getType()  + " Nickname: " + piece.getNickname());
+        for (ChessPiece piece : this.chessPieces.values()) {
+            System.out.println(Arrays.toString(piece.getInfo()));
         }
     }
-
 }

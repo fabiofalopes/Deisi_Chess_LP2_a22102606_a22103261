@@ -1,34 +1,24 @@
 package pt.ulusofona.lp2.deisichess;
 
 public class Square {
-    int id;
-    int coordX;
-    int coordY;
-    boolean white;
-    ChessPiece piece;
+    private int coordX;
+    private int coordY;
+    private boolean isWhite;
+    private ChessPiece piece;
 
-
-    public Square(int id, int coordX, int coordY){
-        this.id = id;
+    public Square(int coordX, int coordY, boolean isWhite, ChessPiece piece){
         this.coordX = coordX;
         this.coordY = coordY;
-        this.white = false;
-        this.piece = null;
-    }
-
-    public Square(int id, int coordX, int coordY, boolean white){
-        this.id = id;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.white = white;
-        this.piece = null;
-    }
-
-    public Square(int id, int coordX, int coordY, boolean white, ChessPiece piece){
-        this.id = id;
-        this.coordX = coordX;
-        this.coordY = coordY;
-        this.white = white;
+        this.isWhite = isWhite;
         this.piece = piece;
     }
+
+    // region Methods
+    public boolean equals(int coordX, int coordY){
+        return this.coordX == coordX && this.coordY == coordY;
+    }
+    public ChessPiece getPiece(){
+        return this.piece;
+    }
+    // endregion
 }
