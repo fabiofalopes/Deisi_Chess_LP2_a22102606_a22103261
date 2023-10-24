@@ -10,7 +10,6 @@ public class ChessPiece {
     private int coordY;
     private boolean dead = false;
 
-    // region Methods
     public ChessPiece(int id, int type, int team, String nickname){
         this.id = id;
         this.type = type;
@@ -26,12 +25,13 @@ public class ChessPiece {
         this.image = image;
     }
 
+    // region Methods
     public void updateCoordinates(int coordX, int coordY) {
         this.coordX = coordX;
         this.coordY = coordY;
     }
 
-    public String getStatus(){
+    private String getStatus(){
         return this.dead ? "capturado" : "em jogo";
     }
 

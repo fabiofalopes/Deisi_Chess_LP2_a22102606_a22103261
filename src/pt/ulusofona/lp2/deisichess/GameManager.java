@@ -11,32 +11,41 @@ public class GameManager {
     private ArrayList<Square> board;
     private HashMap<Integer, ChessPiece> chessPieces;
     private HashSet<String> validBoardPositions;
-    private int moveCount = 0;
-    private int moveCountWithoutDeads = 0;
+    private int moveCount;
+    private int moveCountWithoutDeads;
     private boolean gameOver;
     JPanel authorsPanel;
 
     public GameManager(){
-        this.board = new ArrayList<>();
-        this.chessPieces = new HashMap<>();
-        this.validBoardPositions = new HashSet<>();
-        this.authorsPanel = new JPanel();
+        this.init();
     }
 
     // region Methods
-    public boolean isValidBoardPosition(int coordX, int coordY){
+    private void init(){
+        this.board = new ArrayList<>();
+        this.chessPieces = new HashMap<>();
+        this.validBoardPositions = new HashSet<>();
+        this.moveCount = 0;
+        this.moveCountWithoutDeads = 0;
+        this.gameOver = false;
+        this.authorsPanel = new JPanel();
+    }
+
+    private boolean isValidBoardPosition(int coordX, int coordY){
         String coord = coordX + "" + coordY;
         return this.validBoardPositions.contains(coord);
     }
 
     // TODO: implement
-    public boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
+    private boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
         return true;
     }
     // endregion
 
     // region API
     public boolean loadGame(File file) {
+        this.init();
+
         if(file == null){
             return false;
         }
@@ -107,12 +116,12 @@ public class GameManager {
     }
 
     public int getBoardSize() {
-        return board.size();
+        return this.board.size();
     }
 
     // TODO: review and finish
     public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
-        if(!this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
+        if(this.gameOver || !this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
             return false;
         }
 
@@ -138,7 +147,7 @@ public class GameManager {
             return null;
         }
 
-        for (Square square : board) {
+        for (Square square : this.board) {
             if(square.equals(coordX, coordy)) {
                 ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
@@ -174,7 +183,7 @@ public class GameManager {
     // TODO
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
-        return authorsPanel;
+        return this.authorsPanel;
     }
 
     // TODO
