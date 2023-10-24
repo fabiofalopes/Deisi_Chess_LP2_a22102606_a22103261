@@ -28,6 +28,7 @@ public class GameManager {
         String coord = coordX + "" + coordY;
         return this.validBoardPositions.contains(coord);
     }
+    
     // TODO: implement
     public boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
         return true;
@@ -104,9 +105,11 @@ public class GameManager {
 
         return false;
     }
+
     public int getBoardSize() {
         return board.size();
     }
+
     // TODO: review and finish
     public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
         if(!this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
@@ -128,7 +131,8 @@ public class GameManager {
         
         return false;
     }
-    // expected format: { id, tipo, equipa, alcunha, png }
+
+    // expected format: { id, type, team, nickname, image }
     public String[] getSquareInfo(int coordX, int coordy) {
         if(this.board.isEmpty() || !this.isValidBoardPosition(coordX, coordy)) {
             return null;
@@ -146,25 +150,33 @@ public class GameManager {
 
         return null;
     }
+
+    // expected format: { id, type, team, status("capturado", "em jogo"), coordX, coordY }
     public String[] getPieceInfo(int ID) {
         ChessPiece piece = this.chessPieces.get(ID);
         return piece == null ? null : piece.getInfoWithStatus();
     }
+
+    // expected string: "id | type | team | nickname | @(coordX, coordY)
     public String getPieceInfoAsString(int ID) {
         ChessPiece piece = this.chessPieces.get(ID);
         return piece == null ? "" : piece.toString();
     }
+
     public int getCurrentTeamID() {
         return this.moveCount % 2 == 0 ? 0 : 1;
     }
+
     public boolean gameOver() {
         return this.gameOver || this.moveCountWithoutDeads > 10;
     }
+
     // TODO
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
         return authorsPanel;
     }
+
     // TODO
     public ArrayList<String> getGameResults() {
         /*
