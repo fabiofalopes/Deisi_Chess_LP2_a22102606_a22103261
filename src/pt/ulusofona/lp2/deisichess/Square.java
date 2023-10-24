@@ -17,6 +17,7 @@ public class Square {
     public boolean equals(int coordX, int coordY){
         return this.coordX == coordX && this.coordY == coordY;
     }
+
     public ChessPiece getPiece(){
         return this.piece;
     }

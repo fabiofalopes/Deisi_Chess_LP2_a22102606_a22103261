@@ -17,6 +17,7 @@ public class ChessPiece {
         this.team = team;
         this.nickname = nickname;
     }
+
     public ChessPiece(int id, int type, int team, String nickname, String image){
         this.id = id;
         this.type = type;
@@ -24,13 +25,16 @@ public class ChessPiece {
         this.nickname = nickname;
         this.image = image;
     }
+
     public void updateCoordinates(int coordX, int coordY) {
         this.coordX = coordX;
         this.coordY = coordY;
     }
+
     public String getStatus(){
         return this.dead ? "capturado" : "em jogo";
     }
+
     public String[] getInfo(){
         return new String[] {
                 this.id + "",
@@ -40,6 +44,7 @@ public class ChessPiece {
                 this.image
         };
     }
+
     public String[] getInfoWithStatus(){
         return new String[] {
                 this.id + "",
@@ -50,9 +55,11 @@ public class ChessPiece {
                 this.coordY + ""
         };
     }
+
     public void kill(){
         this.dead = true;
     }
+
     @Override
     public String toString() {
         return this.id + " | " +

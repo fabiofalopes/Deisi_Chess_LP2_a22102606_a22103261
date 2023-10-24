@@ -28,7 +28,7 @@ public class GameManager {
         String coord = coordX + "" + coordY;
         return this.validBoardPositions.contains(coord);
     }
-    
+
     // TODO: implement
     public boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
         return true;
