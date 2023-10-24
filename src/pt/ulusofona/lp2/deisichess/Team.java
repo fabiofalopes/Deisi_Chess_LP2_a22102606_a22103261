@@ -31,6 +31,15 @@ public class Team {
     public void addKill(){
         this.countKills += 1;
     }
+
+    public String[] getResult(){
+        return new String[] {
+            "Equipa das " + this.name,
+            this.countKills + "",
+            this.validMoves + "",
+            this.invalidMoves + ""
+        };
+    }
     // endregion
 
     @Override
