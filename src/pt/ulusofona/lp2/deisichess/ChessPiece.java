@@ -1,7 +1,7 @@
 package pt.ulusofona.lp2.deisichess;
 
 public class ChessPiece {
-    private int id;
+    private int ID;
     private int team; // Black Pieces - team : 0 | White Pieces team : 1
     private int type; // King : 0
     private String nickname;
@@ -10,15 +10,15 @@ public class ChessPiece {
     private int coordY;
     private boolean dead = false;
 
-    public ChessPiece(int id, int type, int team, String nickname){
-        this.id = id;
+    public ChessPiece(int ID, int type, int team, String nickname){
+        this.ID = ID;
         this.type = type;
         this.team = team;
         this.nickname = nickname;
     }
 
-    public ChessPiece(int id, int type, int team, String nickname, String image){
-        this.id = id;
+    public ChessPiece(int ID, int type, int team, String nickname, String image){
+        this.ID = ID;
         this.type = type;
         this.team = team;
         this.nickname = nickname;
@@ -37,7 +37,7 @@ public class ChessPiece {
 
     public String[] getInfo(){
         return new String[] {
-                this.id + "",
+                this.ID + "",
                 this.type + "",
                 this.team + "",
                 this.nickname,
@@ -47,7 +47,7 @@ public class ChessPiece {
 
     public String[] getInfoWithStatus(){
         return new String[] {
-                this.id + "",
+                this.ID + "",
                 this.type + "",
                 this.team + "",
                 this.getStatus(),
@@ -62,7 +62,7 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return this.id + " | " +
+        return this.ID + " | " +
                this.type + " | " +
                this.team + " | " +
                this.nickname + " | @(" +

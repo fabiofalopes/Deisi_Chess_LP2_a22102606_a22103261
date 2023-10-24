@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class GameManager {
     private ArrayList<Square> board;
     private HashMap<Integer, ChessPiece> chessPieces;
-    private HashMap<Integer, Integer> teams;
+    private HashMap<Integer, Team> teams;
     private HashSet<String> validBoardPositions;
     private int moveCount;
     private int moveCountWithoutDeads;
@@ -45,6 +45,7 @@ public class GameManager {
     // endregion
 
     // region API
+    // TODO: validate board and number pieces
     public boolean loadGame(File file) {
         this.init();
 
@@ -144,13 +145,13 @@ public class GameManager {
     }
 
     // expected format: { id, type, team, nickname, image }
-    public String[] getSquareInfo(int coordX, int coordy) {
-        if(this.board.isEmpty() || !this.isValidBoardPosition(coordX, coordy)) {
+    public String[] getSquareInfo(int coordX, int coordY) {
+        if(this.board.isEmpty() || !this.isValidBoardPosition(coordX, coordY)) {
             return null;
         }
 
         for (Square square : this.board) {
-            if(square.equals(coordX, coordy)) {
+            if(square.equals(coordX, coordY)) {
                 ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
                     break;
@@ -188,54 +189,26 @@ public class GameManager {
         return this.authorsPanel;
     }
 
-    // TODO
+    // TODO: only the winner is missing
     public ArrayList<String> getGameResults() {
-        /*
-            A ArrayList de Strings contem
-            [0] - "JOGO DE CRAZY CHESS"
-            [1] - "Resultado: < RES >"
-            ...
-            Vareaveís para acessar:
-            - RES
-                - "VENCERAM AS BRANCAS"
-                - "VENCERAM AS PRETAS"
-                - "EMPATE"
-            - NR CAPTURAS (de cada)
-            - NR JOGADAS VALIDAS (de cada)
-            - NR TENTATIVAS INVALIDAS (de cada)
+        if(this.teams.size() != 2){
+            return null;
+        }
 
-            ```
-            JOGO DE CRAZY CHESS
-            Resultado: <RES>
-            ---
-            Equipa das Pretas
-            <NR CAPTURAS>
-            <NR JOGADAS VALIDAS>
-            <NR TENTATIVAS INVALIDAS>
-            Equipa das Brancas
-            <NR CAPTURAS>
-            <NR JOGADAS VALIDAS>
-            <NR TENTATIVAS INVALIDAS>
-            ```
-        */
+        ArrayList<String> resultMessage = new ArrayList<>();
+        resultMessage.add("JOGO DE CRAZY CHESS");
+        resultMessage.add("Resultado: ");
+        resultMessage.add("---");
 
+        for (int teamID = 0; teamID <= 1; teamID++){
+            String[] teamResult = this.teams.get(teamID).getResult();
 
-        ArrayList<String> results = new ArrayList<>();
-         /*
-        results.add("JOGO DE CRAZY CHESS");
-        results.add("Resultado: " + RES);
-        results.add("---");
-        results.add("Equipa das Pretas");
-        results.add(NR CAPTURAS);
-        results.add(NR JOGADAS VALIDAS);
-        results.add(NR TENTATIVAS INVALIDAS);
-        results.add("Equipa das Brancas");
-        results.add(NR CAPTURAS);
-        results.add(NR JOGADAS VALIDAS);
-        results.add(NR TENTATIVAS INVALIDAS);
-        */
+            for(int resultLine = 0; resultLine < 4; resultLine++){
+                resultMessage.add(teamResult[resultLine]);
+            }
+        }
 
-        return results;
+        return resultMessage;
     }
     // endregion
 
