@@ -152,12 +152,7 @@ public class GameManager {
     }
     public String getPieceInfoAsString(int ID) {
         ChessPiece piece = this.chessPieces.get(ID);
-
-        if(piece == null){
-            return "";
-        }
-
-        return piece.toString();
+        return piece == null ? "" : piece.toString();
     }
     public int getCurrentTeamID() {
         return this.moveCount % 2 == 0 ? 0 : 1;
