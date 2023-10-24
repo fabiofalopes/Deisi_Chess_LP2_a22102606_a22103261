@@ -41,9 +41,4 @@ public class Team {
         };
     }
     // endregion
-
-    @Override
-    public String toString() {
-        return "Equipa das " + this.name;
-    }
 }
