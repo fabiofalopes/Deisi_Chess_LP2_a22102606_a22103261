@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 public class GameManager {
     private ArrayList<Square> board;
     private HashMap<Integer, ChessPiece> chessPieces;
+    private HashMap<Integer, Integer> teams;
     private HashSet<String> validBoardPositions;
     private int moveCount;
     private int moveCountWithoutDeads;
@@ -24,6 +25,7 @@ public class GameManager {
     private void init(){
         this.board = new ArrayList<>();
         this.chessPieces = new HashMap<>();
+        this.teams = new HashMap<>();
         this.validBoardPositions = new HashSet<>();
         this.moveCount = 0;
         this.moveCountWithoutDeads = 0;
