@@ -8,9 +8,16 @@ import java.util.HashSet;
 import javax.swing.JPanel;
 
 public class GameManager {
+    private final int BLACK_TEAM_ID = 0;
+    private final String BLACK_TEAM_NAME = "Pretas";
+    private final int WHITE_TEAM_ID = 1;
+    private final String WHITE_TEAM_NAME = "Brancas";
+
+
     private ArrayList<Square> board;
     private HashMap<Integer, ChessPiece> chessPieces;
-    private HashMap<Integer, Team> teams;
+    private Team blackTeam;
+    private Team whiteTeam;
     private HashSet<String> validBoardPositions;
     private int moveCount;
     private int moveCountWithoutDeads;
@@ -25,7 +32,8 @@ public class GameManager {
     private void init(){
         this.board = new ArrayList<>();
         this.chessPieces = new HashMap<>();
-        this.teams = new HashMap<>();
+        this.blackTeam = new Team(BLACK_TEAM_ID, BLACK_TEAM_NAME);
+        this.whiteTeam = new Team(WHITE_TEAM_ID, WHITE_TEAM_NAME);
         this.validBoardPositions = new HashSet<>();
         this.moveCount = 0;
         this.moveCountWithoutDeads = 0;
@@ -36,6 +44,17 @@ public class GameManager {
     private boolean isValidBoardPosition(int coordX, int coordY){
         String coord = coordX + "" + coordY;
         return this.validBoardPositions.contains(coord);
+    }
+
+    private boolean addPieceTeam(int teamID, int pieceID, ChessPiece piece){
+        switch (teamID){
+            case BLACK_TEAM_ID:
+                return this.blackTeam.addPiece(pieceID, piece);
+            case WHITE_TEAM_ID:
+                return this.whiteTeam.addPiece(pieceID, piece);
+            default:
+                return false;
+        }
     }
 
     // TODO: implement
@@ -71,14 +90,22 @@ public class GameManager {
                     return false;
                 }
 
+                // TODO VALIDA DATA
                 int chessPieceID = Integer.parseInt(columns[0].trim()),
                     chessPieceType = Integer.parseInt(columns[1].trim()),
                     chessPieceTeam = Integer.parseInt(columns[2].trim());
                 String chessPieceNickname = columns[3].trim();
 
                 ChessPiece piece = new ChessPiece(chessPieceID, chessPieceType, chessPieceTeam, chessPieceNickname);
+                boolean result = this.addPieceTeam(chessPieceTeam, chessPieceID, piece);
+                if(!result){
+                    return false;
+                }
                 this.chessPieces.put(chessPieceID, piece);
             }
+
+            // to ensure we don't load repeated pieces
+            HashSet<Integer> readPieceIDS = new HashSet<>();
 
             // read board squares info
             for(int rowIndex = 0; rowIndex < boardDimension; rowIndex++){
@@ -97,11 +124,21 @@ public class GameManager {
                     int pieceID = Integer.parseInt(columns[columnIndex]);
                     ChessPiece chessPiece = null;
 
+                    // break if has repeated pieceID
+                    if(readPieceIDS.contains(pieceID)){
+                        return false;
+                    }
+
                     if(pieceID != 0){
                         chessPiece = this.chessPieces.get(pieceID);
-                        if(chessPiece != null) {
-                            chessPiece.updateCoordinates(rowIndex, columnIndex);
+
+                        // to ensure pieceID has a ChessPiece object
+                        if(chessPiece == null){
+                            return false;
                         }
+
+                        readPieceIDS.add(pieceID);
+                        chessPiece.updateCoordinates(rowIndex, columnIndex);
                     }
 
                     this.board.add(new Square(rowIndex, columnIndex, isWhiteSquare, chessPiece));
@@ -191,17 +228,16 @@ public class GameManager {
 
     // TODO: only the winner is missing
     public ArrayList<String> getGameResults() {
-        if(this.teams.size() != 2){
-            return null;
-        }
-
         ArrayList<String> resultMessage = new ArrayList<>();
         resultMessage.add("JOGO DE CRAZY CHESS");
         resultMessage.add("Resultado: ");
         resultMessage.add("---");
 
         for (int teamID = 0; teamID <= 1; teamID++){
-            String[] teamResult = this.teams.get(teamID).getResult();
+            String[] teamResult =
+                    teamID == BLACK_TEAM_ID ?
+                                this.blackTeam.getResult() :
+                                    this.whiteTeam.getResult();
 
             for(int resultLine = 0; resultLine < 4; resultLine++){
                 resultMessage.add(teamResult[resultLine]);
