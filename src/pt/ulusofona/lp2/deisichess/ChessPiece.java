@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.deisichess;
 
 public class ChessPiece {
     private int ID;
-    private int team; // Black Pieces - team : 0 | White Pieces team : 1
+    private int teamID; // Black Pieces - team : 0 | White Pieces team : 1
     private int type; // King : 0
     private String nickname;
     private String image = null;
@@ -10,17 +10,17 @@ public class ChessPiece {
     private int coordY;
     private boolean dead = false;
 
-    public ChessPiece(int ID, int type, int team, String nickname){
+    public ChessPiece(int ID, int type, int teamID, String nickname){
         this.ID = ID;
         this.type = type;
-        this.team = team;
+        this.teamID = teamID;
         this.nickname = nickname;
     }
 
-    public ChessPiece(int ID, int type, int team, String nickname, String image){
+    public ChessPiece(int ID, int type, int teamID, String nickname, String image){
         this.ID = ID;
         this.type = type;
-        this.team = team;
+        this.teamID = teamID;
         this.nickname = nickname;
         this.image = image;
     }
@@ -39,7 +39,7 @@ public class ChessPiece {
         return new String[] {
                 this.ID + "",
                 this.type + "",
-                this.team + "",
+                this.teamID + "",
                 this.nickname,
                 this.image
         };
@@ -49,7 +49,7 @@ public class ChessPiece {
         return new String[] {
                 this.ID + "",
                 this.type + "",
-                this.team + "",
+                this.teamID + "",
                 this.getStatus(),
                 this.coordX + "",
                 this.coordY + ""
@@ -64,7 +64,7 @@ public class ChessPiece {
     public String toString() {
         return this.ID + " | " +
                this.type + " | " +
-               this.team + " | " +
+               this.teamID + " | " +
                this.nickname + " | @(" +
                this.coordX + ", " +
                this.coordY + ")";
