@@ -192,6 +192,17 @@ Equipa das Brancas
 ```
 
 
+### GameOver()
+É sempre chamado apos cada jogada
+- Verifica se o jogo ja terminou:
+- Valida
+  - So existem reis de uma equipa (vence essa equipa);
+  - Se só existe um rei de cada equipa (empate?);
+  - Se ao fim de 10 jodadas não houver nenhuma captura então o jogo termina (empate?) 
+    "Valido se houver pelo menos 1 captura previa!!!"
+	(Portanto isto e a regra classica dos 40 moves cortada para 10. caso nenhuma equipa faça capturas entao empata o jogo.)
+
+
 ### JPanel getAuthorsPanel() 
 
 Metodo chamado quando se click no botão créditos da interface gráfica e retorna uma JPanel 
