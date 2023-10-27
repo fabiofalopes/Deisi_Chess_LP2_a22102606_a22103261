@@ -85,6 +85,14 @@ public class GameManager {
         // null se nao houver match com o square
         return null;
     }
+    public Square getSquareAtPosition(int x, int y) {
+        for (Square square : board) {
+            if (square.equals(x, y)) {
+                return square;
+            }
+        }
+        return null;
+    }
 
 
     // endregion
@@ -186,11 +194,13 @@ public class GameManager {
     }
 
     // TODO: review and finish
+    // INCOMPLETE !!!! updateBoard() nao existe.
+    // TODO: Necessario fazer updateBoard() talvez nao necessite de ser um metodo
+    // TODO: Rever ultima proposta
     public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
         if(this.gameOver || !this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
             return false;
         }
-
         if(!this.validMove(coordX0, coordY0, coordX1, coordY1)){
             return false;
         }
@@ -201,10 +211,56 @@ public class GameManager {
         //onde quando clicamos o botão **mover**, o programa chama a nossa classe
         // GameManager.move(a,b,c,d)
 
+        ChessPiece piece = getPieceAtPosition(coordX0, coordY0);
+
+        if(piece == null){
+            return false;
+        }
+
+        // Get the destination square
+        Square destinationSquare = getSquareAtPosition(coordX1, coordY1);
+
+        // Check if the destination square is occupied
+        if (destinationSquare.getPiece() != null){
+
+            ChessPiece pieceAtDestinationSquare = destinationSquare.getPiece();
+
+            // If the destination square is occupied by a piece from the same team, the move is not valid
+            if (pieceAtDestinationSquare.getTeamID() == piece.getTeamID()) {
+                return false;
+            }
+            // If the destination square is occupied by a piece from the opposing team, capture it
+            else {
+                moveCountWithoutDeads = 0; // Reset counter for amout of rounds with no captures/kills
+                pieceAtDestinationSquare.kill();
+                if(pieceAtDestinationSquare.getTeamID() == BLACK_TEAM_ID){
+                    blackTeam.addDead();
+                    whiteTeam.addKill();
+                } else {
+                    whiteTeam.addDead();
+                    blackTeam.addKill();
+                }
+            }
+        }
+        else {
+            if (blackTeam.getCountKills() != 0 || whiteTeam.getCountKills() != 0){
+                //Ele diz no video que a regra dos 10 moves (empate) so é valida se já houve uma captura durante o jogo
+                //Que foi sucedida por 10 moves sem capturas
+                moveCountWithoutDeads++;
+            }
+        }
+
+        // Move the piece to the new position
+        piece.updateCoordinates(coordX1, coordY1);
+
+        // Update the board
+        //updateBoard();
+
         // if move válido incremente nr de jogadas
         this.moveCount++;
-        
-        return false;
+
+        return true;
+        //return false;
     }
 
     // expected format: { id, type, team, nickname, image }

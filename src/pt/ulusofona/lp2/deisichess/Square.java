@@ -21,5 +21,20 @@ public class Square {
     public ChessPiece getPiece(){
         return this.piece;
     }
+
+    public boolean addPieceToSquare(ChessPiece newPiece){
+        if (this.piece == null){
+            piece = newPiece;
+            return true;
+        }
+        return false;
+    }
+    public boolean removePiece(){
+        if (this.piece != null){ // Tem uma peça
+            this.piece = null;
+            return true;
+        }
+        return false;
+    }
     // endregion
 }
