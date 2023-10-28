@@ -18,11 +18,13 @@ reprovação dos alunos na avaliação de primeira época da componente prática
 ### Objectivos - Primeira Parte
 
 Nesta primeira parte, os alunos terão de:
-	● Criar um diagrama de classes em UML que seja suficiente para modelar a realidade
-	apresentada e responder aos requisitos funcionais apresentados ao longo do
-	enunciado.
+
+	● Criar um diagrama de classes em UML que seja suficiente para modelar a realidade apresentada e responder aos requisitos funcionais apresentados ao longo do enunciado.
+
 	● Implementar o modelo proposto, usando a linguagem Java 17.
+
 	● Implementar algumas funcionalidades básicas, também em Java 17.
+
 	● Criar testes automáticos unitários para uma parte do modelo implementado, usando JUnit 5.
 
 ## Restrições Técnicas - Primeira Parte

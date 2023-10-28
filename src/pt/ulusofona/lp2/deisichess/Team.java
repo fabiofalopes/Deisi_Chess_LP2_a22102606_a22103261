@@ -61,5 +61,8 @@ public class Team {
             this.invalidMoves + ""
         };
     }
+    public int getCountKills(){
+        return this.countKills;
+    }
     // endregion
 }

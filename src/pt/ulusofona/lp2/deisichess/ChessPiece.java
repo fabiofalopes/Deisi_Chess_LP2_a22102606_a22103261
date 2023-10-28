@@ -69,5 +69,8 @@ public class ChessPiece {
                this.coordX + ", " +
                this.coordY + ")";
     }
+    public int getTeamID(){
+        return this.teamID;
+    }
     // endregion
 }

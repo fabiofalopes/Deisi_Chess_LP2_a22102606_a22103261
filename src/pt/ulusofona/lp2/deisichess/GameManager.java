@@ -1,11 +1,12 @@
 package pt.ulusofona.lp2.deisichess;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class GameManager {
     private final int BLACK_TEAM_ID = 0;
@@ -57,10 +58,43 @@ public class GameManager {
         }
     }
 
-    // TODO: implement
+    // TODO: Review if no logic errors
     private boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
-        return true;
+        // No caso do Rei, este pode-se mover 1 square em todas as direções horizontal, vertical e diagonal
+        // Logo o valor absoluto da subtração entre os |x1 - x0| e |y1 - y0| tem que ser menor ou igual a 1
+        //Também não se pode mover para um square em que esteja presente algum elemento da proproa
+        ChessPiece evalCurrentSquarePiece = getPieceAtPosition(coordX0,coordY0);
+
+        if (evalCurrentSquarePiece == null){
+            //Nem existe nenhuma peca do square atual retorna logo false
+            return false;
+        }
+        return Math.abs(coordX0 - coordX1) <= 1 &&
+                Math.abs(coordY0 - coordY1) <= 1 &&
+                getPieceAtPosition(coordX1,coordY1).getTeamID() != evalCurrentSquarePiece.getTeamID()
+                ;
     }
+
+    public ChessPiece getPieceAtPosition(int x, int y) {
+        for (Square square : board) {
+            if (square.equals(x, y)) {
+                // Retorna peça presente ou null caso nao exista nenhuma no square
+                return square.getPiece();
+            }
+        }
+        // null se nao houver match com o square
+        return null;
+    }
+    public Square getSquareAtPosition(int x, int y) {
+        for (Square square : board) {
+            if (square.equals(x, y)) {
+                return square;
+            }
+        }
+        return null;
+    }
+
+
     // endregion
 
     // region API
@@ -160,11 +194,13 @@ public class GameManager {
     }
 
     // TODO: review and finish
+    // INCOMPLETE !!!! updateBoard() nao existe.
+    // TODO: Necessario fazer updateBoard() talvez nao necessite de ser um metodo
+    // TODO: Rever ultima proposta
     public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
         if(this.gameOver || !this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
             return false;
         }
-
         if(!this.validMove(coordX0, coordY0, coordX1, coordY1)){
             return false;
         }
@@ -175,10 +211,56 @@ public class GameManager {
         //onde quando clicamos o botão **mover**, o programa chama a nossa classe
         // GameManager.move(a,b,c,d)
 
+        ChessPiece piece = getPieceAtPosition(coordX0, coordY0);
+
+        if(piece == null){
+            return false;
+        }
+
+        // Get the destination square
+        Square destinationSquare = getSquareAtPosition(coordX1, coordY1);
+
+        // Check if the destination square is occupied
+        if (destinationSquare.getPiece() != null){
+
+            ChessPiece pieceAtDestinationSquare = destinationSquare.getPiece();
+
+            // If the destination square is occupied by a piece from the same team, the move is not valid
+            if (pieceAtDestinationSquare.getTeamID() == piece.getTeamID()) {
+                return false;
+            }
+            // If the destination square is occupied by a piece from the opposing team, capture it
+            else {
+                moveCountWithoutDeads = 0; // Reset counter for amout of rounds with no captures/kills
+                pieceAtDestinationSquare.kill();
+                if(pieceAtDestinationSquare.getTeamID() == BLACK_TEAM_ID){
+                    blackTeam.addDead();
+                    whiteTeam.addKill();
+                } else {
+                    whiteTeam.addDead();
+                    blackTeam.addKill();
+                }
+            }
+        }
+        else {
+            if (blackTeam.getCountKills() != 0 || whiteTeam.getCountKills() != 0){
+                //Ele diz no video que a regra dos 10 moves (empate) so é valida se já houve uma captura durante o jogo
+                //Que foi sucedida por 10 moves sem capturas
+                moveCountWithoutDeads++;
+            }
+        }
+
+        // Move the piece to the new position
+        piece.updateCoordinates(coordX1, coordY1);
+
+        // Update the board
+        //updateBoard();
+
         // if move válido incremente nr de jogadas
         this.moveCount++;
-        
-        return false;
+
+        return true;
+        //return false;
     }
 
     // expected format: { id, type, team, nickname, image }
@@ -189,7 +271,7 @@ public class GameManager {
 
         for (Square square : this.board) {
             if(square.equals(coordX, coordY)) {
-                ChessPiece piece = square.getPiece();
+                    ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
                     break;
                 }
@@ -220,10 +302,25 @@ public class GameManager {
         return this.gameOver || this.moveCountWithoutDeads > 10;
     }
 
-    // TODO
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
-        return this.authorsPanel;
+        JPanel panel = new JPanel();
+
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        JLabel title = new JLabel("Créditos");
+        title.setFont(new Font("Arial", Font.BOLD,24));
+        title.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.add(title);
+        String[] authors = {"a22102606 - Marcos Gil", "a22103261 - Fábio Lopes"};
+        for (String author : authors){
+            JLabel label = new JLabel(author);
+            label.setFont(new Font("Arial", Font.PLAIN,18));
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            panel.add(label);
+        }
+        //return this.authorsPanel;
+        return panel;
     }
 
     // TODO: only the winner is missing
