@@ -256,7 +256,7 @@ public class GameManager {
     // expected format: { id, type, team, nickname, image }
     public String[] getSquareInfo(int x, int y) {
         if(this.notPlayable || !this.isValidBoardPosition(x, y)) {
-            return new String[]{};
+            return new String[]{null};
         }
 
         for (Square square : this.board) {
@@ -269,16 +269,16 @@ public class GameManager {
             }
         }
 
-        return new String[]{};
+        return new String[]{null};
     }
     // expected format: { id, type, team, nickname, status("capturado", "em jogo"), coordX, coordY }
     public String[] getPieceInfo(int ID) {
         if(this.notPlayable){
-            return new String[]{};
+            return new String[]{null};
         }
 
         ChessPiece piece = this.pieces.get(ID);
-        return piece == null ? new String[]{} : piece.getInfoWithLifeStatusAndPosition();
+        return piece == null ? new String[]{null} : piece.getInfoWithLifeStatusAndPosition();
     }
     // expected string: "id | type | team | nickname | @(coordX, coordY)
     public String getPieceInfoAsString(int ID) {
