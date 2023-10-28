@@ -30,7 +30,7 @@ public class Team {
     }
     public String[] getResult(){
         return new String[] {
-            "Equipa das " + this.name,
+            GameProperties.teamMessage + this.name,
             this.countCaptures + "",
             this.countValidMoves + "",
             this.countInvalidMoves + ""
