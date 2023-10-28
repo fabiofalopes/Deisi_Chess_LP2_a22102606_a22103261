@@ -7,7 +7,7 @@ public class ChessPiece {
     private int teamID; // Black team: 0 | White team: 1
     private int type; // King : 0
     private String nickname;
-    private String image;
+    private String image = null;
     private int currentCoordX;
     private int currentCoordY;
     private boolean captured;
