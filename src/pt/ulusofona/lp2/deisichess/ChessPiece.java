@@ -69,7 +69,7 @@ public class ChessPiece {
         return this.ID + " | " +
                 this.type + " | " +
                 this.teamID + " | " +
-                this.nickname + " | @ (" +
+                this.nickname + "@ (" +
                 this.currentCoordX + ", " +
                 this.currentCoordY + ")";
     }
