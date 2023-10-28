@@ -237,6 +237,7 @@ public class GameManager {
             this.playsWithoutCaptures += 1;
         } else {
             this.playsWithoutCaptures = 0;
+            enemyPiece.updatePosition(null,null);
             enemyPiece.capture();
             playerPiece.addCaptureLog(enemyPiece.getID());
 
