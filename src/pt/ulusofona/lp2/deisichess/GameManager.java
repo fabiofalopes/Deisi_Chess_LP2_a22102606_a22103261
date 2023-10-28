@@ -24,6 +24,8 @@ public class GameManager {
     private int moveCountWithoutDeads;
     private boolean gameOver;
     JPanel authorsPanel;
+    private int boardDimension;
+    private int numberOfChessPieces;
 
     public GameManager(){
         this.init();
@@ -94,6 +96,13 @@ public class GameManager {
         return null;
     }
 
+    public int getBoardDimension() {
+        return boardDimension;
+    }
+
+    public int getNumberOfChessPieces() {
+        return numberOfChessPieces;
+    }
 
     // endregion
 
@@ -112,8 +121,8 @@ public class GameManager {
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            int boardDimension = Integer.parseInt(reader.readLine().trim());
-            int numberOfChessPieces = Integer.parseInt(reader.readLine().trim());
+            this.boardDimension = Integer.parseInt(reader.readLine().trim());
+            this.numberOfChessPieces = Integer.parseInt(reader.readLine().trim());
 
             // read pieces info
             for(int i = 0; i < numberOfChessPieces; i++){
