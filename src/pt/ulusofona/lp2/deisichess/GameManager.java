@@ -125,6 +125,9 @@ public class GameManager {
             int countBlackTeamPieces = 0,
                 countWhiteTeamPieces = 0;
 
+            // TODO: REMOVE
+            int whitePieceID = -1;
+
             // read pieces info
             for(int i = 0; i < readNrPieces; i++){
                 String row = reader.readLine();
@@ -160,6 +163,7 @@ public class GameManager {
                 else {
                     this.whiteTeam.addPiece(readPieceID, piece);
                     countWhiteTeamPieces++;
+                    whitePieceID = readPieceID;
                 }
 
                 this.pieces.put(readPieceID, piece);
@@ -214,8 +218,13 @@ public class GameManager {
                     (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
 
             if(!this.initGameOver){
+                boolean noChance = (this.boardDimension * 2 - 1 == countBlackTeamPieces);
                 this.initGameOver = (this.boardDimension * 2 == (countBlackTeamPieces + countBlackTeamPieces) ||
-                        (this.boardDimension * 2 - 1 == countBlackTeamPieces));
+                        noChance);
+
+                if(noChance){
+                    this.pieces.get(whitePieceID).capture();
+                }
             }
 
             return true;
