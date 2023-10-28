@@ -18,8 +18,12 @@ public class ChessPiece {
         this.type = type;
         this.teamID = teamID;
         this.nickname = nickname;
+        this.captureLog = new ArrayList<>();
     }
 
+    public int getID(){
+        return this.ID;
+    }
     public void updatePosition(int x, int y) {
         this.currentCoordX = x;
         this.currentCoordY = y;
@@ -49,8 +53,14 @@ public class ChessPiece {
     public void capture(){
         this.captured = true;
     }
+    public boolean isCaptured(){
+        return this.captured;
+    }
     public int getTeamID(){
         return this.teamID;
+    }
+    public void addCaptureLog(int ID){
+        this.captureLog.add(ID);
     }
 
     @Override

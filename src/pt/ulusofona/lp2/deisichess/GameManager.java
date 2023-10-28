@@ -2,92 +2,88 @@ package pt.ulusofona.lp2.deisichess;
 
 import java.awt.*;
 import java.io.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import javax.swing.*;
 
 public class GameManager {
-    private final int BLACK_TEAM_ID = 0;
-    private final String BLACK_TEAM_NAME = "Pretas";
-    private final int WHITE_TEAM_ID = 1;
-    private final String WHITE_TEAM_NAME = "Brancas";
-
-
     private ArrayList<Square> board;
-    private HashMap<Integer, ChessPiece> chessPieces;
+    private HashSet<String> validBoardPositions;
+    private int boardDimension;
+    private HashMap<Integer, ChessPiece> pieces;
     private Team blackTeam;
     private Team whiteTeam;
-    private HashSet<String> validBoardPositions;
-    private int moveCount;
-    private int moveCountWithoutDeads;
-    private boolean gameOver;
-    JPanel authorsPanel;
-    private int boardDimension;
-    private int numberOfChessPieces;
+    private boolean blackTeamIsPlaying;
+    private int playsWithoutCaptures;
+    private JPanel authorsPanel;
+    private boolean notPlayable;
+
 
     public GameManager(){
-        this.init();
+        this.initGame();
     }
-
-    // region Methods
-    private void init(){
+    private void initGame(){
         this.board = new ArrayList<>();
-        this.chessPieces = new HashMap<>();
-        this.blackTeam = new Team(BLACK_TEAM_ID, BLACK_TEAM_NAME);
-        this.whiteTeam = new Team(WHITE_TEAM_ID, WHITE_TEAM_NAME);
         this.validBoardPositions = new HashSet<>();
-        this.moveCount = 0;
-        this.moveCountWithoutDeads = 0;
-        this.gameOver = false;
+        this.boardDimension = 0;
+        this.pieces = new HashMap<>();
+        this.blackTeam = new Team(GameProperties.blackTeamID, GameProperties.blackTeamName);
+        this.whiteTeam = new Team(GameProperties.whiteTeamID, GameProperties.whiteTeamName);
+        this.blackTeamIsPlaying = true;
+        this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
+        this.notPlayable = false;
     }
-
-    private boolean isValidBoardPosition(int coordX, int coordY){
-        String coord = coordX + "" + coordY;
-        return this.validBoardPositions.contains(coord);
+    private void makeItUnplayable(){
+        this.notPlayable = true;
     }
-
-    private boolean addPieceTeam(int teamID, int pieceID, ChessPiece piece){
-        switch (teamID){
-            case BLACK_TEAM_ID:
-                return this.blackTeam.addPiece(pieceID, piece);
-            case WHITE_TEAM_ID:
-                return this.whiteTeam.addPiece(pieceID, piece);
-            default:
-                return false;
-        }
+    private boolean isValidBoardPosition(int x, int y){
+        return this.validBoardPositions.contains(x + "" + y);
     }
-
-    // TODO: Review if no logic errors
-    private boolean validMove(int coordX0, int coordY0, int coordX1, int coordY1){
-        // No caso do Rei, este pode-se mover 1 square em todas as direções horizontal, vertical e diagonal
-        // Logo o valor absoluto da subtração entre os |x1 - x0| e |y1 - y0| tem que ser menor ou igual a 1
-        //Também não se pode mover para um square em que esteja presente algum elemento da proproa
-        ChessPiece evalCurrentSquarePiece = getPieceAtPosition(coordX0,coordY0);
-
-        if (evalCurrentSquarePiece == null){
-            //Nem existe nenhuma peca do square atual retorna logo false
+    private int getBoardDimension(){
+        return this.boardDimension;
+    }
+    private boolean setBoardDimension(int dimension){
+        if(dimension < GameProperties.minBoardDimension) {
             return false;
         }
-        return Math.abs(coordX0 - coordX1) <= 1 &&
-                Math.abs(coordY0 - coordY1) <= 1 &&
-                getPieceAtPosition(coordX1,coordY1).getTeamID() != evalCurrentSquarePiece.getTeamID()
-                ;
-    }
 
-    public ChessPiece getPieceAtPosition(int x, int y) {
+        this.boardDimension = dimension;
+        return true;
+    }
+    private ChessPiece getPieceAtPosition(int x, int y) {
         for (Square square : board) {
-            if (square.equals(x, y)) {
-                // Retorna peça presente ou null caso nao exista nenhuma no square
+            if (square.equals(x, y)) { // return piece with this coordinates
                 return square.getPiece();
             }
         }
-        // null se nao houver match com o square
+        // no match
         return null;
     }
-    public Square getSquareAtPosition(int x, int y) {
+    private boolean validMoveAndPositions(int x0, int y0, int x1, int y1){
+        if(!this.isValidBoardPosition(x0, y0) || !this.isValidBoardPosition(x1, y1)){
+            return false;
+        }
+
+        if(x0 == x1 && y0 == y1){ // same position
+            return false;
+        }
+
+        ChessPiece currentPiece = getPieceAtPosition(x0, y0);
+        ChessPiece targetPiece = getPieceAtPosition(x1, y1);
+
+        if(currentPiece == null){
+            return false;
+        }
+
+        // |x1 - x0| and |y1 - y0| has to be <= 1
+        return Math.abs(x0 - x1) <= 1 &&
+               Math.abs(y0 - y1) <= 1 &&
+               (targetPiece == null || (currentPiece.getTeamID() != targetPiece.getTeamID()));
+    }
+    private Square getSquareAtPosition(int x, int y) {
         for (Square square : board) {
             if (square.equals(x, y)) {
                 return square;
@@ -95,97 +91,109 @@ public class GameManager {
         }
         return null;
     }
-
-    public int getBoardDimension() {
-        return boardDimension;
+    private boolean isGameTie(){
+        return (this.playsWithoutCaptures > GameProperties.tieMoveRule &&
+                    (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
+        );
     }
 
-    public int getNumberOfChessPieces() {
-        return numberOfChessPieces;
-    }
 
-    // endregion
-
-    // region API
-    // TODO: validate board and number pieces
     public boolean loadGame(File file) {
-        this.init();
+        this.initGame();
 
         if(file == null){
+            this.makeItUnplayable();
             return false;
         }
-
-        final int PIECE_ROW_INFO_COLUMNS = 4;
-        final String COLUMNS_SEPARATOR = ":";
 
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            this.boardDimension = Integer.parseInt(reader.readLine().trim());
-            this.numberOfChessPieces = Integer.parseInt(reader.readLine().trim());
+            boolean validBoardDimension = this.setBoardDimension(Integer.parseInt(reader.readLine().trim()));
+            int readNrPieces = Integer.parseInt(reader.readLine().trim());
 
-            // read pieces info
-            for(int i = 0; i < numberOfChessPieces; i++){
-                String row = reader.readLine();
-                String[] columns = row.split(COLUMNS_SEPARATOR);
-
-                if(columns.length != PIECE_ROW_INFO_COLUMNS){
-                    return false;
-                }
-
-                // TODO VALIDA DATA
-                int chessPieceID = Integer.parseInt(columns[0].trim()),
-                    chessPieceType = Integer.parseInt(columns[1].trim()),
-                    chessPieceTeam = Integer.parseInt(columns[2].trim());
-                String chessPieceNickname = columns[3].trim();
-
-                ChessPiece piece = new ChessPiece(chessPieceID, chessPieceType, chessPieceTeam, chessPieceNickname);
-                boolean result = this.addPieceTeam(chessPieceTeam, chessPieceID, piece);
-                if(!result){
-                    return false;
-                }
-                this.chessPieces.put(chessPieceID, piece);
+            if(!validBoardDimension || readNrPieces < GameProperties.minChessPieces){
+                this.makeItUnplayable();
+                return false;
             }
 
-            // to ensure we don't load repeated pieces
-            HashSet<Integer> readPieceIDS = new HashSet<>();
+            // read pieces info
+            for(int i = 0; i < readNrPieces; i++){
+                String row = reader.readLine();
+                String[] columns = row.split(GameProperties.fileColumnSeparator);
 
-            // read board squares info
-            for(int rowIndex = 0; rowIndex < boardDimension; rowIndex++){
-                String row = reader.readLine().trim();
-                String[] columns = row.split(COLUMNS_SEPARATOR);
-
-                if(columns.length != boardDimension){
+                if(columns.length != GameProperties.fileInfoNrColumns){
+                    this.makeItUnplayable();
                     return false;
                 }
 
-                for(int columnIndex = 0; columnIndex < boardDimension; columnIndex++){
-                    // even -> white
-                    // odd -> black
-                    boolean isWhiteSquare = columnIndex % 2 == 0;
+                int readPieceID = Integer.parseInt(columns[0].trim()),
+                    readPieceType = Integer.parseInt(columns[1].trim()),
+                    readPieceTeamID = Integer.parseInt(columns[2].trim());
 
-                    int pieceID = Integer.parseInt(columns[columnIndex]);
-                    ChessPiece chessPiece = null;
+                String readPieceNickname = columns[3].trim();
+
+                if(!GameProperties.readPieceValidation(readPieceID, readPieceType, readPieceTeamID) ||
+                    this.pieces.get(readPieceID) != null){ // to avoid duplicates
+                        this.makeItUnplayable();
+                        return false;
+                }
+
+                ChessPiece piece = new ChessPiece(
+                        readPieceID,
+                        readPieceType,
+                        readPieceTeamID,
+                        readPieceNickname);
+
+                if(readPieceTeamID == GameProperties.blackTeamID){
+                    this.blackTeam.addPiece(readPieceID, piece);
+                }
+                else {
+                    this.whiteTeam.addPiece(readPieceID, piece);
+                }
+
+                this.pieces.put(readPieceID, piece);
+            }
+
+            // to ensure we don't place repeated pieces
+            HashSet<Integer> piecesPlacedOnBoard = new HashSet<>();
+            // read board squares info
+            for(int colX = 0; colX < this.boardDimension; colX++){
+                String row = reader.readLine().trim();
+                String[] columns = row.split(GameProperties.fileColumnSeparator);
+
+                if(columns.length != this.boardDimension){
+                    this.makeItUnplayable();
+                    return false;
+                }
+
+                for(int colY = 0; colY < boardDimension; colY++){
+                    Square square = new Square(colX, colY);
+
+                    int readPieceID = Integer.parseInt(columns[colY]);
+                    ChessPiece piece = null;
 
                     // break if has repeated pieceID
-                    if(readPieceIDS.contains(pieceID)){
+                    if(piecesPlacedOnBoard.contains(readPieceID)){
+                        this.makeItUnplayable();
                         return false;
                     }
 
-                    if(pieceID != 0){
-                        chessPiece = this.chessPieces.get(pieceID);
-
+                    if(readPieceID != 0){ // has squad init position
+                        piece = this.pieces.get(readPieceID);
                         // to ensure pieceID has a ChessPiece object
-                        if(chessPiece == null){
+                        if(piece == null){
+                            this.makeItUnplayable();
                             return false;
                         }
 
-                        readPieceIDS.add(pieceID);
-                        chessPiece.updateCoordinates(rowIndex, columnIndex);
+                        piecesPlacedOnBoard.add(readPieceID);
+                        piece.updatePosition(colX, colY);
+                        square.updatePiece(piece);
                     }
 
-                    this.board.add(new Square(rowIndex, columnIndex, isWhiteSquare, chessPiece));
-                    this.validBoardPositions.add(rowIndex + "" + columnIndex);
+                    this.board.add(square);
+                    this.validBoardPositions.add(colX + "" + colY);
                 }
             }
 
@@ -195,92 +203,65 @@ public class GameManager {
             //System.err.println("Error reading file: " + e.getMessage());
         }
 
+        this.makeItUnplayable();
         return false;
     }
-
     public int getBoardSize() {
-        return this.getBoardDimension();
+        return this.notPlayable ? 0 : this.getBoardDimension();
     }
-
-    // TODO: review and finish
-    // INCOMPLETE !!!! updateBoard() nao existe.
-    // TODO: Necessario fazer updateBoard() talvez nao necessite de ser um metodo
-    // TODO: Rever ultima proposta
-    public boolean move(int coordX0, int coordY0, int coordX1, int coordY1) {
-        if(this.gameOver || !this.isValidBoardPosition(coordX0, coordY0) || !this.isValidBoardPosition(coordX1, coordY1)){
-            return false;
-        }
-        if(!this.validMove(coordX0, coordY0, coordX1, coordY1)){
+    public boolean move(int x0, int y0, int x1, int y1) {
+        if(this.notPlayable || this.gameOver()) {
             return false;
         }
 
-        //A interface gráfica carrega contem elementos:
-        //  - De: (a,b)
-        //  - Para: (c,d)
-        //onde quando clicamos o botão **mover**, o programa chama a nossa classe
-        // GameManager.move(a,b,c,d)
-
-        ChessPiece piece = getPieceAtPosition(coordX0, coordY0);
-
-        if(piece == null){
-            return false;
-        }
-
-        // Get the destination square
-        Square destinationSquare = getSquareAtPosition(coordX1, coordY1);
-
-        // Check if the destination square is occupied
-        if (destinationSquare.getPiece() != null){
-
-            ChessPiece pieceAtDestinationSquare = destinationSquare.getPiece();
-
-            // If the destination square is occupied by a piece from the same team, the move is not valid
-            if (pieceAtDestinationSquare.getTeamID() == piece.getTeamID()) {
-                return false;
+        if(!this.validMoveAndPositions(x0, y0, x1, y1)){
+            if (this.blackTeamIsPlaying) {
+                this.blackTeam.incrementInvalidMove();
+            } else {
+                this.whiteTeam.incrementInvalidMove();
             }
-            // If the destination square is occupied by a piece from the opposing team, capture it
+            return false;
+        }
+
+        Square playerSquare = getSquareAtPosition(x0, y0);
+        ChessPiece playerPiece = playerSquare.getPiece();
+        playerSquare.updatePiece(null);
+
+        Square enemySquare = getSquareAtPosition(x1, y1);
+        ChessPiece enemyPiece = enemySquare.getPiece();
+        enemySquare.updatePiece(playerPiece);
+
+        playerPiece.updatePosition(x1, y1);
+
+        if(enemyPiece == null) {
+            this.playsWithoutCaptures += 1;
+        } else {
+            this.playsWithoutCaptures = 0;
+            enemyPiece.capture();
+            playerPiece.addCaptureLog(enemyPiece.getID());
+
+            if(this.blackTeamIsPlaying){
+                this.blackTeam.incrementCapture();
+                this.whiteTeam.incrementSelfCapture();
+            }
             else {
-                moveCountWithoutDeads = 0; // Reset counter for amout of rounds with no captures/kills
-                pieceAtDestinationSquare.kill();
-                if(pieceAtDestinationSquare.getTeamID() == BLACK_TEAM_ID){
-                    blackTeam.addDead();
-                    whiteTeam.addKill();
-                } else {
-                    whiteTeam.addDead();
-                    blackTeam.addKill();
-                }
-            }
-        }
-        else {
-            if (blackTeam.getCountKills() != 0 || whiteTeam.getCountKills() != 0){
-                //Ele diz no video que a regra dos 10 moves (empate) so é valida se já houve uma captura durante o jogo
-                //Que foi sucedida por 10 moves sem capturas
-                moveCountWithoutDeads++;
+                this.blackTeam.incrementSelfCapture();
+                this.whiteTeam.incrementCapture();
             }
         }
 
-        // Move the piece to the new position
-        piece.updateCoordinates(coordX1, coordY1);
-
-        // Update the board
-        //updateBoard();
-
-        // if move válido incremente nr de jogadas
-        this.moveCount++;
-
+        this.blackTeamIsPlaying = !this.blackTeamIsPlaying;
         return true;
-        //return false;
     }
-
     // expected format: { id, type, team, nickname, image }
-    public String[] getSquareInfo(int coordX, int coordY) {
-        if(this.board.isEmpty() || !this.isValidBoardPosition(coordX, coordY)) {
+    public String[] getSquareInfo(int x, int y) {
+        if(this.notPlayable || !this.isValidBoardPosition(x, y)) {
             return null;
         }
 
         for (Square square : this.board) {
-            if(square.equals(coordX, coordY)) {
-                    ChessPiece piece = square.getPiece();
+            if(square.equals(x, y)) {
+                ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
                     break;
                 }
@@ -290,27 +271,30 @@ public class GameManager {
 
         return null;
     }
-
     // expected format: { id, type, team, status("capturado", "em jogo"), coordX, coordY }
     public String[] getPieceInfo(int ID) {
-        ChessPiece piece = this.chessPieces.get(ID);
-        return piece == null ? null : piece.getInfoWithStatus();
-    }
+        if(this.notPlayable){
+            return null;
+        }
 
+        ChessPiece piece = this.pieces.get(ID);
+        return piece == null ? null : piece.getInfoWithLifeStatusAndPosition();
+    }
     // expected string: "id | type | team | nickname | @(coordX, coordY)
     public String getPieceInfoAsString(int ID) {
-        ChessPiece piece = this.chessPieces.get(ID);
+        if(this.notPlayable){
+            return null;
+        }
+
+        ChessPiece piece = this.pieces.get(ID);
         return piece == null ? "" : piece.toString();
     }
-
     public int getCurrentTeamID() {
-        return this.moveCount % 2 == 0 ? 0 : 1;
+        return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
-
     public boolean gameOver() {
-        return this.gameOver || this.moveCountWithoutDeads > 10;
+        return ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
-
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
         JPanel panel = new JPanel();
@@ -331,31 +315,32 @@ public class GameManager {
         //return this.authorsPanel;
         return panel;
     }
-
-    // TODO: only the winner is missing
     public ArrayList<String> getGameResults() {
-        ArrayList<String> resultMessage = new ArrayList<>();
-        resultMessage.add("JOGO DE CRAZY CHESS");
-        resultMessage.add("Resultado: ");
-        resultMessage.add("---");
-
-        for (int teamID = 0; teamID <= 1; teamID++){
-            String[] teamResult =
-                    teamID == BLACK_TEAM_ID ?
-                                this.blackTeam.getResult() :
-                                    this.whiteTeam.getResult();
-
-            for(int resultLine = 0; resultLine < 4; resultLine++){
-                resultMessage.add(teamResult[resultLine]);
-            }
+        if(this.notPlayable || !this.gameOver()){
+            return null;
         }
 
-        return resultMessage;
+        String gameResultMessage = "";
+        if(this.isGameTie()){
+            gameResultMessage = GameProperties.tieMessage;
+        } else if (this.blackTeam.isAlive()){
+            gameResultMessage = GameProperties.winMessage + blackTeam.getName().toUpperCase();
+        } else {
+            gameResultMessage = GameProperties.winMessage + whiteTeam.getName().toUpperCase();
+        }
+
+        ArrayList<String> message = new ArrayList<>();
+        message.add(GameProperties.gameTitle);
+        message.add(GameProperties.resultMessage + gameResultMessage);
+        message.add("---");
+        message.addAll(Arrays.asList(this.blackTeam.getResult()));
+        message.addAll(Arrays.asList(this.whiteTeam.getResult()));
+
+        return message;
     }
-    // endregion
 
     public void printPieces() {
-        for (ChessPiece piece : this.chessPieces.values()) {
+        for (ChessPiece piece : this.pieces.values()) {
             System.out.println(Arrays.toString(piece.getInfo()));
         }
     }
