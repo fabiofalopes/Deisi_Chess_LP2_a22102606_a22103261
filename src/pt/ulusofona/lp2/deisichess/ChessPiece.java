@@ -28,7 +28,6 @@ public class ChessPiece {
         this.currentCoordX = x;
         this.currentCoordY = y;
     }
-    // TODO: not sure...
     public void cleanPosition(){
         this.currentCoordX = -1;
         this.currentCoordY = -1;
