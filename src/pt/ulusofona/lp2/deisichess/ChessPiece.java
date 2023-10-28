@@ -52,8 +52,8 @@ public class ChessPiece {
                 this.teamID + "",
                 this.nickname,
                 this.getLifeStatus(),
-                (this.currentCoordX == -1 ? "" : this.currentCoordX + ""),
-                (this.currentCoordY == -1 ? "" : this.currentCoordY + "")
+                (this.currentCoordX == -1 ? null : this.currentCoordX + ""),
+                (this.currentCoordY == -1 ? null : this.currentCoordY + "")
         };
     }
     public void capture(){
@@ -75,7 +75,8 @@ public class ChessPiece {
                 this.type + " | " +
                 this.teamID + " | " +
                 this.nickname + " @ (" +
-                this.currentCoordX + ", " +
-                this.currentCoordY + ")";
+                (this.isCaptured() ?
+                    "n/a" :
+                        this.currentCoordX + ", " + this.currentCoordY) + ")";
     }
 }
