@@ -170,7 +170,7 @@ public class GameManager {
                 for(int colX = 0; colX < boardDimension; colX++){
                     Square square = new Square(colX, colY);
 
-                    int readPieceID = Integer.parseInt(columns[colY]);
+                    int readPieceID = Integer.parseInt(columns[colX]);
                     ChessPiece piece = null;
 
                     // break if has repeated pieceID
