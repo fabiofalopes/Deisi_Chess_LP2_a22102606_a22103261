@@ -214,7 +214,8 @@ public class GameManager {
                     (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
 
             if(!this.initGameOver){
-                this.initGameOver = this.boardDimension * 2 == (countBlackTeamPieces + countBlackTeamPieces);
+                this.initGameOver = (this.boardDimension * 2 == (countBlackTeamPieces + countBlackTeamPieces) ||
+                        (this.boardDimension * 2 - 1 == countBlackTeamPieces);
             }
 
             return true;
