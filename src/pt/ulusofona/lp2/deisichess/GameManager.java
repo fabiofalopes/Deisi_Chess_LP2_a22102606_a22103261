@@ -158,7 +158,7 @@ public class GameManager {
             // to ensure we don't place repeated pieces
             HashSet<Integer> piecesPlacedOnBoard = new HashSet<>();
             // read board squares info
-            for(int colX = 0; colX < this.boardDimension; colX++){
+            for(int colY = 0; colY < this.boardDimension; colY++){
                 String row = reader.readLine().trim();
                 String[] columns = row.split(GameProperties.fileColumnSeparator);
 
@@ -167,7 +167,7 @@ public class GameManager {
                     return false;
                 }
 
-                for(int colY = 0; colY < boardDimension; colY++){
+                for(int colX = 0; colX < boardDimension; colX++){
                     Square square = new Square(colX, colY);
 
                     int readPieceID = Integer.parseInt(columns[colY]);
