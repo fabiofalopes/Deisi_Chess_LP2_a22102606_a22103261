@@ -30,8 +30,8 @@ public class ChessPiece {
     }
     // TODO: not sure...
     public void cleanPosition(){
-        this.currentCoordX = 0;
-        this.currentCoordY = 0;
+        this.currentCoordX = -1;
+        this.currentCoordY = -1;
     }
     private String getLifeStatus(){
         return this.captured ? "capturado" : "em jogo";
@@ -52,8 +52,8 @@ public class ChessPiece {
                 this.teamID + "",
                 this.nickname,
                 this.getLifeStatus(),
-                this.currentCoordX + "",
-                this.currentCoordY + ""
+                (this.currentCoordX == -1 ? "" : this.currentCoordX + ""),
+                (this.currentCoordY == -1 ? "" : this.currentCoordY + "")
         };
     }
     public void capture(){
