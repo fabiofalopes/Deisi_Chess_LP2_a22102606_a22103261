@@ -43,5 +43,5 @@ public class Team {
     public boolean hasCaptures(){
         return this.getCountCaptures() > 1;
     }
-    public boolean isAlive(){ return this.pieces.size() > this.countSelfCaptures; }
+    public boolean isAlive(){ return this.pieces.size() >= this.countSelfCaptures; }
 }

@@ -19,7 +19,7 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
-
+    private boolean gameIsOver;
 
     public GameManager(){
         this.initGame();
@@ -35,6 +35,7 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
+        this.gameIsOver = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -96,7 +97,9 @@ public class GameManager {
                     (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
         );
     }
-
+    private boolean getGameOver(){
+        return this.gameIsOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+    }
 
     public boolean loadGame(File file) {
         this.initGame();
@@ -116,6 +119,9 @@ public class GameManager {
                 this.makeItUnplayable();
                 return false;
             }
+
+            int countBlackTeamPieces = 0,
+                countWhiteTeamPieces = 0;
 
             // read pieces info
             for(int i = 0; i < readNrPieces; i++){
@@ -147,9 +153,11 @@ public class GameManager {
 
                 if(readPieceTeamID == GameProperties.blackTeamID){
                     this.blackTeam.addPiece(readPieceID, piece);
+                    countBlackTeamPieces++;
                 }
                 else {
                     this.whiteTeam.addPiece(readPieceID, piece);
+                    countWhiteTeamPieces++;
                 }
 
                 this.pieces.put(readPieceID, piece);
@@ -173,7 +181,7 @@ public class GameManager {
                     int readPieceID = Integer.parseInt(columns[colX]);
                     ChessPiece piece = null;
 
-                    // break if has repeated pieceID
+                    // break if it has repeated pieceID
                     if(piecesPlacedOnBoard.contains(readPieceID)){
                         this.makeItUnplayable();
                         return false;
@@ -198,6 +206,13 @@ public class GameManager {
             }
 
             reader.close();
+
+            // game was already finished
+            if((countBlackTeamPieces == 1 || countWhiteTeamPieces == 1) &&
+               (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0)){
+                this.gameIsOver = true;
+            }
+
             return true;
         } catch (IOException e) {
             //System.err.println("Error reading file: " + e.getMessage());
@@ -294,7 +309,7 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return this.getGameOver();
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
