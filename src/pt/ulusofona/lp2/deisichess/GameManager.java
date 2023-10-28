@@ -257,29 +257,30 @@ public class GameManager {
     // expected format: { id, type, team, nickname, image }
     public String[] getSquareInfo(int x, int y) {
         if(this.notPlayable || !this.isValidBoardPosition(x, y)) {
-            return new String[]{null};
+            return null;
         }
 
         for (Square square : this.board) {
             if(square.equals(x, y)) {
                 ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
-                    break;
+                    // TODO: not sure
+                   return new String[]{ null, null, null, null, null };
                 }
                return piece.getInfo();
             }
         }
 
-        return new String[]{null};
+        return null;
     }
     // expected format: { id, type, team, nickname, status("capturado", "em jogo"), coordX, coordY }
     public String[] getPieceInfo(int ID) {
         if(this.notPlayable){
-            return new String[]{null};
+            return null;
         }
 
         ChessPiece piece = this.pieces.get(ID);
-        return piece == null ? new String[]{null} : piece.getInfoWithLifeStatusAndPosition();
+        return piece == null ? null : piece.getInfoWithLifeStatusAndPosition();
     }
     // expected string: "id | type | team | nickname | @(coordX, coordY)
     public String getPieceInfoAsString(int ID) {
