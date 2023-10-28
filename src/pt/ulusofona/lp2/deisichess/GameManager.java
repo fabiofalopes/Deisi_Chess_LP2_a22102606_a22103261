@@ -95,7 +95,7 @@ public class GameManager {
         return null;
     }
     private boolean isGameTie(){
-        return (this.playsWithoutCaptures > (GameProperties.tieMoveRule * 2) &&
+        return (this.playsWithoutCaptures >= GameProperties.tieMoveRule &&
                     (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
         );
     }
@@ -212,6 +212,11 @@ public class GameManager {
             // game was already finished
             this.initGameOver = this.initGameTie = (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0) ||
                     (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
+
+            if(!this.initGameOver){
+                this.initGameOver = this.boardDimension * 2 == (countBlackTeamPieces + countBlackTeamPieces);
+            }
+
             return true;
         } catch (IOException e) {
             //System.err.println("Error reading file: " + e.getMessage());
