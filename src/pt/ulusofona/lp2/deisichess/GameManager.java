@@ -208,8 +208,7 @@ public class GameManager {
             reader.close();
 
             // game was already finished
-            if((countBlackTeamPieces == 1 || countWhiteTeamPieces == 1) &&
-               (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0)){
+            if(countBlackTeamPieces == 0 || countWhiteTeamPieces == 0){
                 this.gameIsOver = true;
             }
 
