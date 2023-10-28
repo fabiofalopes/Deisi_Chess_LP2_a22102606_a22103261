@@ -271,7 +271,7 @@ public class GameManager {
 
         return null;
     }
-    // expected format: { id, type, team, status("capturado", "em jogo"), coordX, coordY }
+    // expected format: { id, type, team, nickname, status("capturado", "em jogo"), coordX, coordY }
     public String[] getPieceInfo(int ID) {
         if(this.notPlayable){
             return null;

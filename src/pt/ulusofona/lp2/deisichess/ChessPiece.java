@@ -45,6 +45,7 @@ public class ChessPiece {
                 this.ID + "",
                 this.type + "",
                 this.teamID + "",
+                this.nickname,
                 this.getLifeStatus(),
                 this.currentCoordX + "",
                 this.currentCoordY + ""
