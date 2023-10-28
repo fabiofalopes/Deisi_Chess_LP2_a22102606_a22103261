@@ -265,7 +265,7 @@ public class GameManager {
                 ChessPiece piece = square.getPiece();
                 if(piece == null){ // means that has no piece on the requested square
                     // TODO: not sure
-                   return new String[]{ null, null, null, null, null };
+                   return new String[]{ };
                 }
                return piece.getInfo();
             }
