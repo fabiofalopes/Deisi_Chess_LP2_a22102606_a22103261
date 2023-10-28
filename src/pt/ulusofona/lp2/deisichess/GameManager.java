@@ -208,7 +208,8 @@ public class GameManager {
             reader.close();
 
             // game was already finished
-            this.gameIsOver = countBlackTeamPieces == 0 || countWhiteTeamPieces == 0;
+            this.gameIsOver = (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0) ||
+                    (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
             return true;
         } catch (IOException e) {
             //System.err.println("Error reading file: " + e.getMessage());
