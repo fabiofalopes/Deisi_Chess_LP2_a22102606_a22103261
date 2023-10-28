@@ -35,7 +35,7 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
-        this.gameIsOver = false;
+        this.gameIsOver = true;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -208,15 +208,11 @@ public class GameManager {
             reader.close();
 
             // game was already finished
-            if(countBlackTeamPieces == 0 || countWhiteTeamPieces == 0){
-                this.gameIsOver = true;
-            }
-
+            this.gameIsOver = !(countBlackTeamPieces == 0 || countWhiteTeamPieces == 0);
             return true;
         } catch (IOException e) {
             //System.err.println("Error reading file: " + e.getMessage());
         }
-
         this.makeItUnplayable();
         return false;
     }
