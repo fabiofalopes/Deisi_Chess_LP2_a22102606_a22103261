@@ -19,7 +19,8 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
-    private boolean gameIsOver;
+    private boolean initGameOver;
+    private boolean initGameTie;
 
     public GameManager(){
         this.initGame();
@@ -35,7 +36,8 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
-        this.gameIsOver = false;
+        this.initGameOver = false;
+        this.initGameTie = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -98,7 +100,7 @@ public class GameManager {
         );
     }
     private boolean getGameOver(){
-        return this.gameIsOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return this.initGameOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
 
     public boolean loadGame(File file) {
@@ -208,7 +210,7 @@ public class GameManager {
             reader.close();
 
             // game was already finished
-            this.gameIsOver = (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0) ||
+            this.initGameOver = this.initGameTie = (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0) ||
                     (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
             return true;
         } catch (IOException e) {
@@ -334,7 +336,7 @@ public class GameManager {
         }
 
         String gameResultMessage = "";
-        if(this.isGameTie()){
+        if(this.isGameTie() || this.initGameTie){
             gameResultMessage = GameProperties.tieMessage;
         } else if (this.blackTeam.isAlive()){
             gameResultMessage = GameProperties.winMessage + blackTeam.getName().toUpperCase();
