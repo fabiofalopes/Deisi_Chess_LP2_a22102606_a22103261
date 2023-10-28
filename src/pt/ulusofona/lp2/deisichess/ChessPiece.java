@@ -8,8 +8,8 @@ public class ChessPiece {
     private int type; // King : 0
     private String nickname;
     private String image = null;
-    private Integer currentCoordX;
-    private Integer currentCoordY;
+    private int currentCoordX;
+    private int currentCoordY;
     private boolean captured;
     private ArrayList<Integer> captureLog;
 
@@ -24,9 +24,14 @@ public class ChessPiece {
     public int getID(){
         return this.ID;
     }
-    public void updatePosition(Integer x, Integer y) {
+    public void updatePosition(int x, int y) {
         this.currentCoordX = x;
         this.currentCoordY = y;
+    }
+    // TODO: not sure...
+    public void cleanPosition(){
+        this.currentCoordX = 0;
+        this.currentCoordY = 0;
     }
     private String getLifeStatus(){
         return this.captured ? "capturado" : "em jogo";
