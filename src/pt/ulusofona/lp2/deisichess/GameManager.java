@@ -199,7 +199,7 @@ public class GameManager {
     }
 
     public int getBoardSize() {
-        return this.board.size();
+        return this.getBoardDimension();
     }
 
     // TODO: review and finish

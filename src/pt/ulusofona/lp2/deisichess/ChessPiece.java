@@ -1,5 +1,12 @@
 package pt.ulusofona.lp2.deisichess;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 public class ChessPiece {
     private int ID;
     private int teamID; // Black Pieces - team : 0 | White Pieces team : 1
@@ -10,11 +17,18 @@ public class ChessPiece {
     private int coordY;
     private boolean dead = false;
 
-    public ChessPiece(int ID, int type, int teamID, String nickname){
+    public ChessPiece(int ID, int type, int teamID, String nickname) {
         this.ID = ID;
         this.type = type;
         this.teamID = teamID;
         this.nickname = nickname;
+        //BufferedImage imageFile;
+        /*try {
+            imageFile = ImageIO.read(new File("./src/images/king-" + this.ID + "-team.png"));
+            this.image = imageFile.toString();
+        }  catch (IOException e) {
+            this.image = "";
+        }*/
     }
 
     public ChessPiece(int ID, int type, int teamID, String nickname, String image){
