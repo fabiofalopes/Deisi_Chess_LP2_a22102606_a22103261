@@ -268,6 +268,13 @@ public class GameManager {
             return false;
         }
         else {
+            if (blackTeamIsPlaying) {
+                this.blackTeam.incrementValidMove();
+            }
+            else {
+                this.whiteTeam.incrementValidMove();
+            }
+
             Square square = this.getSquareAtPosition(x0, y0);
             if(square.getPiece() == null){
                 return false;
@@ -280,13 +287,6 @@ public class GameManager {
                     return false;
                 }
             }
-        }
-
-        if (blackTeamIsPlaying) {
-            this.blackTeam.incrementValidMove();
-        }
-        else {
-            this.whiteTeam.incrementValidMove();
         }
 
         Square playerSquare = getSquareAtPosition(x0, y0);
