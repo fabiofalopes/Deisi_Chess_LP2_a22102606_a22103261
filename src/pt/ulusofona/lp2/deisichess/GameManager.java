@@ -267,6 +267,12 @@ public class GameManager {
             }
             return false;
         }
+        else {
+            Square square = this.getSquareAtPosition(x0, y0);
+            if(square.getPiece() == null){
+                return false;
+            }
+        }
 
         if (blackTeamIsPlaying) {
             this.blackTeam.incrementValidMove();
