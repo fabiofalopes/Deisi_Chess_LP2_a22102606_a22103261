@@ -3,7 +3,7 @@ package pt.ulusofona.lp2.deisichess;
 import java.util.ArrayList;
 
 public class ChessPiece {
-    private int ID;
+    private int id;
     private int teamID; // Black team: 0 | White team: 1
     private int type; // King : 0
     private String nickname;
@@ -14,7 +14,7 @@ public class ChessPiece {
     private ArrayList<Integer> captureLog;
 
     public ChessPiece(int ID, int type, int teamID, String nickname) {
-        this.ID = ID;
+        this.id = ID;
         this.type = type;
         this.teamID = teamID;
         this.nickname = nickname;
@@ -22,7 +22,7 @@ public class ChessPiece {
     }
 
     public int getID(){
-        return this.ID;
+        return this.id;
     }
     public void updatePosition(int x, int y) {
         this.currentCoordX = x;
@@ -37,7 +37,7 @@ public class ChessPiece {
     }
     public String[] getInfo(){
         return new String[] {
-                this.ID + "",
+                this.id + "",
                 this.type + "",
                 this.teamID + "",
                 this.nickname,
@@ -46,7 +46,7 @@ public class ChessPiece {
     }
     public String[] getInfoWithLifeStatusAndPosition(){
         return new String[] {
-                this.ID + "",
+                this.id + "",
                 this.type + "",
                 this.teamID + "",
                 this.nickname,
@@ -70,7 +70,7 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return this.ID + " | " +
+        return this.id + " | " +
                 this.type + " | " +
                 this.teamID + " | " +
                 this.nickname + " @ (" +

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Team {
-    private int ID;
+    private int id;
     private String name;
     private int countInvalidMoves;
     private int countValidMoves;
@@ -13,7 +13,7 @@ public class Team {
     private HashMap<Integer, ChessPiece> pieces;
 
     public Team(int ID, String name){
-        this.ID = ID;
+        this.id = ID;
         this.name = name;
         this.pieces = new HashMap<>();
     }
