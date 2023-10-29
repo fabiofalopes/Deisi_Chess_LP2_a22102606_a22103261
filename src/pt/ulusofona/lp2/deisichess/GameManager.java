@@ -370,7 +370,8 @@ public class GameManager {
                 isGameTie() ||
                 this.blackTeam.getCountPieces() == 0 ||
                 this.whiteTeam.getCountPieces() == 0 ||
-                this.pieces.isEmpty();
+                this.pieces.isEmpty() ||
+                this.board.isEmpty();
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
