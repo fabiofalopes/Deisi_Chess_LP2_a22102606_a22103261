@@ -272,6 +272,14 @@ public class GameManager {
             if(square.getPiece() == null){
                 return false;
             }
+            else {
+                if(this.blackTeamIsPlaying && square.getPiece().getTeamID() != GameProperties.blackTeamID){
+                    return false;
+                }
+                else if (!this.blackTeamIsPlaying && square.getPiece().getTeamID() != GameProperties.whiteTeamID){
+                    return false;
+                }
+            }
         }
 
         if (blackTeamIsPlaying) {
