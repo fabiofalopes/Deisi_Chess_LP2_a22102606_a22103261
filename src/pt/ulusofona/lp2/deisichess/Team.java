@@ -52,6 +52,14 @@ public class Team {
         }
         return false;
     }
+    public boolean hasDeadPieces(){
+        for (ChessPiece value : pieces.values()) {
+            if(value.isCaptured()){
+                return true;
+            }
+        }
+        return false;
+    }
     public int getCountPieces(){
         return this.pieces.size();
     }
