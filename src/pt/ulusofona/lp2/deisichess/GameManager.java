@@ -250,7 +250,11 @@ public class GameManager {
         if(!this.blackTeam.isAlive() && !this.whiteTeam.isAlive()){
             return false;
         }
-        
+
+        if(this.blackTeam.getCountPieces() == 0 || this.whiteTeam.getCountPieces() == 0){
+            return false;
+        }
+
         if(this.notPlayable || this.gameOver()) {
             return false;
         }
