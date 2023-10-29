@@ -95,7 +95,7 @@ public class GameManager {
         return null;
     }
     private boolean isGameTie(){
-        return (this.playsWithoutCaptures > (GameProperties.tieMoveRule * 20) &&
+        return (this.playsWithoutCaptures > GameProperties.tieMoveRule &&
                     (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
         );
     }
@@ -211,14 +211,14 @@ public class GameManager {
                     capturedPiece.capture();
                     capturedPiece.cleanPosition();
 
-                    /*int teamID = capturedPiece.getTeamID();
+                    int teamID = capturedPiece.getTeamID();
                     if(teamID == GameProperties.blackTeamID){
                         this.blackTeam.incrementCapture();
                         this.whiteTeam.incrementSelfCapture();
                     } else {
                         this.blackTeam.incrementSelfCapture();
                         this.whiteTeam.incrementCapture();
-                    }*/
+                    }
                 }
             }
 
