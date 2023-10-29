@@ -362,7 +362,14 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return (this.initTie || this.initWhiteTeamWin || this.initBlackTeamWin) || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return this.initTie ||
+                this.initWhiteTeamWin ||
+                this.initBlackTeamWin ||
+                !this.blackTeam.isAlive() ||
+                !this.whiteTeam.isAlive() || 
+                isGameTie() ||
+                this.blackTeam.getCountPieces() == 0 ||
+                this.whiteTeam.getCountPieces() == 0;
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
