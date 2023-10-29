@@ -201,9 +201,9 @@ public class GameManager {
             }
 
             this.initTie = piecesPlacedOnBoard.isEmpty() || (this.blackTeam.getCountPieces() == 1 && this.whiteTeam.getCountPieces() == 1);
-            this.initBlackTeamWin = this.blackTeam.getCountPieces() > 0 && this.whiteTeam.getCountPieces() == 0;
-            this.initWhiteTeamWin = this.whiteTeam.getCountPieces() > 0 && this.blackTeam.getCountPieces() == 0;
 
+            int whiteTeamDeadPieces = 0;
+            int blackTeamDeadPices = 0;
             // to capture pieces that aren't on the board
             for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
                 if(!piecesPlacedOnBoard.contains(piece.getKey())){
@@ -211,14 +211,26 @@ public class GameManager {
                     capturedPiece.capture();
                     capturedPiece.cleanPosition();
 
-                    /*int teamID = capturedPiece.getTeamID();
+                    int teamID = capturedPiece.getTeamID();
                     if(teamID == GameProperties.blackTeamID){
-                        this.blackTeam.incrementCapture();
-                        this.whiteTeam.incrementSelfCapture();
+                        blackTeamDeadPices++;
                     } else {
-                        this.blackTeam.incrementSelfCapture();
-                        this.whiteTeam.incrementCapture();
-                    }*/
+                        whiteTeamDeadPieces++;
+                    }
+                }
+            }
+
+            if(blackTeamDeadPices == this.blackTeam.getCountPieces() &&
+              whiteTeamDeadPieces != this.whiteTeam.getCountPieces()){
+                this.initWhiteTeamWin = true;
+            }
+            else if (whiteTeamDeadPieces == this.whiteTeam.getCountPieces() &&
+                    blackTeamDeadPices != this.blackTeam.getCountPieces()){
+                this.initBlackTeamWin = true;
+            }
+            else if (!this.initTie){
+                if(blackTeamDeadPices == whiteTeamDeadPieces){
+                    this.initTie = true;
                 }
             }
 
