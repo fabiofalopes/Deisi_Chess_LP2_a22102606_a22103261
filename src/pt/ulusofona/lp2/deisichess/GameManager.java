@@ -210,6 +210,15 @@ public class GameManager {
                     ChessPiece capturedPiece = piece.getValue();
                     capturedPiece.capture();
                     capturedPiece.cleanPosition();
+
+                    int teamID = capturedPiece.getTeamID();
+                    if(teamID == GameProperties.blackTeamID){
+                        this.blackTeam.incrementCapture();
+                        this.whiteTeam.incrementSelfCapture();
+                    } else {
+                        this.blackTeam.incrementSelfCapture();
+                        this.whiteTeam.incrementCapture();
+                    }
                 }
             }
 
