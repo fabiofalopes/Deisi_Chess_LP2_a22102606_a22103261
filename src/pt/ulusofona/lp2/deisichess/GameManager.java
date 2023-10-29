@@ -268,25 +268,27 @@ public class GameManager {
             return false;
         }
         else {
-            if (blackTeamIsPlaying) {
-                this.blackTeam.incrementValidMove();
-            }
-            else {
-                this.whiteTeam.incrementValidMove();
-            }
-
             Square square = this.getSquareAtPosition(x0, y0);
             if(square.getPiece() == null){
                 return false;
             }
             else {
                 if(this.blackTeamIsPlaying && square.getPiece().getTeamID() != GameProperties.blackTeamID){
+                    this.blackTeam.incrementInvalidMove();
                     return false;
                 }
                 else if (!this.blackTeamIsPlaying && square.getPiece().getTeamID() != GameProperties.whiteTeamID){
+                    this.whiteTeam.incrementInvalidMove();
                     return false;
                 }
             }
+        }
+
+        if (blackTeamIsPlaying) {
+            this.blackTeam.incrementValidMove();
+        }
+        else {
+            this.whiteTeam.incrementValidMove();
         }
 
         Square playerSquare = getSquareAtPosition(x0, y0);
