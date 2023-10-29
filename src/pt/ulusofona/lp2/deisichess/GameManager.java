@@ -211,16 +211,16 @@ public class GameManager {
                     capturedPiece.capture();
                     capturedPiece.cleanPosition();
 
-                    int teamID = capturedPiece.getTeamID();
+                    /*int teamID = capturedPiece.getTeamID();
                     if(teamID == GameProperties.blackTeamID){
                         blackTeamDeadPices++;
                     } else {
                         whiteTeamDeadPieces++;
-                    }
+                    }*/
                 }
             }
 
-            if(blackTeamDeadPices == this.blackTeam.getCountPieces() &&
+            /*if(blackTeamDeadPices == this.blackTeam.getCountPieces() &&
               whiteTeamDeadPieces != this.whiteTeam.getCountPieces()){
                 this.initWhiteTeamWin = true;
             }
@@ -232,7 +232,7 @@ public class GameManager {
                 if(blackTeamDeadPices == whiteTeamDeadPieces){
                     this.initTie = true;
                 }
-            }
+            }*/
 
             reader.close();
             return true;
