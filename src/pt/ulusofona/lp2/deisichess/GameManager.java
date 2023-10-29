@@ -95,7 +95,7 @@ public class GameManager {
         return null;
     }
     private boolean isGameTie(){
-        return (this.playsWithoutCaptures >= (GameProperties.tieMoveRule * 20) &&
+        return (this.playsWithoutCaptures > (GameProperties.tieMoveRule * 20) &&
                     (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
         );
     }
