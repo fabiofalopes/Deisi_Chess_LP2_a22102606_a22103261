@@ -372,8 +372,9 @@ public class GameManager {
                 this.whiteTeam.getCountPieces() == 0 ||
                 this.pieces.isEmpty() ||
                 this.board.isEmpty() ||
-                (this.board.size() < 4 || this.board.size() > 8) ||
-                this.boardDimension < 4;
+                this.blackTeam.getCountPieces() == this.pieces.size() ||
+                this.whiteTeam.getCountPieces() == this.pieces.size();
+
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
