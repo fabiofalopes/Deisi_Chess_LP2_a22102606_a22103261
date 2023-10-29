@@ -205,22 +205,13 @@ public class GameManager {
             this.initWhiteTeamWin = this.whiteTeam.getCountPieces() > 0 && this.blackTeam.getCountPieces() == 0;
 
             // to capture pieces that aren't on the board
-            /*for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
+            for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
                 if(!piecesPlacedOnBoard.contains(piece.getKey())){
                     ChessPiece capturedPiece = piece.getValue();
                     capturedPiece.capture();
                     capturedPiece.cleanPosition();
-
-                    int teamID = capturedPiece.getTeamID();
-                    if(teamID == GameProperties.blackTeamID){
-                        this.blackTeam.incrementCapture();
-                        this.whiteTeam.incrementSelfCapture();
-                    } else {
-                        this.blackTeam.incrementSelfCapture();
-                        this.whiteTeam.incrementCapture();
-                    }
                 }
-            }*/
+            }
 
             reader.close();
             return true;
