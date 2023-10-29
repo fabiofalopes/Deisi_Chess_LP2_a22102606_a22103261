@@ -376,10 +376,10 @@ public class GameManager {
                 this.whiteTeam.getCountPieces() == 0 ||
                 this.pieces.isEmpty() ||
                 this.board.isEmpty() ||
-                this.blackTeam.getCountPieces() == this.pieces.size() ||
-                this.whiteTeam.getCountPieces() == this.pieces.size() ||
+                this.blackTeam.getCountPieces() == this.pieces.size() - 1 ||
+                this.whiteTeam.getCountPieces() == this.pieces.size() - 1||
                 this.notPlayable ||
-                this.boardDimension == 0;
+                this.boardDimension <= 1;
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
