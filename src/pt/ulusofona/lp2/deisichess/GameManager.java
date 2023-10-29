@@ -3,10 +3,7 @@ package pt.ulusofona.lp2.deisichess;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class GameManager {
     private ArrayList<Square> board;
@@ -173,7 +170,7 @@ public class GameManager {
                     int readPieceID = Integer.parseInt(columns[colX]);
                     ChessPiece piece = null;
 
-                    // break if has repeated pieceID
+                    // break if it has repeated pieceID
                     if(piecesPlacedOnBoard.contains(readPieceID)){
                         this.makeItUnplayable();
                         return false;
@@ -182,10 +179,10 @@ public class GameManager {
                     if(readPieceID != 0){ // has squad init position
                         piece = this.pieces.get(readPieceID);
                         // to ensure pieceID has a ChessPiece object
-                        if(piece == null){
+                        /*if(piece == null){
                             this.makeItUnplayable();
                             return false;
-                        }
+                        }*/
 
                         piecesPlacedOnBoard.add(readPieceID);
                         piece.updatePosition(colX, colY);
@@ -197,6 +194,23 @@ public class GameManager {
                 }
             }
 
+            // to capture pieces that aren't on the board
+            for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
+                if(!piecesPlacedOnBoard.contains(piece.getKey())){
+                    ChessPiece capturedPiece = piece.getValue();
+                    capturedPiece.capture();
+
+                    int teamID = capturedPiece.getTeamID();
+                    if(teamID == GameProperties.blackTeamID){
+                        this.blackTeam.getCountCaptures();
+                        this.whiteTeam.getCountSelfCaptures();
+                    } else {
+                        this.blackTeam.getCountSelfCaptures();
+                        this.whiteTeam.getCountCaptures();
+                    }
+                }
+            }
+            
             reader.close();
             return true;
         } catch (IOException e) {
