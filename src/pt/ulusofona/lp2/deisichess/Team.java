@@ -44,4 +44,7 @@ public class Team {
         return this.getCountCaptures() > 1;
     }
     public boolean isAlive(){ return this.pieces.size() != this.countSelfCaptures; }
+    public int getCountPieces(){
+        return this.pieces.size();
+    }
 }

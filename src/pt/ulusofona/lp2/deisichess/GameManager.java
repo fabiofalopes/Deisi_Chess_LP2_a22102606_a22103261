@@ -16,7 +16,9 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
-    private boolean initGameOver;
+    private boolean initTie;
+    private boolean initBlackTeamWin;
+    private boolean initWhiteTeamWin;
 
 
     public GameManager(){
@@ -33,7 +35,9 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
-        this.initGameOver = false;
+        this.initTie = false;
+        this.initBlackTeamWin = false;
+        this.initWhiteTeamWin = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -196,7 +200,9 @@ public class GameManager {
                 }
             }
 
-            this.initGameOver = piecesPlacedOnBoard.isEmpty();
+            this.initTie = piecesPlacedOnBoard.isEmpty();
+            this.initBlackTeamWin = this.blackTeam.getCountPieces() > 0 && this.whiteTeam.getCountPieces() == 0;
+            this.initWhiteTeamWin = this.whiteTeam.getCountPieces() > 0 && this.blackTeam.getCountPieces() == 0;
 
             // to capture pieces that aren't on the board
             /*for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
@@ -313,7 +319,7 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return this.initGameOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return (this.initTie || this.initWhiteTeamWin || this.initBlackTeamWin) || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
@@ -341,9 +347,9 @@ public class GameManager {
         }
 
         String gameResultMessage = "";
-        if(this.isGameTie() || this.initGameOver){
+        if(this.isGameTie() || this.initTie){
             gameResultMessage = GameProperties.tieMessage;
-        } else if (this.blackTeam.isAlive()){
+        } else if (this.blackTeam.isAlive() || this.initBlackTeamWin){
             gameResultMessage = GameProperties.winMessage + blackTeam.getName().toUpperCase();
         } else {
             gameResultMessage = GameProperties.winMessage + whiteTeam.getName().toUpperCase();
