@@ -366,10 +366,11 @@ public class GameManager {
                 this.initWhiteTeamWin ||
                 this.initBlackTeamWin ||
                 !this.blackTeam.isAlive() ||
-                !this.whiteTeam.isAlive() || 
+                !this.whiteTeam.isAlive() ||
                 isGameTie() ||
                 this.blackTeam.getCountPieces() == 0 ||
-                this.whiteTeam.getCountPieces() == 0;
+                this.whiteTeam.getCountPieces() == 0 ||
+                this.pieces.isEmpty();
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
