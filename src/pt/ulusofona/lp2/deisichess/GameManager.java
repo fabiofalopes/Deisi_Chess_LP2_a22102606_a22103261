@@ -151,8 +151,12 @@ public class GameManager {
                 if(readPieceTeamID == GameProperties.blackTeamID){
                     this.blackTeam.addPiece(readPieceID, piece);
                 }
-                else {
+                else if(readPieceTeamID == GameProperties.whiteTeamID) {
                     this.whiteTeam.addPiece(readPieceID, piece);
+                }
+                else {
+                    this.makeItUnplayable();
+                    return false;
                 }
 
                 this.pieces.put(readPieceID, piece);
@@ -374,8 +378,7 @@ public class GameManager {
                 this.board.isEmpty() ||
                 this.blackTeam.getCountPieces() == this.pieces.size() ||
                 this.whiteTeam.getCountPieces() == this.pieces.size() ||
-                this.notPlayable ||
-                this.board.size() == this.pieces.size();
+                this.notPlayable;
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
