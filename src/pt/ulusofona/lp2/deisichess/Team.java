@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.deisichess;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Team {
     private int ID;
@@ -43,7 +44,14 @@ public class Team {
     public boolean hasCaptures(){
         return this.getCountCaptures() > 1;
     }
-    public boolean isAlive(){ return this.pieces.size() != this.countSelfCaptures; }
+    public boolean isAlive(){
+        for (ChessPiece value : pieces.values()) {
+            if(!value.isCaptured()){
+                return true;
+            }
+        }
+        return false;
+    }
     public int getCountPieces(){
         return this.pieces.size();
     }
