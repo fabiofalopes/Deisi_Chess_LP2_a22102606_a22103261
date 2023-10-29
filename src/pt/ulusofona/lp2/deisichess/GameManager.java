@@ -199,7 +199,7 @@ public class GameManager {
             this.initGameOver = piecesPlacedOnBoard.isEmpty();
 
             // to capture pieces that aren't on the board
-            for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
+            /*for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
                 if(!piecesPlacedOnBoard.contains(piece.getKey())){
                     ChessPiece capturedPiece = piece.getValue();
                     capturedPiece.capture();
@@ -214,9 +214,7 @@ public class GameManager {
                         this.whiteTeam.incrementCapture();
                     }
                 }
-            }
-
-
+            }*/
 
             reader.close();
             return true;
