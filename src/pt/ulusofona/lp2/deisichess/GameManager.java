@@ -19,8 +19,7 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
-    private boolean initGameOver;
-    private boolean initGameTie;
+
 
     public GameManager(){
         this.initGame();
@@ -36,8 +35,6 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
-        this.initGameOver = false;
-        this.initGameTie = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -95,13 +92,11 @@ public class GameManager {
         return null;
     }
     private boolean isGameTie(){
-        return (this.playsWithoutCaptures >= GameProperties.tieMoveRule &&
+        return (this.playsWithoutCaptures > GameProperties.tieMoveRule &&
                     (this.blackTeam.hasCaptures() || this.whiteTeam.hasCaptures())
         );
     }
-    private boolean getGameOver(){
-        return this.initGameOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
-    }
+
 
     public boolean loadGame(File file) {
         this.initGame();
@@ -121,12 +116,6 @@ public class GameManager {
                 this.makeItUnplayable();
                 return false;
             }
-
-            int countBlackTeamPieces = 0,
-                countWhiteTeamPieces = 0;
-
-            // TODO: REMOVE
-            int whitePieceID = -1;
 
             // read pieces info
             for(int i = 0; i < readNrPieces; i++){
@@ -158,12 +147,9 @@ public class GameManager {
 
                 if(readPieceTeamID == GameProperties.blackTeamID){
                     this.blackTeam.addPiece(readPieceID, piece);
-                    countBlackTeamPieces++;
                 }
                 else {
                     this.whiteTeam.addPiece(readPieceID, piece);
-                    countWhiteTeamPieces++;
-                    whitePieceID = readPieceID;
                 }
 
                 this.pieces.put(readPieceID, piece);
@@ -187,7 +173,7 @@ public class GameManager {
                     int readPieceID = Integer.parseInt(columns[colX]);
                     ChessPiece piece = null;
 
-                    // break if it has repeated pieceID
+                    // break if has repeated pieceID
                     if(piecesPlacedOnBoard.contains(readPieceID)){
                         this.makeItUnplayable();
                         return false;
@@ -212,21 +198,6 @@ public class GameManager {
             }
 
             reader.close();
-
-            // game was already finished
-            this.initGameOver = this.initGameTie = (countBlackTeamPieces == 0 || countWhiteTeamPieces == 0) ||
-                    (countBlackTeamPieces == 1 && countWhiteTeamPieces == 1);
-
-            if(!this.initGameOver){
-                boolean noChance = (this.boardDimension * 2 - 1 == countBlackTeamPieces);
-                this.initGameOver = (this.boardDimension * 2 == (countBlackTeamPieces + countBlackTeamPieces) ||
-                        noChance);
-
-                if(noChance){
-                    this.pieces.get(whitePieceID).capture();
-                }
-            }
-
             return true;
         } catch (IOException e) {
             //System.err.println("Error reading file: " + e.getMessage());
@@ -323,7 +294,7 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return this.getGameOver();
+        return ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
@@ -351,7 +322,7 @@ public class GameManager {
         }
 
         String gameResultMessage = "";
-        if(this.isGameTie() || this.initGameTie){
+        if(this.isGameTie()){
             gameResultMessage = GameProperties.tieMessage;
         } else if (this.blackTeam.isAlive()){
             gameResultMessage = GameProperties.winMessage + blackTeam.getName().toUpperCase();
