@@ -16,6 +16,7 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
+    private boolean initGameOver;
 
 
     public GameManager(){
@@ -32,6 +33,7 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
+        this.initGameOver = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -194,6 +196,8 @@ public class GameManager {
                 }
             }
 
+            this.initGameOver = piecesPlacedOnBoard.isEmpty();
+
             // to capture pieces that aren't on the board
             for (Map.Entry<Integer, ChessPiece> piece : pieces.entrySet()) {
                 if(!piecesPlacedOnBoard.contains(piece.getKey())){
@@ -211,6 +215,8 @@ public class GameManager {
                     }
                 }
             }
+
+
 
             reader.close();
             return true;
@@ -309,7 +315,7 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return this.initGameOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
@@ -337,7 +343,7 @@ public class GameManager {
         }
 
         String gameResultMessage = "";
-        if(this.isGameTie()){
+        if(this.isGameTie() || this.initGameOver){
             gameResultMessage = GameProperties.tieMessage;
         } else if (this.blackTeam.isAlive()){
             gameResultMessage = GameProperties.winMessage + blackTeam.getName().toUpperCase();
