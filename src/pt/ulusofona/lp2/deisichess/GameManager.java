@@ -16,6 +16,7 @@ public class GameManager {
     private int playsWithoutCaptures;
     private JPanel authorsPanel;
     private boolean notPlayable;
+    private boolean initGameOver;
 
 
     public GameManager(){
@@ -32,6 +33,7 @@ public class GameManager {
         this.playsWithoutCaptures = 0;
         this.authorsPanel = new JPanel();
         this.notPlayable = false;
+        this.initGameOver = false;
     }
     private void makeItUnplayable(){
         this.notPlayable = true;
@@ -211,7 +213,9 @@ public class GameManager {
                     }
                 }
             }
-            
+
+            // init game over
+            this.initGameOver = !this.blackTeam.isAlive() || !this.whiteTeam.isAlive();
             reader.close();
             return true;
         } catch (IOException e) {
@@ -309,7 +313,7 @@ public class GameManager {
         return this.blackTeamIsPlaying ? GameProperties.blackTeamID : GameProperties.whiteTeamID;
     }
     public boolean gameOver() {
-        return ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
+        return this.initGameOver || ((!this.blackTeam.isAlive() || !this.whiteTeam.isAlive()) || isGameTie());
     }
     public JPanel getAuthorsPanel() {
         // Return a JPanel with information about the authors of the game.
