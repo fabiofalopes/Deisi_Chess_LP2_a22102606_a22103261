@@ -376,8 +376,8 @@ public class GameManager {
                 this.whiteTeam.getCountPieces() == 0 ||
                 this.pieces.isEmpty() ||
                 this.board.isEmpty() ||
-                this.blackTeam.getCountPieces() == this.pieces.size() - 1 ||
-                this.whiteTeam.getCountPieces() == this.pieces.size() - 1||
+                this.blackTeam.getCountPieces() == this.pieces.size() ||
+                this.whiteTeam.getCountPieces() == this.pieces.size() ||
                 this.notPlayable ||
                 this.boardDimension <= 1;
     }
