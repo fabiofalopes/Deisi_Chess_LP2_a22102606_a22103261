@@ -200,7 +200,7 @@ public class GameManager {
                 }
             }
 
-            this.initTie = piecesPlacedOnBoard.isEmpty();
+            this.initTie = piecesPlacedOnBoard.isEmpty() || (this.blackTeam.getCountPieces() == 1 && this.whiteTeam.getCountPieces() == 1);
             this.initBlackTeamWin = this.blackTeam.getCountPieces() > 0 && this.whiteTeam.getCountPieces() == 0;
             this.initWhiteTeamWin = this.whiteTeam.getCountPieces() > 0 && this.blackTeam.getCountPieces() == 0;
 
