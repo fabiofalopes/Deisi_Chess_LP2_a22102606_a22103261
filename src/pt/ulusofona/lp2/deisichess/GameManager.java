@@ -199,6 +199,7 @@ public class GameManager {
                 if(!piecesPlacedOnBoard.contains(piece.getKey())){
                     ChessPiece capturedPiece = piece.getValue();
                     capturedPiece.capture();
+                    capturedPiece.cleanPosition();
 
                     int teamID = capturedPiece.getTeamID();
                     if(teamID == GameProperties.blackTeamID){
