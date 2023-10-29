@@ -247,6 +247,10 @@ public class GameManager {
         return this.notPlayable ? 0 : this.getBoardDimension();
     }
     public boolean move(int x0, int y0, int x1, int y1) {
+        if(!this.blackTeam.isAlive() && !this.whiteTeam.isAlive()){
+            return false;
+        }
+        
         if(this.notPlayable || this.gameOver()) {
             return false;
         }
