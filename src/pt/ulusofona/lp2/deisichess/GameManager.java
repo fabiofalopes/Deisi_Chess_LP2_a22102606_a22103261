@@ -248,6 +248,13 @@ public class GameManager {
             return false;
         }
 
+        if (blackTeamIsPlaying) {
+            this.blackTeam.incrementValidMove();
+        }
+        else {
+            this.whiteTeam.incrementValidMove();
+        }
+
         Square playerSquare = getSquareAtPosition(x0, y0);
         ChessPiece playerPiece = playerSquare.getPiece();
         playerSquare.updatePiece(null);
