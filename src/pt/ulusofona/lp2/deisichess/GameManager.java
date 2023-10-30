@@ -283,17 +283,10 @@ public class GameManager {
     }
     public boolean gameOver() {
         if(this.tieFromFile || this.isTie()){
-            this.reset();
             return true;
         }
 
-        boolean teamDefeated = this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
-        if(teamDefeated){
-            this.reset();
-            return true;
-        }
-
-        return false;
+        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
     }
     public JPanel getAuthorsPanel(){
         this.authorsPanel = new JPanel();
