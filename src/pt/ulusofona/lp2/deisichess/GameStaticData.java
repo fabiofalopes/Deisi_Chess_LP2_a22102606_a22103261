@@ -15,4 +15,6 @@ public class GameStaticData {
     public static String RESULT_LABEL_TITLE = "Resultado: ";
     public final static String RESULT_TIE_MESSAGE = "EMPATE";
     public final static String RESULT_WIN_MESSAGE = "VENCERAM AS ";
+    public final static String KING_BLACK_TEAM = "king-0-team.png";
+    public final static String KING_WHITE_TEAM = "king-1-team.png";
 }

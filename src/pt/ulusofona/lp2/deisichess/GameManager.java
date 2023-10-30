@@ -80,8 +80,10 @@ public class GameManager {
 
                 ChessPiece piece = new ChessPiece(pieceId, pieceType, pieceNickname);
                 if(pieceTeamId == GameStaticData.BLACK_TEAM_ID){
+                    piece.updateImage(GameStaticData.KING_BLACK_TEAM);
                     this.blackTeam.addPiece(piece);
                 } else if(pieceTeamId == GameStaticData.WHITE_TEAM_ID){
+                    piece.updateImage(GameStaticData.KING_WHITE_TEAM);
                     this.whiteTeam.addPiece(piece);
                 } else { // wrong team id
                     return false;

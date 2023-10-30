@@ -15,6 +15,9 @@ public class ChessPiece {
         this.defeated = true;
     }
 
+    void updateImage(String image){
+        this.image = image;
+    }
     int getId(){
         return this.id;
     }
