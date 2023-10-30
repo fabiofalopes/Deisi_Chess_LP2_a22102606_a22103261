@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public class GameManager {
     private boolean tieFromFile;
+    private boolean completeFromFile;
     private int dimension;
     private int movesWithoutDefeats;
     private Team blackTeam;
@@ -22,6 +23,7 @@ public class GameManager {
     }
     private void reset(){
         this.tieFromFile = false;
+        this.completeFromFile = false;
         this.dimension = 0;
         this.movesWithoutDefeats = 0;
         this.blackTeam = new Team(GameStaticData.BLACK_TEAM_ID, GameStaticData.BLACK_TEAM_NAME);
@@ -53,6 +55,12 @@ public class GameManager {
                            !this.whiteTeam.isDefeated() &&
                            this.blackTeam.getCountNonDefeated() == 1 &&
                            this.whiteTeam.getCountNonDefeated() == 1;
+    }
+    private void evaluateCompleteFromFile(){
+        this.completeFromFile = (this.blackTeam.isDefeated() ||
+                                this.whiteTeam.isDefeated()) &&
+                                !this.blackTeam.hasKills() &&
+                                !this.whiteTeam.hasKills();
     }
 
     public boolean loadGame(File file){
@@ -114,6 +122,7 @@ public class GameManager {
             }
 
             this.evaluateTieFromFile();
+            this.evaluateCompleteFromFile();
             return true;
         } catch (IOException e) {
             return false;
@@ -281,7 +290,7 @@ public class GameManager {
         return this.blackTeamRound ? GameStaticData.BLACK_TEAM_ID : GameStaticData.WHITE_TEAM_ID;
     }
     public boolean gameOver() {
-        if(this.tieFromFile || this.isTie()){
+        if(this.tieFromFile || this.completeFromFile || this.isTie()){
             return true;
         }
 
