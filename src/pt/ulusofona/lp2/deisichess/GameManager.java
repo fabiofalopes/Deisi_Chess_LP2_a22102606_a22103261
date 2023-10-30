@@ -29,7 +29,6 @@ public class GameManager {
         this.blackTeamRound = true;
         this.squares = new ArrayList<>();
         this.boardPositions = new ArrayList<>();
-        this.authorsPanel = new JPanel();
     }
 
     private Square getSquareByPosition(int x, int y){
@@ -284,12 +283,20 @@ public class GameManager {
     }
     public boolean gameOver() {
         if(this.tieFromFile || this.isTie()){
+            this.reset();
             return true;
         }
 
-        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
+        boolean teamDefeated = this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
+        if(teamDefeated){
+            this.reset();
+            return true;
+        }
+
+        return false;
     }
     public JPanel getAuthorsPanel(){
+        this.authorsPanel = new JPanel();
         this.authorsPanel.setLayout(new BoxLayout(this.authorsPanel,BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Créditos");
