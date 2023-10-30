@@ -83,6 +83,9 @@ public class Team {
     void incrementKills(){
         this.kills++;
     }
+    boolean hasKills(){
+        return this.kills > 0;
+    }
     String[] getScore(){
         return new String[] {
             GameStaticData.RESULT_TEAM_MESSAGE + this.name,

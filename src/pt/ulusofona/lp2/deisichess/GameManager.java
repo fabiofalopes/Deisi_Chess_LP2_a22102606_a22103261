@@ -46,7 +46,7 @@ public class GameManager {
     }
     private boolean isTie(){
         return this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
-                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0);
+                (this.blackTeam.hasKills() || this.whiteTeam.hasKills());
     }
 
     public boolean loadGame(File file){
