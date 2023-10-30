@@ -56,11 +56,11 @@ public class GameManager {
     }
 
     public boolean loadGame(File file){
-        this.reset();
-
         if(file == null){
             return false;
         }
+
+        this.reset();
 
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
