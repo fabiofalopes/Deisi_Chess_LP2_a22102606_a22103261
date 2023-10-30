@@ -124,7 +124,7 @@ public class GameManager {
         if(!this.validBoardPosition(x0, y0) || // doesn't count as an invalid position
            !this.validBoardPosition(x1, y1) || // because there's no way from the UI to do so
            this.gameOver()){
-            return false;
+                return false;
         }
 
         // invalid move: same position
