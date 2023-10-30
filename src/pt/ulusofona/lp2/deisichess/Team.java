@@ -1,7 +1,5 @@
 package pt.ulusofona.lp2.deisichess;
 
-import org.testng.internal.collections.Pair;
-
 import java.util.ArrayList;
 
 public class Team {
@@ -38,13 +36,13 @@ public class Team {
     }
     ChessPiece getPieceByPosition(int x, int y){
         for (ChessPiece piece : pieces) {
-            Pair<Integer, Integer> position = piece.getPosition();
+            Square position = piece.getPosition();
 
             if(position == null){
                 continue;
             }
 
-            if(position.first().equals(x) && position.second().equals(y)){
+            if(position.equals(x, y)){
                 return piece;
             }
         }

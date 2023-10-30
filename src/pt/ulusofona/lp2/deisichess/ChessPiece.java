@@ -1,7 +1,5 @@
 package pt.ulusofona.lp2.deisichess;
 
-import org.testng.internal.collections.Pair;
-
 public class ChessPiece {
     private int id;
     private int type; // TODO: temp, 0 == king
@@ -42,7 +40,7 @@ public class ChessPiece {
     void move(Square square){
         this.square = square;
     }
-    Pair<Integer, Integer> getPosition(){
-        return this.square != null ? this.square.getPosition() : null;
+    Square getPosition(){
+        return this.square;
     }
 }

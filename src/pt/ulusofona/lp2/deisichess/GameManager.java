@@ -1,7 +1,5 @@
 package pt.ulusofona.lp2.deisichess;
 
-import org.testng.internal.collections.Pair;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -242,7 +240,7 @@ public class GameManager {
             return null;
         }
 
-        Pair<Integer, Integer> position = piece.getPosition();
+        Square position = piece.getPosition();
 
         return new String[]{
             piece.getId() + "",
@@ -250,8 +248,8 @@ public class GameManager {
             teamId + "",
             piece.getNickname(),
             piece.isDefeated() ? GameStaticData.DEFEATED_LABEL : GameStaticData.NOT_DEFEATED_LABEL,
-            position != null ? position.first() + "" : "",
-            position != null ? position.second() + "" : ""
+            position != null ? position.getX() + "" : "",
+            position != null ? position.getY() + "" : ""
         };
     }
     public String getPieceInfoAsString(int id) {
@@ -267,7 +265,7 @@ public class GameManager {
             return "";
         }
 
-        Pair<Integer, Integer> position = piece.getPosition();
+        Square position = piece.getPosition();
 
         return piece.getId() + " | " +
                piece.getType() + " | " +
@@ -275,7 +273,7 @@ public class GameManager {
                piece.getNickname() + " @ (" +
                 (position == null ?
                     GameStaticData.NO_POSITION_LABEL :
-                        position.first() + ", " + position.second()) + ")";
+                        position.getX() + ", " + position.getY()) + ")";
     }
     public int getCurrentTeamID() {
         return this.blackTeamRound ? GameStaticData.BLACK_TEAM_ID : GameStaticData.WHITE_TEAM_ID;
