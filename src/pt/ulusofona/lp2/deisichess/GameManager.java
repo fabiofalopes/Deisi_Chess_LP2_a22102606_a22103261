@@ -318,7 +318,7 @@ public class GameManager {
     public ArrayList<String> getGameResults(){
         String resultMessage = "";
 
-        if(this.isTie()){
+        if(this.tieFromFile || this.isTie()){
             resultMessage = GameStaticData.RESULT_TIE_MESSAGE;
         } else {
             resultMessage = GameStaticData.RESULT_WIN_MESSAGE +
