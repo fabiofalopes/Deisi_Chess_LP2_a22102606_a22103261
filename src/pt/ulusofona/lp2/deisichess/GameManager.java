@@ -70,20 +70,15 @@ public class GameManager {
             this.dimension = Integer.parseInt(reader.readLine().trim());
             final int nrPieces = Integer.parseInt(reader.readLine().trim());
 
-            // TODO: need validation here (top ^) ??
-
             // read pieces data
             for(int i = 0; i < nrPieces; i++){
                 String pieceRow = reader.readLine();
                 String[] pieceData = pieceRow.split(GameStaticData.FILE_CONTENT_SEPARATOR);
-                // TODO: need validation here (top ^) ??
 
                 int pieceId = Integer.parseInt(pieceData[0].trim()),
                     pieceType = Integer.parseInt(pieceData[1].trim()),
                     pieceTeamId = Integer.parseInt(pieceData[2].trim());
                 String pieceNickname = pieceData[3].trim();
-
-                // TODO: need validation here (top ^) ??
 
                 ChessPiece piece = new ChessPiece(pieceId, pieceType, pieceNickname);
                 if(pieceTeamId == GameStaticData.BLACK_TEAM_ID){
@@ -99,7 +94,6 @@ public class GameManager {
             for(int rowY = 0; rowY < this.dimension; rowY++) {
                 String row = reader.readLine().trim();
                 String[] rowData = row.split(GameStaticData.FILE_CONTENT_SEPARATOR);
-                // TODO: need validation here (top ^) ??
 
                 for(int colX = 0; colX < this.dimension; colX++) {
                     // create squares
