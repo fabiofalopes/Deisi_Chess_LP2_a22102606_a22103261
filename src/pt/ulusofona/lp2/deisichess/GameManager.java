@@ -44,8 +44,9 @@ public class GameManager {
         return this.boardPositions.contains(x + "" + y);
     }
     private boolean isTie(){
-        return this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
-                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0);
+        return (this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
+                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
+                 (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
     }
     private void evaluateTieFromFile(){
         this.tieFromFile = !this.blackTeam.isDefeated() &&
@@ -286,8 +287,7 @@ public class GameManager {
             return true;
         }
 
-        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated() ||
-               (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
+        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
     }
     public JPanel getAuthorsPanel(){
         this.authorsPanel = new JPanel();
