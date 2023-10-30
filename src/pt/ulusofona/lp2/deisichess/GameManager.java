@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameManager {
-    //private boolean gameLoadedCorrectly;
     private boolean tieFromFile;
     private int dimension;
     private int movesWithoutDefeats;
@@ -22,7 +21,6 @@ public class GameManager {
         this.reset();
     }
     private void reset(){
-        //this.gameLoadedCorrectly = false;
         this.tieFromFile = false;
         this.dimension = 0;
         this.movesWithoutDefeats = 0;
@@ -115,7 +113,6 @@ public class GameManager {
                 }
             }
 
-            //this.gameLoadedCorrectly = true;
             this.evaluateTieFromFile();
             return true;
         } catch (IOException e) {
