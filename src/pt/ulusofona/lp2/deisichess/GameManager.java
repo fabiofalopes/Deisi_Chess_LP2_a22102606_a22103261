@@ -286,7 +286,8 @@ public class GameManager {
             return true;
         }
 
-        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated();
+        return this.blackTeam.isDefeated() || this.whiteTeam.isDefeated() ||
+               (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
     }
     public JPanel getAuthorsPanel(){
         this.authorsPanel = new JPanel();
