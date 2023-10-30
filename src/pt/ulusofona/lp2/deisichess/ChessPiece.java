@@ -4,7 +4,7 @@ public class ChessPiece {
     private int id;
     private int type; // TODO: temp, 0 == king
     private String nickname;
-    private String image = null; // TODO
+    private String image = null;
     private boolean defeated;
     private Square square;
 
