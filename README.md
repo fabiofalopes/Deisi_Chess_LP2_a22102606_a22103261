@@ -1,3 +1,5 @@
+![](diagrama.png?raw=true "Diagrama UML")
+
 # Notas do [video](https://www.youtube.com/watch?v=EMKTKl4lZXI)
 
 ## Git / Github workflow
