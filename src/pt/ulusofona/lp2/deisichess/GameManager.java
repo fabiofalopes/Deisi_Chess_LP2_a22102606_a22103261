@@ -45,7 +45,7 @@ public class GameManager {
         return this.boardPositions.contains(x + "" + y);
     }
     private boolean isTie(){
-        return this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
+        return (this.movesWithoutDefeats >= GameStaticData.TIE_RULE * 2) && // Game over from TIE
                 (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0);
     }
     private void evaluateTieFromFile(){
