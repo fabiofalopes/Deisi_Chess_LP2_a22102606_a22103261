@@ -57,8 +57,8 @@ public class GameManager {
                            this.whiteTeam.getCountNonDefeated() == 1;
     }
     private void evaluateCompleteFromFile(){
-        this.completeFromFile = (this.blackTeam.isDefeated() ||
-                                this.whiteTeam.isDefeated()) &&
+        this.completeFromFile = this.blackTeam.isDefeated() &&
+                                this.whiteTeam.isDefeated() &&
                                 !this.blackTeam.hasKills() &&
                                 !this.whiteTeam.hasKills();
     }
