@@ -1,66 +1,96 @@
 package pt.ulusofona.lp2.deisichess;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.testng.internal.collections.Pair;
+
+import java.util.ArrayList;
 
 public class Team {
     private int id;
     private String name;
-    private int countInvalidMoves;
-    private int countValidMoves;
-    private int countCaptures;
-    private int countSelfCaptures;
-    private HashMap<Integer, ChessPiece> pieces;
+    private int validMoves;
+    private int invalidMoves;
+    private int kills;
+    private ArrayList<ChessPiece> pieces;
 
-    public Team(int ID, String name){
-        this.id = ID;
+    public Team(int id, String name){
+        this.id = id;
         this.name = name;
-        this.pieces = new HashMap<>();
+        this.validMoves = 0;
+        this.invalidMoves = 0;
+        this.kills = 0;
+        this.pieces = new ArrayList<>();
     }
-    public String getName(){
+
+    void addPiece(ChessPiece piece){
+        this.pieces.add(piece);
+    }
+    String getName(){
         return this.name;
     }
-    public void incrementInvalidMove(){
-        this.countInvalidMoves += 1;
+    ChessPiece getPieceById(int id){
+        for (ChessPiece piece : pieces) {
+            if(piece.getId() == id){
+                return piece;
+            }
+        }
+
+        return null;
     }
-    public void incrementValidMove(){ this.countValidMoves += 1; }
-    public void incrementCapture() { this.countCaptures += 1; }
-    public void incrementSelfCapture(){ this.countSelfCaptures += 1; }
-    public void addPiece(int pieceID, ChessPiece piece){
-        this.pieces.put(pieceID, piece);
+    ChessPiece getPieceByPosition(int x, int y){
+        for (ChessPiece piece : pieces) {
+            Pair<Integer, Integer> position = piece.getPosition();
+
+            if(position == null){
+                continue;
+            }
+
+            if(position.first().equals(x) && position.second().equals(y)){
+                return piece;
+            }
+        }
+
+        return null;
     }
-    public String[] getResult(){
+    int getCountNonDefeated(){
+        int count = 0;
+
+        for (ChessPiece piece : pieces) {
+            if(!piece.isDefeated()){
+                count++;
+            }
+        }
+
+        return count;
+    }
+    int getCountDefeated(){
+        int count = 0;
+
+        for (ChessPiece piece : pieces) {
+            if(piece.isDefeated()){
+                count++;
+            }
+        }
+
+        return count;
+    }
+    boolean isDefeated(){
+        return this.getCountDefeated() == pieces.size();
+    }
+    void incrementValidMove(){
+        this.validMoves++;
+    }
+    void incrementInvalidMove(){
+        this.invalidMoves++;
+    }
+    void incrementKills(){
+        this.kills++;
+    }
+    String[] getScore(){
         return new String[] {
-            GameProperties.teamMessage + this.name,
-            this.countCaptures + "",
-            this.countValidMoves + "",
-            this.countInvalidMoves + ""
+            GameStaticData.RESULT_TEAM_MESSAGE + this.name,
+            this.kills + "",
+            this.validMoves + "",
+            this.invalidMoves + ""
         };
-    }
-    public int getCountCaptures(){ return this.countCaptures; }
-    public int getCountSelfCaptures(){
-        return this.countSelfCaptures;
-    }
-    public boolean hasCaptures(){
-        return this.getCountCaptures() > 1;
-    }
-    public boolean isAlive(){
-        for (ChessPiece value : pieces.values()) {
-            if(!value.isCaptured()){
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean hasDeadPieces(){
-        for (ChessPiece value : pieces.values()) {
-            if(value.isCaptured()){
-                return true;
-            }
-        }
-        return false;
-    }
-    public int getCountPieces(){
-        return this.pieces.size();
     }
 }

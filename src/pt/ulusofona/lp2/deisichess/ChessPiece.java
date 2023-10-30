@@ -1,81 +1,48 @@
 package pt.ulusofona.lp2.deisichess;
 
-import java.util.ArrayList;
+import org.testng.internal.collections.Pair;
 
 public class ChessPiece {
     private int id;
-    private int teamID; // Black team: 0 | White team: 1
-    private int type; // King : 0
+    private int type; // TODO: temp, 0 == king
     private String nickname;
-    private String image = null;
-    private int currentCoordX;
-    private int currentCoordY;
-    private boolean captured;
-    private ArrayList<Integer> captureLog;
+    private String image = null; // TODO
+    private boolean defeated;
+    private Square square;
 
-    public ChessPiece(int ID, int type, int teamID, String nickname) {
-        this.id = ID;
+    ChessPiece(int id, int type, String nickame){
+        this.id = id;
         this.type = type;
-        this.teamID = teamID;
-        this.nickname = nickname;
-        this.captureLog = new ArrayList<>();
+        this.nickname = nickame;
+        this.defeated = true;
     }
 
-    public int getID(){
+    int getId(){
         return this.id;
     }
-    public void updatePosition(int x, int y) {
-        this.currentCoordX = x;
-        this.currentCoordY = y;
+    int getType(){
+        return this.type;
     }
-    public void cleanPosition(){
-        this.currentCoordX = -1;
-        this.currentCoordY = -1;
+    String getNickname(){
+        return this.nickname;
     }
-    private String getLifeStatus(){
-        return this.captured ? "capturado" : "em jogo";
+    String getImage(){
+        return this.image;
     }
-    public String[] getInfo(){
-        return new String[] {
-                this.id + "",
-                this.type + "",
-                this.teamID + "",
-                this.nickname,
-                this.image
-        };
+    boolean isDefeated(){
+        return this.defeated;
     }
-    public String[] getInfoWithLifeStatusAndPosition(){
-        return new String[] {
-                this.id + "",
-                this.type + "",
-                this.teamID + "",
-                this.nickname,
-                this.getLifeStatus(),
-                (this.currentCoordX == -1 ? "" : this.currentCoordX + ""),
-                (this.currentCoordY == -1 ? "" : this.currentCoordY + "")
-        };
+    void revive(){
+        this.defeated = false;
     }
-    public void capture(){
-        this.captured = true;
+    void defeatMe(){
+        this.defeated = true;
+        this.square = null;
     }
-    public boolean isCaptured(){
-        return this.captured;
+    void move(Square square){
+        this.square = square;
     }
-    public int getTeamID(){
-        return this.teamID;
-    }
-    public void addCaptureLog(int ID){
-        this.captureLog.add(ID);
-    }
-
-    @Override
-    public String toString() {
-        return this.id + " | " +
-                this.type + " | " +
-                this.teamID + " | " +
-                this.nickname + " @ (" +
-                (this.isCaptured() ?
-                    "n/a" :
-                        this.currentCoordX + ", " + this.currentCoordY) + ")";
+    Pair<Integer, Integer> getPosition(){
+        return this.square != null ? this.square.getPosition() : null;
     }
 }

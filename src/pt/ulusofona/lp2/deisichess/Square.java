@@ -1,21 +1,20 @@
 package pt.ulusofona.lp2.deisichess;
 
-public class Square {
-    private int coordX;
-    private int coordY;
-    private ChessPiece piece;
+import org.testng.internal.collections.Pair;
 
-    public Square(int coordX, int coordY){
-        this.coordX = coordX;
-        this.coordY = coordY;
+public class Square {
+    private int x;
+    private int y;
+
+    public Square(int x, int y){
+        this.x = x;
+        this.y = y;
     }
-    public ChessPiece getPiece(){
-        return this.piece;
+
+    Pair<Integer, Integer> getPosition(){
+        return new Pair<>(this.x, this.y);
     }
-    public void updatePiece(ChessPiece piece){
-        this.piece = piece;
-    }
-    public boolean equals(int x, int y){
-        return this.coordX == x && this.coordY == y;
+    boolean equals(int x, int y){
+        return this.x == x && this.y == y;
     }
 }
