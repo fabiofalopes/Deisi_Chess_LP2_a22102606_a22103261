@@ -46,7 +46,7 @@ public class GameManager {
     }
     private boolean isTie(){
         return this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
-                (this.blackTeam.hasKills() || this.whiteTeam.hasKills());
+                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0);
     }
 
     public boolean loadGame(File file){
@@ -174,6 +174,7 @@ public class GameManager {
             if(pieceOnDestiny != null){
                 pieceOnDestiny.defeatMe();
                 this.blackTeam.incrementKills();
+                this.movesWithoutDefeats = 0;
             } else {
                 this.movesWithoutDefeats++;
             }
@@ -182,6 +183,7 @@ public class GameManager {
             if(pieceOnDestiny != null){
                 pieceOnDestiny.defeatMe();
                 this.whiteTeam.incrementKills();
+                this.movesWithoutDefeats = 0;
             } else {
                 this.movesWithoutDefeats++;
             }
