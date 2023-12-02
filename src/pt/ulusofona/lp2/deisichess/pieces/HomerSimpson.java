@@ -3,8 +3,6 @@ package pt.ulusofona.lp2.deisichess.pieces;
 import pt.ulusofona.lp2.deisichess.Board;
 import pt.ulusofona.lp2.deisichess.ChessPiece;
 import pt.ulusofona.lp2.deisichess.GameStaticData;
-import pt.ulusofona.lp2.deisichess.Square;
-import java.util.ArrayList;
 
 public class HomerSimpson extends ChessPiece {
     private boolean sleeping;
@@ -23,6 +21,10 @@ public class HomerSimpson extends ChessPiece {
     public boolean isSleeping(int count){ return this.sleeping; }
     @Override
     public boolean tryMove(Board board, int x, int y) {
+        if(this.sleeping){
+            return false;
+        }
+
         return false;
     }
 

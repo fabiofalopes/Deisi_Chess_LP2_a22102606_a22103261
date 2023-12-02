@@ -9,8 +9,6 @@ import pt.ulusofona.lp2.deisichess.pieces.VerticalTower;
 import pt.ulusofona.lp2.deisichess.pieces.HomerSimpson;
 import pt.ulusofona.lp2.deisichess.pieces.Joker;
 
-import java.util.ArrayList;
-
 public abstract class ChessPiece {
     protected int id;
     protected String typeName;
@@ -18,7 +16,7 @@ public abstract class ChessPiece {
     protected String nickname;
     protected String image = null;
     protected boolean defeated;
-    protected Square square;
+    public Square square;
     protected boolean isSleepy = false;
     protected int teamID;
     protected ChessPiece(int teamID){

@@ -3,8 +3,6 @@ package pt.ulusofona.lp2.deisichess.pieces;
 import pt.ulusofona.lp2.deisichess.Board;
 import pt.ulusofona.lp2.deisichess.ChessPiece;
 import pt.ulusofona.lp2.deisichess.GameStaticData;
-import pt.ulusofona.lp2.deisichess.Square;
-import java.util.ArrayList;
 
 public class HorizontalTower extends ChessPiece {
 

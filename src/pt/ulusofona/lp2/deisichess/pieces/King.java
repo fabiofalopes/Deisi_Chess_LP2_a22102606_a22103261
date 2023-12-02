@@ -3,8 +3,6 @@ package pt.ulusofona.lp2.deisichess.pieces;
 import pt.ulusofona.lp2.deisichess.Board;
 import pt.ulusofona.lp2.deisichess.ChessPiece;
 import pt.ulusofona.lp2.deisichess.GameStaticData;
-import pt.ulusofona.lp2.deisichess.Square;
-import java.util.ArrayList;
 
 public class King extends ChessPiece {
 
@@ -19,5 +17,15 @@ public class King extends ChessPiece {
     @Override
     public boolean tryMove(Board board, int x, int y) {
         return false;
+    }
+
+    @Override
+    protected String printInfo(){
+        return id + " | " +
+                typeName + " | " +
+                "(infinito) | " +
+                teamID + " | " +
+                nickname + " @ " + "(" +
+                square.getX() + ", " + square.getY() + ")";
     }
 }
