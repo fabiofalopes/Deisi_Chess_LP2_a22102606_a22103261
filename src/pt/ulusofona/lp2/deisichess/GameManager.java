@@ -13,7 +13,7 @@ public class GameManager {
     private Team blackTeam;
     private Team whiteTeam;
     private boolean blackTeamRound;
-    private ArrayList<Square> squares;
+    private ArrayList<Square> board;
     private ArrayList<String> boardPositions;
     private JPanel authorsPanel;
 
@@ -27,7 +27,7 @@ public class GameManager {
         this.blackTeam = new Team(GameStaticData.BLACK_TEAM_ID, GameStaticData.BLACK_TEAM_NAME);
         this.whiteTeam = new Team(GameStaticData.WHITE_TEAM_ID, GameStaticData.WHITE_TEAM_NAME);
         this.blackTeamRound = true;
-        this.squares = new ArrayList<>();
+        this.board = new ArrayList<>();
         this.boardPositions = new ArrayList<>();
     }
 
@@ -44,6 +44,7 @@ public class GameManager {
         return this.boardPositions.contains(x + "" + y);
     }
     private boolean isTie(){
+        // change getCountNonDefeatedPieces to countNonDefeatedPieces
         return (this.movesWithoutDefeats >= GameStaticData.TIE_RULE && // Game over from TIE
                 (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
                  (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
@@ -129,6 +130,7 @@ public class GameManager {
                 return false;
         }
 
+        // TODO: refactor the next 2 blocks, and extract to a new function
         // invalid move: same position
         if(x0 == x1 && y0 == y1){
             if(this.blackTeamRound){

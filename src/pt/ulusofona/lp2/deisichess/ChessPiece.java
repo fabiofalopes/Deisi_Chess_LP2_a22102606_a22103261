@@ -1,49 +1,49 @@
 package pt.ulusofona.lp2.deisichess;
 
-public class ChessPiece {
-    private int id;
-    private int type; // TODO: temp, 0 == king
-    private String nickname;
-    private String image = null;
-    private boolean defeated;
-    private Square square;
+import java.util.ArrayList;
 
-    ChessPiece(int id, int type, String nickame){
+public abstract class ChessPiece {
+    protected int id;
+    protected String typeName;
+    protected int value;
+    protected String nickname;
+    protected String image = null;
+    protected boolean defeated;
+    protected Square square;
+
+    protected ChessPiece(int id, String nickame){
         this.id = id;
-        this.type = type;
         this.nickname = nickame;
         this.defeated = true;
     }
 
-    void updateImage(String image){
+    protected void updateImage(String image){
         this.image = image;
     }
-    int getId(){
+    protected int getId(){
         return this.id;
     }
-    int getType(){
-        return this.type;
-    }
-    String getNickname(){
+    protected String getNickname(){
         return this.nickname;
     }
-    String getImage(){
+    protected String getImage(){
         return this.image;
     }
-    boolean isDefeated(){
+    protected boolean isDefeated(){
         return this.defeated;
     }
-    void revive(){
+    protected void revive(){
         this.defeated = false;
     }
-    void defeatMe(){
+    protected void defeatMe(){
         this.defeated = true;
         this.square = null;
     }
-    void move(Square square){
-        this.square = square;
-    }
-    Square getPosition(){
+    protected Square getPosition(){
         return this.square;
     }
+    protected boolean isSleeping(int count){ return false; }
+    protected boolean isJoker() { return false; }
+
+    public abstract boolean tryMove(ArrayList<Square> board, int x, int y);
 }
