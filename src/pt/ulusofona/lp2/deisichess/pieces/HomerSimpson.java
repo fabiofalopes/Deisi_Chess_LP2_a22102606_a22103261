@@ -21,7 +21,7 @@ public class HomerSimpson extends ChessPiece {
     public boolean isSleeping(int count){ return this.sleeping; }
     @Override
     public boolean tryMove(Board board, int x, int y) {
-        if(this.sleeping){
+        if(this.sleeping || !board.isValidPosition(x, y)){
             return false;
         }
 

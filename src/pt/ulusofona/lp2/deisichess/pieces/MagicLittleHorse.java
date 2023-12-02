@@ -17,6 +17,10 @@ public class MagicLittleHorse extends ChessPiece {
 
     @Override
     public boolean tryMove(Board board, int x, int y) {
+        if(!board.isValidPosition(x, y)){
+            return false;
+        }
+
         return false;
     }
 }
