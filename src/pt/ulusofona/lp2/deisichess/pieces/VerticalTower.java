@@ -21,6 +21,8 @@ public class VerticalTower extends ChessPiece {
             return false;
         }
 
+        // validar se o y é mesmo
+
         return false;
     }
 }

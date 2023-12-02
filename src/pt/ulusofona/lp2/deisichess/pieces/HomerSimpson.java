@@ -25,6 +25,7 @@ public class HomerSimpson extends ChessPiece {
             return false;
         }
 
+        // o mesmo que o priest mas só com um em x de de
         return false;
     }
 

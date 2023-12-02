@@ -21,6 +21,10 @@ public class Queen extends ChessPiece {
             return false;
         }
 
+        // invalid move: move Queen restriction
+        //if(!(Math.abs(x0 - x1) <= 5 && Math.abs(y0 - y1) <= 5)){
+
+        // e se for comer o inimigo não é rainha
         return false;
     }
 }

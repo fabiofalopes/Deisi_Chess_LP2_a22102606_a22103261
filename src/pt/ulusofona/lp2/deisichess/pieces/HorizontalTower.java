@@ -21,6 +21,7 @@ public class HorizontalTower extends ChessPiece {
             return false;
         }
 
+        // validar se o x é o mesmo
         return false;
     }
 }

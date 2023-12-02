@@ -20,6 +20,8 @@ public class King extends ChessPiece {
             return false;
         }
 
+        // invalid move: move King restriction
+        //if(!(Math.abs(x0 - x1) <= 1 && Math.abs(y0 - y1) <= 1)){
         return false;
     }
 

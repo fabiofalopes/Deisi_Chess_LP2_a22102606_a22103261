@@ -21,6 +21,11 @@ public class MagicLittleHorse extends ChessPiece {
             return false;
         }
 
+        // invalid move: move MagicLittleHorse restriction
+        //if(!((x+2,y+2) &&
+        //(x+2,y-2) &&
+        //(x-2,y+2) &&
+        //(x-2,y-2)))
         return false;
     }
 }
