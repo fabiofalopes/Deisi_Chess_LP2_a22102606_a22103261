@@ -32,7 +32,7 @@ public class GameManager {
     }
 
     private Square getSquareByPosition(int x, int y){
-        for (Square square : squares) {
+        for (Square square : this.board.getSquares()) {
             if(square.equals(x, y)){
                 return square;
             }
