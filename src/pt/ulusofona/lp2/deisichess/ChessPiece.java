@@ -78,6 +78,30 @@ public abstract class ChessPiece {
                nickname + " @ " + "(" +
                square.getX() + ", " + square.getY() + ")";
     }
+    public boolean isPathClear(Board board,int x0, int y0, int x1, int y1){
+        /*
+            int stepX = (endX - startX) != 0 ? (endX - startX) / Math.abs(endX - startX) : 0;
+            int stepY = (endY - startY) != 0 ? (endY - startY) / Math.abs(endY - startY) : 0;
+
+            int currentX = startX + stepX;
+            int currentY = startY + stepY;
+
+            while (currentX != endX || currentY != endY) {
+                if (board[currentY][currentX] != null) {
+                    // Há uma peça no caminho
+                    return false;
+                }
+                currentX += stepX;
+                currentY += stepY;
+            }
+
+            // O caminho está livre
+            return true;
+        */
+
+
+        return false;
+    }
 
     public abstract boolean tryMove(Board board, int x, int y);
 }
