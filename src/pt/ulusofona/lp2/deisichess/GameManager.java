@@ -13,8 +13,9 @@ public class GameManager {
     private Team blackTeam;
     private Team whiteTeam;
     private boolean blackTeamRound;
-    private ArrayList<Square> board;
-    private ArrayList<String> boardPositions;
+    //private ArrayList<Square> board;
+    //private ArrayList<String> boardPositions;
+    private Board board;
     private JPanel authorsPanel;
 
     public GameManager(){
@@ -27,8 +28,7 @@ public class GameManager {
         this.blackTeam = new Team(GameStaticData.BLACK_TEAM_ID, GameStaticData.BLACK_TEAM_NAME);
         this.whiteTeam = new Team(GameStaticData.WHITE_TEAM_ID, GameStaticData.WHITE_TEAM_NAME);
         this.blackTeamRound = true;
-        this.board = new ArrayList<>();
-        this.boardPositions = new ArrayList<>();
+        this.board = new Board();
     }
 
     private Square getSquareByPosition(int x, int y){

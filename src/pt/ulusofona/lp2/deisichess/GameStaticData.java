@@ -1,8 +1,32 @@
 package pt.ulusofona.lp2.deisichess;
 
 public class GameStaticData {
-    public final static int BLACK_TEAM_ID = 0;
-    public final static int WHITE_TEAM_ID = 1;
+    public final static int BLACK_TEAM_ID = 10;
+    public final static int WHITE_TEAM_ID = 20;
+    public final static int KING_PIECE_ID = 1;
+    public final static int KING_PIECE_VALUE = 1000;
+    public final static String KING_NAME = "Rei";
+    public final static int QUEEN_PIECE_ID = 2;
+    public final static int QUEEN_PIECE_VALUE = 8;
+    public final static String QUEEN_NAME = "Rainha";
+    public final static int MAGIC_LITTLE_HORSE_PIECE_ID = 3;
+    public final static int MAGIC_LITTLE_HORSE_PIECE_VALUE = 5;
+    public final static String MAGIC_LITTLE_HORSE_NAME = "Ponei Mágico";
+    public final static int VILLAGE_PRIEST_PIECE_ID = 4;
+    public final static int VILLAGE_PRIEST_PIECE_VALUE = 3;
+    public final static String VILLAGE_PRIEST_NAME = "Padre da Vila";
+    public final static int HORIZONTAL_TOWER_PIECE_ID = 5;
+    public final static int HORIZONTAL_TOWER_VALUE = 3;
+    public final static String HORIZONTAL_TOWER_NAME = "TorreHor";
+    public final static int VERTICAL_TOWER_PIECE_ID = 6;
+    public final static int VERTICAL_TOWER_VALUE = 3;
+    public final static String VERTICAL_TOWER_NAME = "TorreVert";
+    public final static int HOMER_SIMPSON_PIECE_ID = 7;
+    public final static int HOMER_SIMPSON_PIECE_VALUE = 2;
+    public final static String HOMER_SIMPSON_NAME = "Homer Simpson";
+    public final static int JOKER_PIECE_ID = 8;
+    public final static int JOKER_PIECE_VALUE = 4;
+    public final static String JOKER_NAME = "Joker";
     public final static String BLACK_TEAM_NAME = "Pretas";
     public final static String WHITE_TEAM_NAME = "Brancas";
     public final static String DEFEATED_LABEL = "capturado";

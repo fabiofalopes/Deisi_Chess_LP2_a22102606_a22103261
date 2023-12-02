@@ -1,19 +1,24 @@
 package pt.ulusofona.lp2.deisichess.pieces;
 
+import pt.ulusofona.lp2.deisichess.Board;
 import pt.ulusofona.lp2.deisichess.ChessPiece;
+import pt.ulusofona.lp2.deisichess.GameStaticData;
 import pt.ulusofona.lp2.deisichess.Square;
 import java.util.ArrayList;
 
 public class Queen extends ChessPiece {
 
-    Queen(int id, String nickame) {
-        super(id, nickame);
-        this.typeName = "Rainha";
-        this.value = 8;
+    public Queen(int teamID){ super(teamID); }
+
+    public Queen(String nickame, int teamID) {
+        super(nickame, teamID);
+        this.id = GameStaticData.QUEEN_PIECE_ID;
+        this.typeName = GameStaticData.QUEEN_NAME;
+        this.value = GameStaticData.QUEEN_PIECE_VALUE;
     }
 
     @Override
-    public boolean tryMove(ArrayList<Square> board, int x, int y) {
+    public boolean tryMove(Board board, int x, int y) {
         return false;
     }
 }

@@ -1,23 +1,33 @@
 package pt.ulusofona.lp2.deisichess.pieces;
 
+import pt.ulusofona.lp2.deisichess.Board;
 import pt.ulusofona.lp2.deisichess.ChessPiece;
+import pt.ulusofona.lp2.deisichess.GameStaticData;
 import pt.ulusofona.lp2.deisichess.Square;
 import java.util.ArrayList;
 
 public class HomerSimpson extends ChessPiece {
+    private boolean sleeping;
 
-    HomerSimpson(int id, String nickame) {
-        super(id, nickame);
-        this.typeName = "Homer Simpson";
-        this.value = 2;
+    public HomerSimpson(int teamID){ super(teamID); }
+
+    public HomerSimpson(String nickame, int teamID) {
+        super(nickame,teamID);
+        this.id = GameStaticData.HOMER_SIMPSON_PIECE_ID;
+        this.typeName = GameStaticData.HOMER_SIMPSON_NAME;
+        this.value = GameStaticData.HOMER_SIMPSON_PIECE_VALUE;
+        this.isSleepy = true;
     }
 
     @Override
-    public boolean isSleeping(int count){
-        return count % 3 == 0;
-    }
+    public boolean isSleeping(int count){ return this.sleeping; }
     @Override
-    public boolean tryMove(ArrayList<Square> board, int x, int y) {
+    public boolean tryMove(Board board, int x, int y) {
         return false;
+    }
+
+    @Override
+    protected String printInfo(){
+        return this.sleeping ? "Doh! zzzzzz" : super.printInfo();
     }
 }

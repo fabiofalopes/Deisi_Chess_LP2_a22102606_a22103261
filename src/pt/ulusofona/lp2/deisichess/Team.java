@@ -57,7 +57,6 @@ public class Team {
                 count++;
             }
         }
-
         return count;
     }
     int getCountDefeated(){
