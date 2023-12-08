@@ -28,7 +28,7 @@ public class HorizontalTowerPiece extends BasePiece{
         }
 
         // uncomment if this piece has movement limit
-        /*if(this.movementLimit != null && this.movementLimit < Math.abs(currentY - y)){
+        /*if(this.movementLimit != null && this.movementLimit < Math.abs(currentX - x)){
             return false;
         }*/
 

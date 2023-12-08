@@ -17,7 +17,7 @@ public abstract class BasePiece {
     protected Square square;
     protected Team team;
     protected Integer movementLimit = null;
-
+    protected boolean queenType = false;
     public BasePiece(String nickname, Team team){
         this.nickname = nickname;
         this.team = team;
@@ -38,6 +38,9 @@ public abstract class BasePiece {
         };
     }
 
+    public boolean isQueen (){
+        return this.queenType;
+    }
     protected int getTeamId(){
         return this.team.getId();
     }
@@ -113,6 +116,9 @@ public abstract class BasePiece {
 
         if(valid){
             this.team.incrementValidMove();
+        }
+        else{
+            this.team.incrementInvalidMove();
         }
 
         return valid;

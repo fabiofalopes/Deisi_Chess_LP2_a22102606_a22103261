@@ -2,6 +2,10 @@ package refactor.pieces;
 
 import refactor.Square;
 import refactor.Team;
+import refactor.movements.DiagonalMovement;
+import refactor.movements.HorizontalMovement;
+import refactor.movements.VerticalMovement;
+
 import java.util.List;
 
 public class HomerSimpsonPiece extends BasePiece{
@@ -14,6 +18,7 @@ public class HomerSimpsonPiece extends BasePiece{
         this.typeName = "Homer Simpson";
         this.value = 2;
         this.canSleep = true;
+        this.movementLimit = 1;
     }
 
     public void setSleeping(int count){
@@ -26,14 +31,20 @@ public class HomerSimpsonPiece extends BasePiece{
 
     @Override
     public boolean validMoveRules(List<List<Square>> board, int x, int y) {
+        if(this.sleeping){
+            return false;
+        }
 
-        /*int deltaX = Math.abs(destinyX - currentX);
-int deltaY = Math.abs(destinyY - currentY);
+        int currentX = this.square.getX();
+        int currentY = this.square.getY();
 
-if(deltaX != deltaY) { // means the piece didn't move diagonally
-    return false;
-}*/
-        return false;
+        boolean validMove = (Math.abs(currentX - x) == this.movementLimit && Math.abs(currentY - y) == this.movementLimit);
+
+        if(!validMove){
+            return false;
+        }
+
+        return !new DiagonalMovement().isOverlapping(board,currentX, currentY, x, y);
     }
 
     @Override
