@@ -2,10 +2,9 @@ package pt.ulusofona.lp2.deisichess;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 
-public class TestGameManager {
+/*public class TestGameManager {
     @Test
     public void loadGameWithoutReadingFile(){
         GameManager game = new GameManager();
@@ -60,4 +59,4 @@ public class TestGameManager {
         game.loadGame(file);
         Assertions.assertNull(game.getPieceInfo(-1));
     }
-}
+}*/

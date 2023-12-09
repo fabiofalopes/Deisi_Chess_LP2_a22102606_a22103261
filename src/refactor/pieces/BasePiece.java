@@ -2,8 +2,6 @@ package refactor.pieces;
 
 import refactor.Square;
 import refactor.Team;
-import refactor.movements.BaseMovement;
-
 import java.util.List;
 
 public abstract class BasePiece {
@@ -18,11 +16,39 @@ public abstract class BasePiece {
     protected Team team;
     protected Integer movementLimit = null;
     protected boolean queenType = false;
+
     public BasePiece(String nickname, Team team){
         this.nickname = nickname;
         this.team = team;
         this.defeated = true;
     }
+
+    public int getTeamId(){
+        return this.team.getId();
+    }
+    public int getId(){
+        return this.id;
+    }
+    public String getTypeName () { return this.typeName; }
+    public int getValue(){
+        return this.value;
+    }
+    public Integer getMovementLimit(){ return this.movementLimit; }
+    public String getNickname(){
+        return this.nickname;
+    }
+    protected String getImage(){
+        return this.image;
+    }
+    public boolean getIsDefeated(){
+        return this.defeated;
+    }
+    public boolean getIsQueen() { return this.queenType; }
+
+    protected void setImage(String image){
+        this.image = image;
+    }
+    public void setSquare(Square square){ this.square = square; }
 
     public static BasePiece create(int id, String nickname, Team team){
         return switch (id){
@@ -37,102 +63,20 @@ public abstract class BasePiece {
             default -> null;
         };
     }
-
-    public boolean isQueen (){
-        return this.queenType;
-    }
-    protected int getTeamId(){
-        return this.team.getId();
-    }
-
-    public int getId(){
-        return this.id;
-    }
-
-    public int getValue(){
-        return this.value;
-    }
-
-    protected String getNickname(){
-        return this.nickname;
-    }
-
-    protected String getImage(){
-        return this.image;
-    }
-
-    protected void setImage(String image){
-        this.image = image;
-    }
-
-    protected void setSquare(Square square){
-        this.square = square;
-        this.square.setPiece(this);
-    }
-
-    public boolean isDefeated(){
-        return this.defeated;
-    }
-
     protected void revive(){
         this.defeated = false;
     }
-
-    protected  void defeatMe(){
-        this.defeated = true;
-        this.square.removePiece();
-        this.removeSquare();
-    }
-
-    protected boolean hasSquare(){
-        return this.square != null;
-    }
-
-    protected void removeSquare(){
-        this.square = null;
-    }
-
-    private boolean huntOrMove(Square destinySquare) {
-        if(destinySquare.hasPiece()){
-            if(destinySquare.getPiece().getTeamId() == this.getTeamId()){ // same team constraint
-                return false;
-            }
-
-            BasePiece piece = destinySquare.getPiece();
-            piece.defeatMe();
-            this.team.incrementKillsAndScore(piece.getValue());
-        }
-
-        this.setSquare(destinySquare);
-        destinySquare.setPiece(this);
-
-        return true;
-    }
-
-    protected boolean move(List<List<Square>> board, int x, int y){
-        boolean valid = BaseMovement.isWithinBounds(board, x ,y) &&
-                        this.validMoveRules(board, x, y) &&
-                        this.huntOrMove(board.get(y).get(x));
-
-        if(valid){
-            this.team.incrementValidMove();
-        }
-        else{
-            this.team.incrementInvalidMove();
-        }
-
-        return valid;
-    }
-
-    protected abstract boolean validMoveRules(List<List<Square>> board, int x, int y);
-
+    protected boolean hasSquare() { return this.square != null; }
+    public void removeSquare() { this.square = null; }
+    public void defeatMe() { this.defeated = true; }
+    public abstract boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY);
     public String printInfo(){
         return this.id + " | " +
-               this.typeName + " | " +
-               this.value + " | " +
-               this.team.getId() + " | " +
-               this.nickname + " @ (" +
-               this.square.getX() + ", " +
-               this.square.getY() + ")";
+                this.typeName + " | " +
+                this.value + " | " +
+                this.team.getId() + " | " +
+                this.nickname + " @ (" +
+                this.square.getX() + ", " +
+                this.square.getY() + ")";
     }
 }

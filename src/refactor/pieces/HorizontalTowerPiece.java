@@ -2,14 +2,12 @@ package refactor.pieces;
 
 import refactor.Square;
 import refactor.Team;
-import refactor.movements.BaseMovement;
 import refactor.movements.HorizontalMovement;
-import refactor.movements.VerticalMovement;
-
 import java.util.List;
 
 public class HorizontalTowerPiece extends BasePiece{
     public static final int ID = 5;
+
     public HorizontalTowerPiece(String nickname, Team team) {
         super(nickname, team);
         this.id = ID;
@@ -19,19 +17,21 @@ public class HorizontalTowerPiece extends BasePiece{
     }
 
     @Override
-    public boolean validMoveRules(List<List<Square>> board, int x, int y) {
-        int currentX = this.square.getX();
-        int currentY = this.square.getY();
+    public boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY) {
+        int currentX = this.square.getX(),
+            currentY = this.square.getY();
 
-        if(currentX == x || currentY != y){ // means the piece didn't move horizontally
-            return false;                   // or moved in Y which isn't allowed
+        /* means the piece didn't move horizontally,
+           or moved in Y which isn't allowed */
+        if(currentX == destinyX || currentY != destinyY){
+            return false;
         }
 
-        // uncomment if this piece has movement limit
-        /*if(this.movementLimit != null && this.movementLimit < Math.abs(currentX - x)){
+        /* uncomment if this piece has movement limit
+        if(this.movementLimit < Math.abs(currentX - x)){
             return false;
         }*/
 
-        return !new HorizontalMovement().isOverlapping(board, currentX, currentY, x, y);
+        return !new HorizontalMovement().isOverlapping(board, currentX, currentY, destinyX, destinyY);
     }
 }

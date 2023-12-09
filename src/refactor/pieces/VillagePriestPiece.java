@@ -3,11 +3,11 @@ package refactor.pieces;
 import refactor.Square;
 import refactor.Team;
 import refactor.movements.DiagonalMovement;
-
 import java.util.List;
 
 public class VillagePriestPiece extends BasePiece{
     public static final int ID = 4;
+
     public VillagePriestPiece(String nickname, Team team) {
         super(nickname, team);
         this.id = ID;
@@ -17,18 +17,19 @@ public class VillagePriestPiece extends BasePiece{
     }
 
     @Override
-    public boolean validMoveRules(List<List<Square>> board, int x, int y) {
+    public boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY) {
+        int currentX = this.square.getX(),
+            currentY = this.square.getY();
+        int deltaX = Math.abs(currentX - destinyX),
+            deltaY = Math.abs(currentY - destinyY);
 
-        int currentX = this.square.getX();
-        int currentY = this.square.getY();
-
-        int deltaX = Math.abs(currentX - x);
-        int deltaY = Math.abs(currentY - y);
-
-        if(deltaX != deltaY && deltaX < this.movementLimit && deltaY < this.movementLimit ) { // means the piece didn't move diagonally
+        // means the piece didn't move diagonally
+        if(deltaX != deltaY &&
+           deltaX < this.movementLimit &&
+           deltaY < this.movementLimit ) {
             return false;
         }
 
-        return !new DiagonalMovement().isOverlapping(board,currentX, currentY, x, y);
+        return !new DiagonalMovement().isOverlapping(board,currentX, currentY, destinyX, destinyY);
     }
 }

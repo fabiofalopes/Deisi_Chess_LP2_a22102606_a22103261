@@ -15,6 +15,7 @@ public class VerticalMovement extends BaseMovement{
                                  int currentY,
                                  int destinyX,
                                  int destinyY) {
+
         int start = currentY;
         int end = destinyY;
 

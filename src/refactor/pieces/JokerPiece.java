@@ -4,10 +4,10 @@ import refactor.Square;
 import refactor.Team;
 import java.util.List;
 
-public class JokerPiece extends BasePiece{
+public class JokerPiece extends BasePiece {
+    public static final int ID = 8;
     private int cloneCounter;
     private BasePiece clone;
-    public static final int ID = 8;
 
     public JokerPiece(String nickname, Team team) {
         super(nickname, team);
@@ -19,7 +19,7 @@ public class JokerPiece extends BasePiece{
     }
 
     @Override
-    public boolean validMoveRules(List<List<Square>> board, int x, int y) {
-        return false;
+    public boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY) {
+        return this.clone.validMoveRules(board, destinyX, destinyY);
     }
 }

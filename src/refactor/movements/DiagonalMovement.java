@@ -15,6 +15,7 @@ public class DiagonalMovement extends BaseMovement{
                                  int currentY,
                                  int destinyX,
                                  int destinyY) {
+
         // Integer compare (on equals) = 0; (on <) - 1; (on >) 1
         int xDir = Integer.compare(destinyX, currentX);
         int yDir = Integer.compare(destinyY, currentY);

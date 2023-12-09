@@ -15,6 +15,7 @@ public class HorizontalMovement extends BaseMovement{
                                  int currentY,
                                  int destinyX,
                                  int destinyY) {
+
         int start = currentX;
         int end = destinyX;
 

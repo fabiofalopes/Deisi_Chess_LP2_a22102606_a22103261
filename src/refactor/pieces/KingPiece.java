@@ -5,11 +5,11 @@ import refactor.Team;
 import refactor.movements.DiagonalMovement;
 import refactor.movements.HorizontalMovement;
 import refactor.movements.VerticalMovement;
-
 import java.util.List;
 
 public class KingPiece extends BasePiece{
     public static final int ID = 1;
+
     public KingPiece(String nickname, Team team) {
         super(nickname, team);
         this.id = ID;
@@ -19,21 +19,21 @@ public class KingPiece extends BasePiece{
     }
 
     @Override
-    public boolean validMoveRules(List<List<Square>> board, int x, int y) {
-        int currentX = this.square.getX();
-        int currentY = this.square.getY();
+    public boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY) {
+        int currentX = this.square.getX(),
+            currentY = this.square.getY();
 
-        boolean validMove = (Math.abs(currentX - x) <= this.movementLimit && Math.abs(currentY - y) <= this.movementLimit);
+        boolean validMove = Math.abs(currentX - destinyX) <= this.movementLimit &&
+                            Math.abs(currentY - destinyY) <= this.movementLimit;
 
         if(!validMove){
             return false;
         }
 
-        return !new VerticalMovement().isOverlapping(board, currentX, currentY, x, y) ||
-               !new HorizontalMovement().isOverlapping(board,currentX, currentY, x, y) ||
-               !new DiagonalMovement().isOverlapping(board,currentX, currentY, x, y);
+        return !new VerticalMovement().isOverlapping(board, currentX, currentY, destinyX, destinyY) ||
+               !new HorizontalMovement().isOverlapping(board,currentX, currentY, destinyX, destinyY) ||
+               !new DiagonalMovement().isOverlapping(board,currentX, currentY, destinyX, destinyY);
     }
-
     @Override
     public String printInfo(){
         return this.id + " | " +

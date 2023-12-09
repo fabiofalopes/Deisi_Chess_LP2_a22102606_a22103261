@@ -15,24 +15,21 @@ public class Square {
     public int getX(){
         return this.x;
     }
-
     public int getY(){
         return this.y;
     }
-
     public BasePiece getPiece(){
         return this.piece;
+    }
+
+    public void removePiece(){
+        this.piece = null;
     }
 
     public boolean hasPiece(){
         return this.piece != null;
     }
-
     public void setPiece(BasePiece piece){
         this.piece = piece;
-    }
-
-    public void removePiece(){
-        this.piece = null;
     }
 }
