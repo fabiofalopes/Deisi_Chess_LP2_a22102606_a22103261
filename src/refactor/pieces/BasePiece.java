@@ -2,6 +2,8 @@ package refactor.pieces;
 
 import refactor.Square;
 import refactor.Team;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasePiece {
@@ -9,18 +11,24 @@ public abstract class BasePiece {
     protected String typeName;
     protected int value;
     protected String nickname;
-    protected boolean defeated;
+    protected boolean defeated = true;
     protected String image = null;
     protected boolean canSleep = false;
     protected Square square;
     protected Team team;
     protected Integer movementLimit = null;
     protected boolean queenType = false;
+    protected boolean jokerType = false;
+    protected  boolean homerSimpsonType = false;
 
-    public BasePiece(String nickname, Team team){
+    public BasePiece(int id, String nickname, Team team){
+        this.id = id;
         this.nickname = nickname;
         this.team = team;
-        this.defeated = true;
+    }
+    public BasePiece(int id, String nickname, Team team, String image){
+        this(id, nickname, team);
+        this.image = image.replace("#", team.getName());
     }
 
     public int getTeamId(){
@@ -44,26 +52,39 @@ public abstract class BasePiece {
         return this.defeated;
     }
     public boolean getIsQueen() { return this.queenType; }
+    public boolean getIsJoker() { return this.jokerType; }
+    public boolean getIsHomerSimpson() { return this.homerSimpsonType; }
+    public List<String> getHints(List<List<Square>> board){
+        List<String> hints = new ArrayList<>();
 
-    protected void setImage(String image){
-        this.image = image;
-    }
+        for (int row = 0; row < board.size(); row++) {
+            for (int column = 0; column < board.get(0).size(); column++) {
+                boolean validMove = this.validMoveRules(board, column, row);
+                if(validMove){
+                    hints.add(row + "," + column);
+                }
+            }
+        }
+
+        return hints;
+    }  // [TODO] move to be comparable
+
     public void setSquare(Square square){ this.square = square; }
 
-    public static BasePiece create(int id, String nickname, Team team){
-        return switch (id){
-            case KingPiece.ID -> new KingPiece(nickname, team);
-            case QueenPiece.ID -> new QueenPiece(nickname, team);
-            case MagicLittleHorsePiece.ID -> new MagicLittleHorsePiece(nickname, team);
-            case VillagePriestPiece.ID -> new VillagePriestPiece(nickname, team);
-            case HorizontalTowerPiece.ID -> new HorizontalTowerPiece(nickname, team);
-            case VerticalTowerPiece.ID -> new VerticalTowerPiece(nickname, team);
-            case HomerSimpsonPiece.ID -> new HomerSimpsonPiece(nickname, team);
-            case JokerPiece.ID -> new JokerPiece(nickname, team);
+    public static BasePiece create(int id, int typeId, String nickname, Team team){
+        return switch (typeId){
+            case KingPiece.PIECE_TYPE_ID -> new KingPiece(id, nickname, team);
+            case QueenPiece.PIECE_TYPE_ID -> new QueenPiece(id, nickname, team);
+            case MagicLittleHorsePiece.PIECE_TYPE_ID -> new MagicLittleHorsePiece(id, nickname, team);
+            case VillagePriestPiece.PIECE_TYPE_ID -> new VillagePriestPiece(id, nickname, team);
+            case HorizontalTowerPiece.PIECE_TYPE_ID -> new HorizontalTowerPiece(id, nickname, team);
+            case VerticalTowerPiece.PIECE_TYPE_ID -> new VerticalTowerPiece(id, nickname, team);
+            case HomerSimpsonPiece.PIECE_TYPE_ID -> new HomerSimpsonPiece(id, nickname, team);
+            case JokerPiece.PIECE_TYPE_ID -> new JokerPiece(id, nickname, team);
             default -> null;
         };
     }
-    protected void revive(){
+    public void revive(){
         this.defeated = false;
     }
     protected boolean hasSquare() { return this.square != null; }

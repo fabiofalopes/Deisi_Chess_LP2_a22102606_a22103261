@@ -1,6 +1,9 @@
 package refactor;
 
 import refactor.pieces.BasePiece;
+import refactor.pieces.HomerSimpsonPiece;
+import refactor.pieces.JokerPiece;
+
 import java.util.ArrayList;
 
 public class Team {
@@ -15,11 +18,13 @@ public class Team {
     private int invalidMoves = 0;
     private int kills = 0;
     private  int score = 0;
+    private boolean isPlaying;
     private ArrayList<BasePiece> pieces;
 
-    public Team(int id, String name){
+    public Team(int id, String name, boolean isPlaying){
         this.id = id;
         this.name = name;
+        this.isPlaying = isPlaying;
         this.pieces = new ArrayList<>();
     }
 
@@ -62,7 +67,31 @@ public class Team {
     public boolean getIsDefeated(){
         return this.getCountDefeated() == pieces.size();
     }
+    public boolean getIsPlaying(){
+        return this.isPlaying;
+    }
+    public HomerSimpsonPiece getHomer(){
+        for (BasePiece piece : pieces) {
+            if(piece.getIsHomerSimpson()){
+                return (HomerSimpsonPiece) piece;
+            }
+        }
 
+        return null;
+    }
+    public JokerPiece getJoker(){
+        for (BasePiece piece : pieces) {
+            if(piece.getIsJoker() && !piece.getIsDefeated()){
+                return (JokerPiece) piece;
+            }
+        }
+
+        return null;
+    }
+
+    public void addPiece(BasePiece piece){
+        this.pieces.add(piece);
+    }
     public void incrementValidMove(){
         this.validMoves++;
     }
@@ -72,5 +101,8 @@ public class Team {
     public void incrementKillsAndScore(int pieceScore){
         this.score += score;
         this.kills++;
+    }
+    public void toggleIsPlaying(){
+        this.isPlaying = !this.isPlaying;
     }
 }

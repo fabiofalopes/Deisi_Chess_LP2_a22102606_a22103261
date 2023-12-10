@@ -8,11 +8,11 @@ import refactor.movements.VerticalMovement;
 import java.util.List;
 
 public class KingPiece extends BasePiece{
-    public static final int ID = 1;
+    public static final int PIECE_TYPE_ID = 1;
+    public static final String PIECE_FILE_IMAGE = "king-#.png";
 
-    public KingPiece(String nickname, Team team) {
-        super(nickname, team);
-        this.id = ID;
+    public KingPiece(int id, String nickname, Team team) {
+        super(id, nickname, team, this.PIECE_FILE_IMAGE);
         this.typeName = "Rei";
         this.value = 1000;
         this.movementLimit = 1;

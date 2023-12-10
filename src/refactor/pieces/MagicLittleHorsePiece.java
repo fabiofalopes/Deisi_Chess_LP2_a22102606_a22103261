@@ -6,11 +6,11 @@ import refactor.movements.LShapeMovement;
 import java.util.List;
 
 public class MagicLittleHorsePiece extends BasePiece{
-    public static final int ID = 3;
+    public static final int PIECE_TYPE_ID = 3;
+    public static final String PIECE_FILE_IMAGE = "magic-little-horse-#.png";
 
-    public MagicLittleHorsePiece(String nickname, Team team) {
-        super(nickname, team);
-        this.id = ID;
+    public MagicLittleHorsePiece(int id, String nickname, Team team) {
+        super(id, nickname, team, this.PIECE_FILE_IMAGE);
         this.typeName = "Ponei Mágico";
         this.value = 5;
         this.movementLimit = 2;

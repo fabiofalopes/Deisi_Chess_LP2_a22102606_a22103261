@@ -6,11 +6,11 @@ import refactor.movements.VerticalMovement;
 import java.util.List;
 
 public class VerticalTowerPiece extends BasePiece{
-    public static final int ID = 6;
+    public static final int PIECE_TYPE_ID = 6;
+    public static final String PIECE_FILE_IMAGE = "vertical-tower-#.png";
 
-    public VerticalTowerPiece(String nickname, Team team) {
-        super(nickname, team);
-        this.id = ID;
+    public VerticalTowerPiece(int id, String nickname, Team team) {
+        super(id, nickname, team, this.PIECE_FILE_IMAGE);
         this.typeName = "TorreVert";
         this.value = 3;
         //this.movementLimit = 3;

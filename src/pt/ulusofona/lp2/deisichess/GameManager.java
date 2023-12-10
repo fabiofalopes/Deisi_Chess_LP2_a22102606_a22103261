@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*public class GameManager {
+public class GameManager {
     private boolean tieFromFile;
     private int dimension;
     private int movesWithoutDefeats;
@@ -332,4 +332,4 @@ import java.util.Arrays;
 
         return message;
     }
-}*/
+}

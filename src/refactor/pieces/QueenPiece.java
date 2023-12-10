@@ -8,11 +8,11 @@ import refactor.movements.VerticalMovement;
 import java.util.List;
 
 public class QueenPiece extends BasePiece{
-    public static final int ID = 2;
+    public static final int PIECE_TYPE_ID = 2;
+    public static final String PIECE_FILE_IMAGE = "queen-#.png";
 
-    public QueenPiece(String nickname, Team team) {
-        super(nickname, team);
-        this.id = ID;
+    public QueenPiece(int id, String nickname, Team team) {
+        super(id, nickname, team, this.PIECE_FILE_IMAGE);
         this.typeName = "Rainha";
         this.queenType = true;
         this.value = 8;
