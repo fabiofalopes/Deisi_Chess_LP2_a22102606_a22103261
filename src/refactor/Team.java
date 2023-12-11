@@ -1,5 +1,6 @@
 package refactor;
 
+import pt.ulusofona.lp2.deisichess.GameStaticData;
 import refactor.pieces.BasePiece;
 import refactor.pieces.HomerSimpsonPiece;
 import refactor.pieces.JokerPiece;
@@ -105,4 +106,14 @@ public class Team {
     public void toggleIsPlaying(){
         this.isPlaying = !this.isPlaying;
     }
+
+    String[] getScore(){
+        return new String[] {
+                GameStaticData.RESULT_TEAM_MESSAGE + this.name,
+                this.kills + "",
+                this.validMoves + "",
+                this.invalidMoves + ""
+        };
+    }
+
 }

@@ -1,22 +1,31 @@
 package refactor;
 
+import pt.ulusofona.lp2.deisichess.ChessPiece;
+import pt.ulusofona.lp2.deisichess.GameStaticData;
 import refactor.movements.BaseMovement;
 import refactor.pieces.BasePiece;
 import refactor.pieces.HomerSimpsonPiece;
 import refactor.pieces.JokerPiece;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class GameManager {
+
+    public final static int TIE_RULE = 10;
+    private boolean tieFromFile;
     private List<List<Square>> board;
     private Team blackTeam;
     private Team whiteTeam;
     private int countValidRounds;
     private int movesWithoutDefeats;
     private List<GameManager> backup;
+    private JPanel authorsPanel;
 
     public GameManager() {
         this.init();
@@ -49,6 +58,20 @@ public class GameManager {
     }
     @Override
     protected GameManager clone() { return this.clone(); }
+
+    private boolean isTie(){
+        // change getCountNonDefeatedPieces to countNonDefeatedPieces
+        return (this.movesWithoutDefeats >= TIE_RULE && // Game over from TIE
+                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
+                (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
+    }
+    private void evaluateTieFromFile(){
+        this.tieFromFile = !this.blackTeam.getIsDefeated() &&
+                !this.whiteTeam.getIsDefeated() &&
+                this.blackTeam.getCountNonDefeated() == 1 &&
+                this.whiteTeam.getCountNonDefeated() == 1;
+    }
+
 
     public void loadGame(File file) throws InvalidGameInputException, IOException {
         if(file == null){
@@ -217,14 +240,158 @@ public class GameManager {
         this.backup.add(this.clone());
         return true;
     }
+    public String[] getSquareInfo(int x, int y) {
+        // Validate if x and y are within the bounds of the board
+        if (x < 0 ||
+            x >= board.size() ||
+            y < 0 ||
+            y >= board.get(x).size()
+        ){
+            throw new IllegalArgumentException("Coordinates are out of bounds.");
+        }
+
+        // Get the square at the specified coordinates
+        Square square = board.get(x).get(y);
+
+        // Check if the square has a piece on it
+        if (square.getPiece() == null) {
+            // Return some default values or throw an exception if a piece is expected
+            return new String[]{"", "", "", "", ""};
+        }
+
+        // Get the piece on the square
+        BasePiece piece = square.getPiece();
+
+        // Return the information about the piece
+        return new String[]{
+                String.valueOf(piece.getId()),
+                piece.getTypeName(),
+                String.valueOf(piece.getTeamId()),
+                piece.getNickname(),
+                piece.getImage()
+        };
+    }
+    public String[] getPieceInfo(int id){
+        String[] toReturn = new String[7];
+        // Get the piece from the black team first
+        BasePiece piece = blackTeam.getPieceById(id);
+        if(piece == null){
+            // If the piece is not found in the black team,
+            // get it from the white team
+            piece = whiteTeam.getPieceById(id);
+        }
+        if (piece == null) {
+            return null;
+        }
+        for (int row = 0; row < board.size(); row++) {
+            for (int column = 0; column < board.get(0).size(); column++) {
+                if (board.get(row).get(column).getPiece() == piece) {
+                    toReturn[0] = String.valueOf(piece.getId());
+                    toReturn[1] = piece.getTypeName();
+                    toReturn[2] = String.valueOf(piece.getTeamId());
+                    toReturn[3] = piece.getNickname();
+                    toReturn[4] = piece.getImage();
+                    toReturn[5] = String.valueOf(column);
+                    toReturn[6] = String.valueOf(row);
+                }
+            }
+        }
+        return toReturn;
+    }
+    public String getPieceInfoAsString(int id) {
+        String toReturn = "";
+        // Get the piece from the black team first
+        BasePiece piece = blackTeam.getPieceById(id);
+        if(piece == null){
+            // If the piece is not found in the black team,
+            // get it from the white team
+            piece = whiteTeam.getPieceById(id);
+        }
+        if (piece == null) {
+            return null;
+        }
+        //id | tipo | equipa | alcunha @(x,y)
+        for (int row = 0; row < board.size(); row++) {
+            for (int column = 0; column < board.get(0).size(); column++) {
+                if (board.get(row).get(column).getPiece() == piece) {
+                    toReturn = piece.getId() + " | " +
+                               piece.getTypeName() + " | " +
+                               piece.getTeamId() + " | " +
+                               piece.getNickname() + " @ (" +
+                               column + ", " +
+                               row + ")";
+                }
+            }
+        }
+        return toReturn;
+    }
+    public int getCurrentTeamID() {
+        return this.blackTeam.getIsPlaying() ? this.blackTeam.getId() : this.whiteTeam.getId();
+    }
+    public boolean gameOver() {
+        if(this.tieFromFile || this.isTie()){
+            return true;
+        }
+        return this.blackTeam.getIsDefeated() || this.whiteTeam.getIsDefeated();
+    }
+    public ArrayList<String> getGameResults(){
+        String resultMessage = "";
+
+        if(this.tieFromFile || this.isTie()){
+            resultMessage = GameStaticData.RESULT_TIE_MESSAGE;
+        } else {
+            resultMessage = GameStaticData.RESULT_WIN_MESSAGE +
+                    (this.blackTeam.getIsDefeated() ?
+                            this.whiteTeam.getName().toUpperCase() :
+                            this.blackTeam.getName().toUpperCase());
+        }
+
+        ArrayList<String> message = new ArrayList<>();
+        message.add(GameStaticData.RESULT_GAME_TITLE);
+        message.add(GameStaticData.RESULT_LABEL_TITLE + resultMessage);
+        message.add("---");
+        message.addAll(Arrays.asList(this.blackTeam.getScore()));
+        message.addAll(Arrays.asList(this.whiteTeam.getScore()));
+
+        return message;
+    }
+    public JPanel getAuthorsPanel(){
+        this.authorsPanel = new JPanel();
+        this.authorsPanel.setLayout(new BoxLayout(this.authorsPanel,BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Créditos");
+        title.setFont(new Font("Arial", Font.BOLD,24));
+        title.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        this.authorsPanel.add(title);
+
+        String[] authors = {"a22102606 - Marcos Gil", "a22103261 - Fábio Lopes"};
+        for (String author : authors){
+            JLabel label = new JLabel(author);
+            label.setFont(new Font("Arial", Font.PLAIN,18));
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            this.authorsPanel.add(label);
+        }
+
+        return this.authorsPanel;
+    }
+    public void saveGame(File file) throws IOException{
+        //TODO: implement
+    }
     public void undo(){
         if(this.backup.isEmpty()){
             return;
         }
-
         int lastBackupIndex = backup.size() - 1;
         GameManager lastBackupGameClone = backup.get(lastBackupIndex).clone();
         this.reInit(lastBackupGameClone);
         this.backup.remove(lastBackupIndex);
     }
+
+    List<Comparable> getHints(int x, int y){
+        //TODO: implement
+        return null;
+    }
+
+
 }

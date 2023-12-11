@@ -227,7 +227,7 @@ public class GameManager {
 
         return new String[]{
             piece.getId() + "",
-            piece.getType() + "",
+            piece.getTypeName() + "",
             teamId + "",
             piece.getNickname(),
             piece.getImage()
