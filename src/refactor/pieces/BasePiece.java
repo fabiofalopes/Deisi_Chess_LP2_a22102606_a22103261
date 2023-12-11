@@ -45,7 +45,7 @@ public abstract class BasePiece {
     public String getNickname(){
         return this.nickname;
     }
-    protected String getImage(){
+    public String getImage(){
         return this.image;
     }
     public boolean getIsDefeated(){
