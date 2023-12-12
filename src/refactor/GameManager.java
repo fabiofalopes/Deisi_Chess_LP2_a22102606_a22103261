@@ -1,12 +1,10 @@
 package refactor;
 
-import pt.ulusofona.lp2.deisichess.ChessPiece;
 import pt.ulusofona.lp2.deisichess.GameStaticData;
 import refactor.movements.BaseMovement;
 import refactor.pieces.BasePiece;
 import refactor.pieces.HomerSimpsonPiece;
 import refactor.pieces.JokerPiece;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -16,9 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GameManager {
-
-    public final static int TIE_RULE = 10;
-    private boolean tieFromFile;
     private List<List<Square>> board;
     private Team blackTeam;
     private Team whiteTeam;
@@ -26,6 +21,7 @@ public class GameManager {
     private int movesWithoutDefeats;
     private List<GameManager> backup;
     private JPanel authorsPanel;
+    private boolean tieFromFile;
 
     public GameManager() {
         this.init();
@@ -45,6 +41,8 @@ public class GameManager {
         this.countValidRounds = backup.countValidRounds;
         this.movesWithoutDefeats = backup.movesWithoutDefeats;
         this.backup = backup.backup;
+        this.authorsPanel = backup.authorsPanel;
+        this.tieFromFile = backup.tieFromFile;
     }
     public void buildBoard(int dimension){
         for (int rowIndex = 0; rowIndex < dimension; rowIndex++) {
@@ -56,22 +54,20 @@ public class GameManager {
             this.board.add(row);
         }
     }
+
     @Override
     protected GameManager clone() { return this.clone(); }
-
     private boolean isTie(){
-        // change getCountNonDefeatedPieces to countNonDefeatedPieces
-        return (this.movesWithoutDefeats >= TIE_RULE && // Game over from TIE
-                (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
-                (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
+        return (this.movesWithoutDefeats >= 10 && // Game over from TIE
+               (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
+               (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
     }
     private void evaluateTieFromFile(){
         this.tieFromFile = !this.blackTeam.getIsDefeated() &&
-                !this.whiteTeam.getIsDefeated() &&
-                this.blackTeam.getCountNonDefeated() == 1 &&
-                this.whiteTeam.getCountNonDefeated() == 1;
+                           !this.whiteTeam.getIsDefeated() &&
+                            this.blackTeam.getCountNonDefeated() == 1 &&
+                            this.whiteTeam.getCountNonDefeated() == 1;
     }
-
 
     public void loadGame(File file) throws InvalidGameInputException, IOException {
         if(file == null){
@@ -241,28 +237,19 @@ public class GameManager {
         return true;
     }
     public String[] getSquareInfo(int x, int y) {
-        // Validate if x and y are within the bounds of the board
-        if (x < 0 ||
-            x >= board.size() ||
-            y < 0 ||
-            y >= board.get(x).size()
-        ){
-            throw new IllegalArgumentException("Coordinates are out of bounds.");
+        boolean coordinatesWithinBounds = BaseMovement.isWithinBounds(this.board, x, y);
+        if(!coordinatesWithinBounds){
+            return null;
         }
 
-        // Get the square at the specified coordinates
         Square square = board.get(x).get(y);
 
-        // Check if the square has a piece on it
-        if (square.getPiece() == null) {
-            // Return some default values or throw an exception if a piece is expected
-            return new String[]{"", "", "", "", ""};
+        BasePiece piece = square.getPiece();
+        if (piece == null) {
+            return new String[]{};
         }
 
-        // Get the piece on the square
-        BasePiece piece = square.getPiece();
-
-        // Return the information about the piece
+        /* return the information about the piece */
         return new String[]{
                 String.valueOf(piece.getId()),
                 piece.getTypeName(),
@@ -272,58 +259,40 @@ public class GameManager {
         };
     }
     public String[] getPieceInfo(int id){
-        String[] toReturn = new String[7];
-        // Get the piece from the black team first
-        BasePiece piece = blackTeam.getPieceById(id);
+        /* try fetch piece from id on both teams */
+        BasePiece piece = this.blackTeam.getPieceById(id);
         if(piece == null){
-            // If the piece is not found in the black team,
-            // get it from the white team
-            piece = whiteTeam.getPieceById(id);
+            piece = this.whiteTeam.getPieceById(id);
         }
-        if (piece == null) {
+
+        if(piece == null) {
             return null;
         }
-        for (int row = 0; row < board.size(); row++) {
-            for (int column = 0; column < board.get(0).size(); column++) {
-                if (board.get(row).get(column).getPiece() == piece) {
-                    toReturn[0] = String.valueOf(piece.getId());
-                    toReturn[1] = piece.getTypeName();
-                    toReturn[2] = String.valueOf(piece.getTeamId());
-                    toReturn[3] = piece.getNickname();
-                    toReturn[4] = piece.getImage();
-                    toReturn[5] = String.valueOf(column);
-                    toReturn[6] = String.valueOf(row);
-                }
-            }
-        }
-        return toReturn;
+
+        Square square = piece.getSquare();
+
+        return new String[]{
+                piece.getId() + "",
+                piece.getTypeName(),
+                piece.getTeamId() + "",
+                piece.getNickname(),
+                piece.getIsDefeated() ? "capturado" : "em jogo",
+                square != null ? square.getX() + "" : "",
+                square != null ? square.getY() + "" : ""
+        };
     }
     public String getPieceInfoAsString(int id) {
-        String toReturn = "";
-        // Get the piece from the black team first
-        BasePiece piece = blackTeam.getPieceById(id);
+        /* try fetch piece from id on both teams */
+        BasePiece piece = this.blackTeam.getPieceById(id);
         if(piece == null){
-            // If the piece is not found in the black team,
-            // get it from the white team
-            piece = whiteTeam.getPieceById(id);
+            piece = this.whiteTeam.getPieceById(id);
         }
-        if (piece == null) {
-            return null;
+
+        if(piece == null) {
+            return "";
         }
-        //id | tipo | equipa | alcunha @(x,y)
-        for (int row = 0; row < board.size(); row++) {
-            for (int column = 0; column < board.get(0).size(); column++) {
-                if (board.get(row).get(column).getPiece() == piece) {
-                    toReturn = piece.getId() + " | " +
-                               piece.getTypeName() + " | " +
-                               piece.getTeamId() + " | " +
-                               piece.getNickname() + " @ (" +
-                               column + ", " +
-                               row + ")";
-                }
-            }
-        }
-        return toReturn;
+
+        return piece.printInfo();
     }
     public int getCurrentTeamID() {
         return this.blackTeam.getIsPlaying() ? this.blackTeam.getId() : this.whiteTeam.getId();
@@ -332,6 +301,7 @@ public class GameManager {
         if(this.tieFromFile || this.isTie()){
             return true;
         }
+
         return this.blackTeam.getIsDefeated() || this.whiteTeam.getIsDefeated();
     }
     public ArrayList<String> getGameResults(){
@@ -387,11 +357,8 @@ public class GameManager {
         this.reInit(lastBackupGameClone);
         this.backup.remove(lastBackupIndex);
     }
-
     List<Comparable> getHints(int x, int y){
         //TODO: implement
         return null;
     }
-
-
 }

@@ -34,14 +34,4 @@ public class KingPiece extends BasePiece{
                !new HorizontalMovement().isOverlapping(board,currentX, currentY, destinyX, destinyY) ||
                !new DiagonalMovement().isOverlapping(board,currentX, currentY, destinyX, destinyY);
     }
-    @Override
-    public String printInfo(){
-        return this.id + " | " +
-                this.typeName + " | " +
-                "(infinito) | " +
-                this.team.getId() + " | " +
-                this.nickname + " @ (" +
-                this.square.getX() + ", " +
-                this.square.getY() + ")";
-    }
 }

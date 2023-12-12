@@ -68,6 +68,7 @@ public abstract class BasePiece {
 
         return hints;
     }  // [TODO] move to be comparable
+    public Square getSquare() { return square; }
 
     public void setSquare(Square square){ this.square = square; }
 
@@ -93,11 +94,10 @@ public abstract class BasePiece {
     public abstract boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY);
     public String printInfo(){
         return this.id + " | " +
-                this.typeName + " | " +
-                this.value + " | " +
-                this.team.getId() + " | " +
-                this.nickname + " @ (" +
-                this.square.getX() + ", " +
-                this.square.getY() + ")";
+               this.typeName + " | " +
+              (this.value == 1000 ? "(infinito)" : this.value) + " | " +
+               this.team.getId() + " | " +
+               this.nickname + " @ (" +
+               this.square == null ? "n/a" : this.square.getX() + ", " + this.square.getY() + ")";
     }
 }
