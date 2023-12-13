@@ -6,17 +6,14 @@ public class InvalidGameInputException extends Exception{
 
     public InvalidGameInputException(int lineWithError, String errorDescription){
         this.lineWithError = lineWithError;
-        this.problemDescription = "Ocorreu um erro a ler o ficheiro, na linha " +
-                                   this.lineWithError + " " +
-                                   "com o seguinte problema: " +
-                                   errorDescription;
+        this.problemDescription = errorDescription;
     }
 
     public static String getMoreDataErrorDescription(int expected, int obtained){
-        return "DADOS A MAIS (Esperava: " + expected + "; Obtive: " + obtained + ")";
+        return "DADOS A MAIS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
     }
     public static String getLessDataErrorDescription(int expected, int obtained){
-        return "DADOS A MENOS (Esperava: " + expected + "; Obtive: " + obtained + ")";
+        return "DADOS A MENOS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
     }
     public int getLineWithError(){
         return this.lineWithError;
