@@ -43,4 +43,14 @@ public class JokerPiece extends BasePiece {
     public boolean validMoveRules(List<List<Square>> board, int destinyX, int destinyY) {
         return this.clone.validMoveRules(board, destinyX, destinyY);
     }
+    @Override
+    public String printInfo(){
+        return this.id + " | " +
+               this.typeName + "/" +
+               this.clone.getTypeName() + " | " +
+               this.value + " | " +
+               this.team.getId() + " | " +
+               this.nickname + " @ (" +
+              (this.square == null ? "n/a" : this.square.getX() + ", " + this.square.getY()) + ")";
+    }
 }
