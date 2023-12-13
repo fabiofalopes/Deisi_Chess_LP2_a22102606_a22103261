@@ -87,22 +87,25 @@ public class GameManager {
         /* set board */
         int boardDimension = Integer.parseInt(reader.readLine().trim());
         this.buildBoard(boardDimension);
+        int fileLineNumber = 2;
 
         /* read and load pieces info */
         HashMap<Integer, BasePiece> loadedPieces = new HashMap<>();
         int nrPieces = Integer.parseInt(reader.readLine().trim());
         for(int i = 0; i < nrPieces; i++){
+            fileLineNumber++;
+
             /* piece info */
             String pieceInfo = reader.readLine();
             String[] pieceData = pieceInfo.split(":");
 
             /* handle invalid data format exceptions */
             if(pieceData.length < 4){
-                throw new InvalidGameInputException(i, InvalidGameInputException.getLessDataErrorDescription(
+                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getLessDataErrorDescription(
                         4, pieceData.length));
             }
             else if (pieceData.length > 4){
-                throw new InvalidGameInputException(i, InvalidGameInputException.getMoreDataErrorDescription(
+                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getMoreDataErrorDescription(
                         4, pieceData.length));
             }
 
@@ -121,17 +124,19 @@ public class GameManager {
         /* read and load board positions */
         final int BOARD_SIZE = this.board.size();
         for (int row = 0; row < BOARD_SIZE; row++) {
+            fileLineNumber++;
+
             /* board info */
             String boardRowInfo = reader.readLine();
             String[] boardRowData = boardRowInfo.split(":");
 
             /* handle invalid data format exceptions */
             if(boardRowData.length < BOARD_SIZE){
-                throw new InvalidGameInputException(row, InvalidGameInputException.getLessDataErrorDescription(
+                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getLessDataErrorDescription(
                         BOARD_SIZE, boardRowData.length));
             }
             else if (boardRowData.length > BOARD_SIZE){
-                throw new InvalidGameInputException(row, InvalidGameInputException.getMoreDataErrorDescription(
+                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getMoreDataErrorDescription(
                         BOARD_SIZE, boardRowData.length));
             }
 

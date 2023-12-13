@@ -5,7 +5,6 @@ public class InvalidGameInputException extends Exception{
     private String problemDescription;
 
     public InvalidGameInputException(int lineWithError, String errorDescription){
-        super();
         this.lineWithError = lineWithError;
         this.problemDescription = "Ocorreu um erro a ler o ficheiro, na linha " +
                                    this.lineWithError + " " +
