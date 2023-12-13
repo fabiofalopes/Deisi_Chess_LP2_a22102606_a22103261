@@ -1,32 +1,41 @@
 package pt.ulusofona.lp2.deisichess;
 
+import pt.ulusofona.lp2.deisichess.pieces.BasePiece;
+import pt.ulusofona.lp2.deisichess.pieces.HomerSimpsonPiece;
+import pt.ulusofona.lp2.deisichess.pieces.JokerPiece;
+
 import java.util.ArrayList;
 
 public class Team {
+    public static final int BLACK_TEAM_ID = 10;
+    public static final String BLACK_TEAM_NAME = "Pretas";
+    public static final int WHITE_TEAM_ID = 20;
+    public static final String WHITE_TEAM_NAME = "Brancas";
+
     private int id;
     private String name;
-    private int validMoves;
-    private int invalidMoves;
-    private int kills;
-    private ArrayList<ChessPiece> pieces;
+    private int validMoves = 0;
+    private int invalidMoves = 0;
+    private int kills = 0;
+    private  int score = 0;
+    private boolean isPlaying;
+    private ArrayList<BasePiece> pieces;
 
-    public Team(int id, String name){
+    public Team(int id, String name, boolean isPlaying){
         this.id = id;
         this.name = name;
-        this.validMoves = 0;
-        this.invalidMoves = 0;
-        this.kills = 0;
+        this.isPlaying = isPlaying;
         this.pieces = new ArrayList<>();
     }
 
-    void addPiece(ChessPiece piece){
-        this.pieces.add(piece);
+    public int getId(){
+        return this.id;
     }
-    String getName(){
+    public String getName(){
         return this.name;
     }
-    ChessPiece getPieceById(int id){
-        for (ChessPiece piece : pieces) {
+    public BasePiece getPieceById(int id){
+        for (BasePiece piece : pieces) {
             if(piece.getId() == id){
                 return piece;
             }
@@ -34,60 +43,76 @@ public class Team {
 
         return null;
     }
-    ChessPiece getPieceByPosition(int x, int y){
-        for (ChessPiece piece : pieces) {
-            Square position = piece.getPosition();
+    public int getCountNonDefeated(){
+        int count = 0;
 
-            if(position == null){
-                continue;
+        for (BasePiece piece : pieces) {
+            if(!piece.getIsDefeated()){
+                count++;
             }
+        }
+        return count;
+    }
+    public int getCountDefeated(){
+        int count = 0;
 
-            if(position.equals(x, y)){
-                return piece;
+        for (BasePiece piece : pieces) {
+            if(piece.getIsDefeated()){
+                count++;
+            }
+        }
+
+        return count;
+    }
+    public boolean getIsDefeated(){
+        return this.getCountDefeated() == pieces.size();
+    }
+    public boolean getIsPlaying(){
+        return this.isPlaying;
+    }
+    public HomerSimpsonPiece getHomer(){
+        for (BasePiece piece : pieces) {
+            if(piece.getIsHomerSimpson()){
+                return (HomerSimpsonPiece) piece;
             }
         }
 
         return null;
     }
-    int getCountNonDefeated(){
-        int count = 0;
-
-        for (ChessPiece piece : pieces) {
-            if(!piece.isDefeated()){
-                count++;
-            }
-        }
-        return count;
-    }
-    int getCountDefeated(){
-        int count = 0;
-
-        for (ChessPiece piece : pieces) {
-            if(piece.isDefeated()){
-                count++;
+    public JokerPiece getJoker(){
+        for (BasePiece piece : pieces) {
+            if(piece.getIsJoker() && !piece.getIsDefeated()){
+                return (JokerPiece) piece;
             }
         }
 
-        return count;
+        return null;
     }
-    boolean isDefeated(){
-        return this.getCountDefeated() == pieces.size();
+
+    public void addPiece(BasePiece piece){
+        this.pieces.add(piece);
     }
-    void incrementValidMove(){
+    public void incrementValidMove(){
         this.validMoves++;
     }
-    void incrementInvalidMove(){
+    public void incrementInvalidMove(){
         this.invalidMoves++;
     }
-    void incrementKills(){
+    public void incrementKillsAndScore(int pieceScore){
+        this.score += score;
         this.kills++;
     }
+    public void toggleIsPlaying(){
+        this.isPlaying = !this.isPlaying;
+    }
+
     String[] getScore(){
         return new String[] {
-            GameStaticData.RESULT_TEAM_MESSAGE + this.name,
-            this.kills + "",
-            this.validMoves + "",
-            this.invalidMoves + ""
+                GameStaticData.RESULT_TEAM_MESSAGE + this.name,
+                this.kills + "",
+                this.validMoves + "",
+                this.invalidMoves + ""
         };
     }
+
 }

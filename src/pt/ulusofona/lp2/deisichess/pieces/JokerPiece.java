@@ -1,17 +1,17 @@
-package refactor.pieces;
+package pt.ulusofona.lp2.deisichess.pieces;
 
-import refactor.Square;
-import refactor.Team;
+import pt.ulusofona.lp2.deisichess.Square;
+import pt.ulusofona.lp2.deisichess.Team;
 import java.util.List;
 
 public class JokerPiece extends BasePiece {
-    public static final int PIECE_TYPE_ID = 8;
+    public static final int PIECE_TYPE_ID = 7;
     public static final String PIECE_FILE_IMAGE = "joker-#.png";
     private int cloneCounter;
     private BasePiece clone;
 
     public JokerPiece(int id, String nickname, Team team) {
-        super(id, nickname, team, this.PIECE_FILE_IMAGE);
+        super(id, nickname, team, PIECE_FILE_IMAGE);
         this.jokerType = true;
         this.typeName = "Joker";
         this.value = 4;

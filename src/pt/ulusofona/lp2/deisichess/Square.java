@@ -1,10 +1,13 @@
 package pt.ulusofona.lp2.deisichess;
 
+import pt.ulusofona.lp2.deisichess.pieces.BasePiece;
+
 public class Square {
     private int x;
     private int y;
+    private BasePiece piece;
 
-    public Square(int x, int y){
+    Square(int x, int y){
         this.x = x;
         this.y = y;
     }
@@ -15,7 +18,18 @@ public class Square {
     public int getY(){
         return this.y;
     }
-    boolean equals(int x, int y){
-        return this.x == x && this.y == y;
+    public BasePiece getPiece(){
+        return this.piece;
+    }
+
+    public void removePiece(){
+        this.piece = null;
+    }
+
+    public boolean hasPiece(){
+        return this.piece != null;
+    }
+    public void setPiece(BasePiece piece){
+        this.piece = piece;
     }
 }

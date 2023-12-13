@@ -1,4 +1,4 @@
-package refactor;
+package pt.ulusofona.lp2.deisichess;
 
 public class InvalidGameInputException extends Exception{
     private int lineWithError;

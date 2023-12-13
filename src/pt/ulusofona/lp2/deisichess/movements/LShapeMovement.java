@@ -1,6 +1,6 @@
-package refactor.movements;
+package pt.ulusofona.lp2.deisichess.movements;
 
-import refactor.Square;
+import pt.ulusofona.lp2.deisichess.Square;
 import java.util.List;
 
 public class LShapeMovement extends BaseMovement {
@@ -62,7 +62,7 @@ public class LShapeMovement extends BaseMovement {
             minY = Math.min(currentY, destinyY),
             maxY = Math.max(currentY, destinyY);
 
-        return this.isOverlappingFromSectionA(board, minX, maxX, minY, maxY) ||
-               this.isOverlappingFromSectionB(board, minX, maxX, minY, maxY);
+        return (this.isOverlappingFromSectionA(board, minX, maxX, minY, maxY) &&
+                this.isOverlappingFromSectionB(board, minX, maxX, minY, maxY));
     }
 }

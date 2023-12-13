@@ -1,17 +1,17 @@
-package refactor.pieces;
+package pt.ulusofona.lp2.deisichess.pieces;
 
-import refactor.Square;
-import refactor.Team;
-import refactor.movements.DiagonalMovement;
+import pt.ulusofona.lp2.deisichess.Square;
+import pt.ulusofona.lp2.deisichess.Team;
+import pt.ulusofona.lp2.deisichess.movements.DiagonalMovement;
 import java.util.List;
 
 public class HomerSimpsonPiece extends BasePiece{
-    public static final int PIECE_TYPE_ID = 7;
+    public static final int PIECE_TYPE_ID = 6;
     public static final String PIECE_FILE_IMAGE = "homer-#.png";
     private boolean sleeping;
 
     public HomerSimpsonPiece(int id, String nickname, Team team) {
-        super(id, nickname, team, this.PIECE_FILE_IMAGE);
+        super(id, nickname, team, PIECE_FILE_IMAGE);
         this.homerSimpsonType = true;
         this.typeName = "Homer Simpson";
         this.value = 2;

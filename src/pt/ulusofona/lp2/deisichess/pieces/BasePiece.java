@@ -1,8 +1,7 @@
-package refactor.pieces;
+package pt.ulusofona.lp2.deisichess.pieces;
 
-import refactor.Square;
-import refactor.Team;
-
+import pt.ulusofona.lp2.deisichess.Square;
+import pt.ulusofona.lp2.deisichess.Team;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +97,6 @@ public abstract class BasePiece {
               (this.value == 1000 ? "(infinito)" : this.value) + " | " +
                this.team.getId() + " | " +
                this.nickname + " @ (" +
-               this.square == null ? "n/a" : this.square.getX() + ", " + this.square.getY() + ")";
+              (this.square == null ? "n/a" : this.square.getX() + ", " + this.square.getY()) + ")";
     }
 }

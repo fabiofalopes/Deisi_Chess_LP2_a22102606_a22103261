@@ -1,16 +1,16 @@
-package refactor.pieces;
+package pt.ulusofona.lp2.deisichess.pieces;
 
-import refactor.Square;
-import refactor.Team;
-import refactor.movements.DiagonalMovement;
+import pt.ulusofona.lp2.deisichess.Square;
+import pt.ulusofona.lp2.deisichess.Team;
+import pt.ulusofona.lp2.deisichess.movements.DiagonalMovement;
 import java.util.List;
 
 public class VillagePriestPiece extends BasePiece{
-    public static final int PIECE_TYPE_ID = 4;
+    public static final int PIECE_TYPE_ID = 3;
     public static final String PIECE_FILE_IMAGE = "village-priest-#.png";
 
     public VillagePriestPiece(int id, String nickname, Team team) {
-        super(id, nickname, team, this.PIECE_FILE_IMAGE);
+        super(id, nickname, team, PIECE_FILE_IMAGE);
         this.typeName = "Padre da Vila";
         this.value = 3;
         this.movementLimit = 3;

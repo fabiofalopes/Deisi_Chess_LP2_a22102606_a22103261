@@ -1,6 +1,6 @@
-package refactor.movements;
+package pt.ulusofona.lp2.deisichess.movements;
 
-import refactor.Square;
+import pt.ulusofona.lp2.deisichess.Square;
 import java.util.List;
 
 public abstract class BaseMovement {

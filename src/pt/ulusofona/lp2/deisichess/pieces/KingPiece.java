@@ -1,18 +1,18 @@
-package refactor.pieces;
+package pt.ulusofona.lp2.deisichess.pieces;
 
-import refactor.Square;
-import refactor.Team;
-import refactor.movements.DiagonalMovement;
-import refactor.movements.HorizontalMovement;
-import refactor.movements.VerticalMovement;
+import pt.ulusofona.lp2.deisichess.Square;
+import pt.ulusofona.lp2.deisichess.Team;
+import pt.ulusofona.lp2.deisichess.movements.DiagonalMovement;
+import pt.ulusofona.lp2.deisichess.movements.HorizontalMovement;
+import pt.ulusofona.lp2.deisichess.movements.VerticalMovement;
 import java.util.List;
 
 public class KingPiece extends BasePiece{
-    public static final int PIECE_TYPE_ID = 1;
+    public static final int PIECE_TYPE_ID = 0;
     public static final String PIECE_FILE_IMAGE = "king-#.png";
 
     public KingPiece(int id, String nickname, Team team) {
-        super(id, nickname, team, this.PIECE_FILE_IMAGE);
+        super(id, nickname, team, PIECE_FILE_IMAGE);
         this.typeName = "Rei";
         this.value = 1000;
         this.movementLimit = 1;

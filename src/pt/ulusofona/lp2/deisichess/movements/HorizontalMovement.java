@@ -1,12 +1,12 @@
-package refactor.movements;
+package pt.ulusofona.lp2.deisichess.movements;
 
-import refactor.Square;
+import pt.ulusofona.lp2.deisichess.Square;
 import java.util.List;
 
-public class VerticalMovement extends BaseMovement{
-    public VerticalMovement(){
+public class HorizontalMovement extends BaseMovement{
+    public HorizontalMovement(){
         super();
-        this.vertical = true;
+        this.horizontal = true;
     }
 
     @Override
@@ -16,19 +16,19 @@ public class VerticalMovement extends BaseMovement{
                                  int destinyX,
                                  int destinyY) {
 
-        int start = currentY;
-        int end = destinyY;
+        int start = currentX;
+        int end = destinyX;
 
-        if (currentY > destinyY) { // is moving backwards
-            start = destinyY + 1;
-            end = currentY;
+        if (currentX > destinyX) { // is moving backwards
+            start = destinyX + 1;
+            end = currentX;
         }
         else { // is moving forwards
             start += 1;
         }
 
         for (int i = start; i < end; i++) {
-            Square square = board.get(i).get(destinyX);
+            Square square = board.get(destinyY).get(i);
             if (square.hasPiece()) {
                 return true; // overlap found
             }
