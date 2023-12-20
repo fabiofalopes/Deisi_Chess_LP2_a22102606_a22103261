@@ -3,7 +3,7 @@ package pt.ulusofona.lp2.deisichess;
 import java.util.ArrayList;
 
 public class GameResult {
-    private final int TIE_GAME_RULE = 10;
+    private final int tieGameRule = 10;
     private boolean isTie;
     private boolean blackTeamWins;
     private boolean whiteTeamWins;
@@ -27,14 +27,13 @@ public class GameResult {
             }
         }
 
-        this.isTie = (countRoundsWithoutKills >= TIE_GAME_RULE && (this.blackTeamDeadPieces > 0 || this.whiteTeamDeadPieces > 0))
-                || (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1);
+        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1) || countRoundsWithoutKills >= this.tieGameRule;
 
-        this.blackTeamWins = this.whiteTeamLivePieces == 0;
+        this.blackTeamWins = this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0;
 
-        this.whiteTeamWins = !this.blackTeamWins;
+        this.whiteTeamWins = this.blackTeamLivePieces == 0 && this.whiteTeamLivePieces > 0;
 
-        this.gameOver = this.isTie || this.blackTeamLivePieces == 0 || this.whiteTeamLivePieces == 0;
+        this.gameOver = this.isTie || this.blackTeamWins || this.whiteTeamWins;
     }
 
     boolean getIsTie(){
@@ -45,9 +44,9 @@ public class GameResult {
         return this.blackTeamWins;
     }
 
-    boolean getWhiteTeamWins(){
+    /*boolean getWhiteTeamWins(){
         return this.whiteTeamWins;
-    }
+    }*/
 
     boolean getGameOver(){
         return this.gameOver;
