@@ -35,6 +35,20 @@ public abstract class Piece implements Cloneable {
         this.image = image.replace("#", teamName);
     }
 
+    public void updateFromSavedFile(int positionX,
+                             int positionY,
+                             int countKills,
+                             int killsScore,
+                             int countValidMoves,
+                             int countInvalidMoves) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.countKills = countKills;
+        this.killsScore = killsScore;
+        this.countValidMoves = countValidMoves;
+        this.countInvalidMoves = countInvalidMoves;
+    }
+
     int getId(){
         return this.id;
     }

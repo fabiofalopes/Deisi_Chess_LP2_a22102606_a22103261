@@ -23,12 +23,28 @@ public class Game implements Cloneable{
         this.playingTeamId = Team.BLACK_TEAM_ID;
     }
 
+    public void updateFromSavedFile(int playingTeamId, int countValidRounds, int countMovesWithoutKills){
+        this.playingTeamId = playingTeamId;
+        this.countValidRounds = countValidRounds;
+        this.countMovesWithoutKills = countMovesWithoutKills;
+    }
+
     ArrayList<Square> getSquares(){
         return this.squares;
     }
 
     ArrayList<Piece> getPieces(){
         return this.pieces;
+    }
+
+    Piece getPieceById(int id){
+        for (Piece piece : this.pieces) {
+            if(piece.getId() == id){
+                return piece;
+            }
+        }
+
+        return null;
     }
 
     Piece getPlayingPiece(int x, int y, int teamId){

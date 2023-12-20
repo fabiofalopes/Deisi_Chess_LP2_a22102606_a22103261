@@ -22,9 +22,24 @@ public class Team implements Cloneable{
         this.score = 0;
     }
 
+    public void updateFromSavedFile(int countValidMoves, int countInvalidMoves, int kills, int score){
+        this.countValidMoves = countValidMoves;
+        this.countInvalidMoves = countInvalidMoves;
+        this.kills = kills;
+        this.score = score;
+    }
+
     public int getId(){
         return this.id;
     }
+
+    public int getCountValidMoves(){ return this.countValidMoves; }
+
+    public int getCountInvalidMoves(){ return this.countInvalidMoves; }
+
+    public int getKills(){return this.kills;}
+
+    public int getScoreValue(){return this.score;}
 
     public String[] getScore(){
         return new String[] {

@@ -100,6 +100,53 @@ public class GameManager {
                 }
             }
 
+            // load statistics
+            if(reader.ready()){
+                // [GAME]
+                String gameInfo = reader.readLine().trim();
+                String[] gameData = gameInfo.split(":");
+                this.game.updateFromSavedFile(
+                    Integer.parseInt(gameData[0]),
+                    Integer.parseInt(gameData[1]),
+                    Integer.parseInt(gameData[2])
+                );
+                // [BLACK-TEAM]
+                String blackTeamInfo = reader.readLine().trim();
+                String[] blackTeamData = blackTeamInfo.split(":");
+                this.game.getBlackTeam().updateFromSavedFile(
+                    Integer.parseInt(blackTeamData[0]),
+                    Integer.parseInt(blackTeamData[1]),
+                    Integer.parseInt(blackTeamData[2]),
+                    Integer.parseInt(blackTeamData[3])
+                );
+                // [WHITE-TEAM]
+                String whiteTeamInfo = reader.readLine().trim();
+                String[] whiteTeamData = whiteTeamInfo.split(":");
+                this.game.getWhiteTeam().updateFromSavedFile(
+                        Integer.parseInt(whiteTeamData[0]),
+                        Integer.parseInt(whiteTeamData[1]),
+                        Integer.parseInt(whiteTeamData[2]),
+                        Integer.parseInt(whiteTeamData[3])
+                );
+                // [PIECES]
+                for (int i = 0; i < this.game.getPieces().size(); i++) {
+                    String pieceInfo = reader.readLine().trim();
+                    String[] pieceData = pieceInfo.split(":");
+
+                    Piece piece = this.game.getPieceById(Integer.parseInt(pieceData[0]));
+                    if(piece != null){
+                        piece.updateFromSavedFile(
+                            Integer.parseInt(pieceData[1]),
+                            Integer.parseInt(pieceData[2]),
+                            Integer.parseInt(pieceData[3]),
+                            Integer.parseInt(pieceData[4]),
+                            Integer.parseInt(pieceData[5]),
+                            Integer.parseInt(pieceData[6])
+                        );
+                    }
+                }
+            }
+
             this.game.addBackup(this.game.clone());
         } catch (IOException e){
             throw new IOException();
@@ -340,14 +387,39 @@ public class GameManager {
                         result = result.substring(0, result.length() - 1);
                         writer.write(result );
 
-                        // to break when the row is filled
-                        if(row != boardSize -1){
-                            writer.newLine();
-                        }
+                        writer.newLine();
                     }
                 }
             }
 
+            // write statistics
+            // [GAME]
+            writer.write(this.game.getPlayingTeamId() + ":");
+            writer.write(this.game.getCountValidRounds() + ":");
+            writer.write(this.game.getCountMovesWithoutKills() + "\n");
+            // [BLACK-TEAM]
+            Team blackTeam = this.game.getBlackTeam();
+            writer.write(blackTeam.getCountValidMoves() + ":");
+            writer.write(blackTeam.getCountInvalidMoves() + ":");
+            writer.write(blackTeam.getKills() + ":");
+            writer.write(blackTeam.getScoreValue() + "\n");
+            // [WHITE-TEAM]
+            Team whiteTeam = this.game.getWhiteTeam();
+            writer.write(whiteTeam.getCountValidMoves() + ":");
+            writer.write(whiteTeam.getCountInvalidMoves() + ":");
+            writer.write(whiteTeam.getKills() + ":");
+            writer.write(whiteTeam.getScoreValue() + "\n");
+            // [PIECES]
+            for (Piece piece : pieces) {
+                writer.write(piece.getId() + ":");
+                writer.write(piece.getPositionX() + ":");
+                writer.write(piece.getPositionY() + ":");
+                writer.write(piece.getCountKills() + ":");
+                writer.write(piece.getKillsScore() + ":");
+                writer.write(piece.getCountValidMoves() + ":");
+                writer.write(piece.getCountInvalidMoves() + "");
+                writer.newLine();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
