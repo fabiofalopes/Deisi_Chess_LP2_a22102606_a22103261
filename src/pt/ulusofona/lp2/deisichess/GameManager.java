@@ -113,27 +113,23 @@ public class GameManager {
     public boolean move(int x0, int y0, int x1, int y1){
         this.game.addBackup(this.game.clone());
 
-        // doesn't count as an invalid position,
-        // because there's no way from the UI to do so
-        ArrayList<Square> squares = this.game.getSquares();
-        if(!Movement.isWithinBounds(squares, x0, y0) ||
-           !Movement.isWithinBounds(squares, x1, y1)) {
-            return false;
-        }
-
         Team playingTeam = this.game.getPlayingTeam();
         Piece playingPiece = this.game.getPlayingPiece(x0, y0, playingTeam.getId());
+        ArrayList<Square> squares = this.game.getSquares();
 
-        // (invalid move): i)   same position on both coordinates
-        //                 ii)  no current piece on (x,y)
-        if((x0 == x1 && y0 == y1) || playingPiece == null) {
-            playingTeam.incrementInvalidMoves();
+        // (invalid move): i)   piece is trying to move outside the board
+        //                 ii)  same position on both coordinates
+        //                 iii) no current piece on (x,y)
+        if(!Movement.isWithinBounds(squares, x0, y0) ||
+           !Movement.isWithinBounds(squares, x1, y1) ||
+           (x0 == x1 && y0 == y1) || playingPiece == null) {
+                playingTeam.incrementInvalidMoves();
 
-            if(playingPiece != null)
-            {
-                playingPiece.incrementCountInvalidMoves();
-            }
-            return false;
+                if(playingPiece != null)
+                {
+                    playingPiece.incrementCountInvalidMoves();
+                }
+                return false;
         }
 
         ArrayList<Piece> pieces = this.game.getPieces();
