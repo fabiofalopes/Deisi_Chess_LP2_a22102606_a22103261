@@ -17,89 +17,85 @@ public class GameManager {
         this.game = new Game();
     }
 
-    public void loadGame(File file) throws InvalidGameInputException {
+    public void loadGame(File file) throws InvalidGameInputException, IOException {
         if(file == null){
-            return;
+            throw new IOException();
         }
 
-        try {
-            final int COUNT_COLUMNS_COUNT = 4;
-            int countRead = 2;
-            HashMap<Integer, Piece> loadedPieces = new HashMap<>();
+        final int COUNT_COLUMNS_COUNT = 4;
+        int countRead = 2;
+        HashMap<Integer, Piece> loadedPieces = new HashMap<>();
 
-            this.init();
+        this.init();
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            int boardDimension = Integer.parseInt(reader.readLine().trim());
-            int numberOfPieces = Integer.parseInt(reader.readLine().trim());
+        int boardDimension = Integer.parseInt(reader.readLine().trim());
+        int numberOfPieces = Integer.parseInt(reader.readLine().trim());
 
-            // read and load pieces info
-            for (int i = 0; i < numberOfPieces; i++){
-                countRead++;
+        // read and load pieces info
+        for (int i = 0; i < numberOfPieces; i++){
+            countRead++;
 
-                String pieceInfo = reader.readLine();
-                String[] pieceData = pieceInfo.split(":");
+            String pieceInfo = reader.readLine();
+            String[] pieceData = pieceInfo.split(":");
 
-                // handle invalid data format exceptions
-                if(pieceData.length < COUNT_COLUMNS_COUNT)
-                {
-                    throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
-                            COUNT_COLUMNS_COUNT, pieceData.length));
-                }
-                else if (pieceData.length > COUNT_COLUMNS_COUNT)
-                {
-                    throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
-                            COUNT_COLUMNS_COUNT, pieceData.length));
-                }
-
-                // create piece
-                int id = Integer.parseInt(pieceData[0].trim());
-                int typeId = Integer.parseInt(pieceData[1].trim());
-                int teamId = Integer.parseInt(pieceData[2].trim());
-                String nickname = pieceData[3].trim();
-
-                Piece piece = Piece.create(id, typeId, teamId, nickname);
-                this.game.addPiece(piece);
-                loadedPieces.put(id, piece);
+            // handle invalid data format exceptions
+            if(pieceData.length < COUNT_COLUMNS_COUNT)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
+                        COUNT_COLUMNS_COUNT, pieceData.length));
+            }
+            else if (pieceData.length > COUNT_COLUMNS_COUNT)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
+                        COUNT_COLUMNS_COUNT, pieceData.length));
             }
 
-            // read and load board info
-            for(int row = 0; row < boardDimension; row++){
-                countRead++;
+            // create piece
+            int id = Integer.parseInt(pieceData[0].trim());
+            int typeId = Integer.parseInt(pieceData[1].trim());
+            int teamId = Integer.parseInt(pieceData[2].trim());
+            String nickname = pieceData[3].trim();
 
-                String squareInfo = reader.readLine();
-                String[] squareData = squareInfo.split(":");
+            Piece piece = Piece.create(id, typeId, teamId, nickname);
+            this.game.addPiece(piece);
+            loadedPieces.put(id, piece);
+        }
 
-                // handle invalid data format exceptions
-                if(squareData.length < boardDimension)
-                {
-                    throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
-                            boardDimension, squareData.length));
-                }
-                else if (squareData.length > boardDimension)
-                {
-                    throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
-                            boardDimension, squareData.length));
-                }
+        // read and load board info
+        for(int row = 0; row < boardDimension; row++){
+            countRead++;
 
-                // create square
-                for(int column = 0; column < boardDimension; column++){
-                    int pieceId = Integer.parseInt(squareData[column].trim());
+            String squareInfo = reader.readLine();
+            String[] squareData = squareInfo.split(":");
 
-                    this.game.addSquare(new Square(column, row));
-
-                    if(pieceId != 0){
-                        Piece piece = loadedPieces.get(pieceId);
-                        piece.setPosition(column, row);
-                    }
-                }
+            // handle invalid data format exceptions
+            if(squareData.length < boardDimension)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
+                        boardDimension, squareData.length));
+            }
+            else if (squareData.length > boardDimension)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
+                        boardDimension, squareData.length));
             }
 
-            this.game.addBackup(this.game.clone());
+            // create square
+            for(int column = 0; column < boardDimension; column++){
+                int pieceId = Integer.parseInt(squareData[column].trim());
+
+                this.game.addSquare(new Square(column, row));
+
+                if(pieceId != 0){
+                    Piece piece = loadedPieces.get(pieceId);
+                    piece.setPosition(column, row);
+                }
+            }
         }
-        catch (Exception e){
-        }
+
+        this.game.addBackup(this.game.clone());
     }
 
     public int getBoardSize(){
