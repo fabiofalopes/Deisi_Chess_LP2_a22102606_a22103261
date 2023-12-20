@@ -129,9 +129,9 @@ public class Game implements Cloneable{
         this.countValidRounds += 1;
     }
 
-    void incrementMovesWithoutKills(){ this.countMovesWithoutKills += 1; }
+    void incrementMovesWithoutKills() { this.countMovesWithoutKills += 1; }
 
-    void resetMovesWithoutKills(){ this.countMovesWithoutKills = 0; }
+    void resetMovesWithoutKills() { this.countMovesWithoutKills = 0; }
 
     void togglePlayingTeamId(){
         this.playingTeamId = this.playingTeamId == Team.BLACK_TEAM_ID ? Team.WHITE_TEAM_ID : Team.BLACK_TEAM_ID;
