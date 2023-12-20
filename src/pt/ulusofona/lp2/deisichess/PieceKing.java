@@ -31,6 +31,30 @@ public class PieceKing extends Piece {
     }
 
     @Override
+    public ArrayList<Hint> getHints(Game game){
+        ArrayList<Hint> results = new ArrayList<>();
+        ArrayList<Square> squares = game.getSquares();
+
+        for (int row = this.positionY - 1; row <= this.positionY + 1; row++) {
+            for (int column = this.positionX - 1; column <= this.positionX + 1; column++) {
+                if(!(row == this.positionY && column == this.positionX)){ // if not on same position
+                    if(Movement.isWithinBounds(squares, column, row)) {
+                        Piece piece = game.getPieceByPosition(column, row);
+                        if(piece == null){
+                            results.add(new Hint(column, row, 0));
+                        }
+                        else if (piece != null && piece.getTeamId() != this.getTeamId()){
+                            results.add(new Hint(column, row, piece.getValue()));
+                        }
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+    @Override
     public String printInfo(int countValidRounds) {
         StringBuilder result = new StringBuilder();
         result.append(this.id + " | ");

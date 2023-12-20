@@ -47,6 +47,16 @@ public class Game implements Cloneable{
         return null;
     }
 
+    Piece getPieceByPosition(int x, int y){
+        for (Piece piece : this.pieces) {
+            if(piece.isOnPosition(x, y)){
+                return piece;
+            }
+        }
+
+        return null;
+    }
+
     Piece getPlayingPiece(int x, int y, int teamId){
         for (Piece piece : this.pieces) {
             if(piece.getTeamId() == teamId && piece.isOnPosition(x, y)){

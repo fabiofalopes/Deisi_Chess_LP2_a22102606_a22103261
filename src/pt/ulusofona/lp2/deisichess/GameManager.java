@@ -240,16 +240,16 @@ public class GameManager {
             return null;
         }
 
-        for (Piece piece : this.game.getPieces()) {
-            if(piece.isOnPosition(x, y)){
-                return new String[]{
+        Piece piece = this.game.getPieceByPosition(x, y);
+
+        if(piece != null){
+            return new String[]{
                     String.valueOf(piece.getId()),
                     piece.getTypeName(),
                     String.valueOf(piece.getTeamId()),
                     piece.getNickname(),
                     piece.getImage()
-                };
-            }
+            };
         }
 
         return new String[]{};
@@ -433,7 +433,19 @@ public class GameManager {
         }
     }
 
-    List<Comparable> getHints(int x, int y){
+    public List<Comparable> getHints(int x, int y){
+        Piece piece = this.game.getPieceByPosition(x, y);
+
+        if(piece != null){
+            ArrayList<Hint> hints = piece.getHints(this.game);
+
+            if (hints != null && !hints.isEmpty()) {
+                List<Comparable> comparableHints = new ArrayList<>(hints);
+                Collections.sort(comparableHints);
+                return comparableHints;
+            }
+        }
+
         return null;
     }
 

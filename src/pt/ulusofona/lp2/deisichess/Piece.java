@@ -1,6 +1,7 @@
 package pt.ulusofona.lp2.deisichess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Piece implements Cloneable {
     protected int id;
@@ -172,4 +173,8 @@ public abstract class Piece implements Cloneable {
     }
 
     public abstract boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds);
+
+    public ArrayList<Hint> getHints(Game game){
+        return null;
+    }
 }
