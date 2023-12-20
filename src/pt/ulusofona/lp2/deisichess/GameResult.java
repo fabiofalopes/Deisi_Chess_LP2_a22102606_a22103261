@@ -22,14 +22,20 @@ public class GameResult {
                 case Team.BLACK_TEAM_ID -> {
                     if(piece.isDead()){ this.blackTeamDeadPieces += 1; }
                     else {
-                        blackTeamHasKing = piece.isKing();
+                        if(!blackTeamHasKing)
+                        {
+                            blackTeamHasKing = piece.isKing();
+                        }
                         this.blackTeamLivePieces += 1;
                     }
                 }
                 case Team.WHITE_TEAM_ID -> {
                     if(piece.isDead()){ this.whiteTeamDeadPieces += 1; }
                     else {
-                        whiteTeamHasKing = piece.isKing();
+                        if(!whiteTeamHasKing)
+                        {
+                            whiteTeamHasKing = piece.isKing();
+                        }
                         this.whiteTeamLivePieces += 1;
                     }
                 }
