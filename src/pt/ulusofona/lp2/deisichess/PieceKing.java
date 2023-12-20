@@ -14,6 +14,9 @@ public class PieceKing extends Piece {
     }
 
     @Override
+    public boolean isKing(){ return true; }
+
+    @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
         boolean validMove = Math.abs(this.positionX - destinyX) <= this.movementLimit &&
                             Math.abs(this.positionY - destinyY) <= this.movementLimit;

@@ -84,6 +84,8 @@ public abstract class Piece implements Cloneable {
         }
     }
 
+    boolean isKing(){ return false; }
+
     boolean isQueen() {
         return false;
     }

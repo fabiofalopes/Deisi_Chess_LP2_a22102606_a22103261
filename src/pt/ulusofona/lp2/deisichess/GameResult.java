@@ -14,24 +14,35 @@ public class GameResult {
     private int whiteTeamDeadPieces;
 
     GameResult(ArrayList<Piece> pieces, int countMovesWithoutKills){
+        boolean blackTeamHasKing = false,
+                whiteTeamHasKing = false;
+
         for (Piece piece : pieces) {
             switch (piece.getTeamId()){
                 case Team.BLACK_TEAM_ID -> {
                     if(piece.isDead()){ this.blackTeamDeadPieces += 1; }
-                    else { this.blackTeamLivePieces += 1; }
+                    else {
+                        blackTeamHasKing = piece.isKing();
+                        this.blackTeamLivePieces += 1;
+                    }
                 }
                 case Team.WHITE_TEAM_ID -> {
                     if(piece.isDead()){ this.whiteTeamDeadPieces += 1; }
-                    else { this.whiteTeamLivePieces += 1; }
+                    else {
+                        whiteTeamHasKing = piece.isKing();
+                        this.whiteTeamLivePieces += 1;
+                    }
                 }
             }
         }
 
-        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1) || (countMovesWithoutKills / 2) >= this.tieGameRule;
+        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1 && blackTeamHasKing && whiteTeamHasKing ) || (countMovesWithoutKills / 2) >= this.tieGameRule;
 
-        this.blackTeamWins = this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0;
+        this.blackTeamWins = (this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0) ||
+                             (blackTeamHasKing && !whiteTeamHasKing);
 
-        this.whiteTeamWins = this.blackTeamLivePieces == 0 && this.whiteTeamLivePieces > 0;
+        this.whiteTeamWins = (this.blackTeamLivePieces == 0 && this.whiteTeamLivePieces > 0) ||
+                             (whiteTeamHasKing && !blackTeamHasKing);
 
         this.gameOver = this.isTie || this.blackTeamWins || this.whiteTeamWins;
     }
