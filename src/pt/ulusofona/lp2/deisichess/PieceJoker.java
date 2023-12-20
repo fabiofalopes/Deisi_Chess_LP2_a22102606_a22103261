@@ -17,6 +17,13 @@ public class PieceJoker extends Piece{
     }
 
     @Override
+    void setPosition(int x, int y){
+        this.positionX = x;
+        this.positionY = y;
+        this.impersonate.setPosition(this.positionX, this.positionY);
+    }
+
+    @Override
     String getTypeName(){
         return this.typeName + "/" + this.impersonate.getTypeName();
     }
