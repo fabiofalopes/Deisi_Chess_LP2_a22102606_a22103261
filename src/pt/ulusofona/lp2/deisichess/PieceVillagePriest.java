@@ -7,7 +7,7 @@ public class PieceVillagePriest extends Piece{
     public static final String PIECE_FILE_IMAGE = "village-priest-#.png";
 
     PieceVillagePriest(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 3;
         this.movementLimit = 3;
         this.typeName = "Padre da Vila";
@@ -19,7 +19,7 @@ public class PieceVillagePriest extends Piece{
             deltaY = Math.abs(this.positionY - destinyY);
 
         // means the piece didn't move diagonally
-        if(deltaX != deltaY && deltaX < this.movementLimit && deltaY < this.movementLimit ) {
+        if(deltaX != deltaY || deltaX > this.movementLimit || deltaY > this.movementLimit) {
             return false;
         }
 

@@ -7,7 +7,7 @@ public class PieceHomerSimpson extends Piece {
     public static final String PIECE_FILE_IMAGE = "homer-#.png";
 
     PieceHomerSimpson(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 2;
         this.movementLimit = 1;
         this.typeName = "Homer Simpson";

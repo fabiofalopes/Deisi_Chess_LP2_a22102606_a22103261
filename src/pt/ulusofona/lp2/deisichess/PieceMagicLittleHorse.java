@@ -7,7 +7,7 @@ public class PieceMagicLittleHorse extends Piece{
     public static final String PIECE_FILE_IMAGE = "magic-little-horse-#.png";
 
     PieceMagicLittleHorse(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 5;
         this.movementLimit = 2;
         this.typeName = "Ponei Mágico";

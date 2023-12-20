@@ -9,7 +9,7 @@ public class Game implements Cloneable{
     private Team blackTeam;
     private Team whiteTeam;
     private int countValidRounds;
-    private int countRoundsWithoutKills;
+    private int countMovesWithoutKills;
     private int playingTeamId;
 
     Game(){
@@ -19,7 +19,7 @@ public class Game implements Cloneable{
         this.blackTeam = new Team(Team.BLACK_TEAM_ID, Team.BLACK_TEAM_NAME);
         this.whiteTeam = new Team(Team.WHITE_TEAM_ID, Team.BLACK_TEAM_NAME);
         this.countValidRounds = 0;
-        this.countRoundsWithoutKills = 0;
+        this.countMovesWithoutKills = 0;
         this.playingTeamId = Team.BLACK_TEAM_ID;
     }
 
@@ -55,7 +55,7 @@ public class Game implements Cloneable{
         return this.countValidRounds;
     }
 
-    int getCountRoundsWithoutKills(){ return this.countRoundsWithoutKills; }
+    int getCountMovesWithoutKills(){ return this.countMovesWithoutKills; }
 
     int getPlayingTeamId(){
         return this.playingTeamId;
@@ -129,9 +129,9 @@ public class Game implements Cloneable{
         this.countValidRounds += 1;
     }
 
-    void incrementRoundsWithoutKills(){ this.countRoundsWithoutKills += 1; }
+    void incrementMovesWithoutKills(){ this.countMovesWithoutKills += 1; }
 
-    void resetRoundsWithoutKills(){ this.countRoundsWithoutKills = 0; }
+    void resetMovesWithoutKills(){ this.countMovesWithoutKills = 0; }
 
     void togglePlayingTeamId(){
         this.playingTeamId = this.playingTeamId == Team.BLACK_TEAM_ID ? Team.WHITE_TEAM_ID : Team.BLACK_TEAM_ID;

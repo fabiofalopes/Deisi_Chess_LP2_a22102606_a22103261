@@ -7,7 +7,7 @@ public class PieceHorizontalTower extends Piece{
     public static final String PIECE_FILE_IMAGE = "horizontal-tower-#.png";
 
     PieceHorizontalTower(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 3;
         //this.movementLimit = ;
         this.typeName = "TorreHor";

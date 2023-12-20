@@ -13,7 +13,7 @@ public class GameResult {
     private int whiteTeamLivePieces;
     private int whiteTeamDeadPieces;
 
-    GameResult(ArrayList<Piece> pieces, int countRoundsWithoutKills){
+    GameResult(ArrayList<Piece> pieces, int countMovesWithoutKills){
         for (Piece piece : pieces) {
             switch (piece.getTeamId()){
                 case Team.BLACK_TEAM_ID -> {
@@ -27,7 +27,7 @@ public class GameResult {
             }
         }
 
-        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1) || countRoundsWithoutKills >= this.tieGameRule;
+        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1) || (countMovesWithoutKills / 2) >= this.tieGameRule;
 
         this.blackTeamWins = this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0;
 

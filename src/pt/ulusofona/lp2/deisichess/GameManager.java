@@ -107,6 +107,8 @@ public class GameManager {
     }
 
     public boolean move(int x0, int y0, int x1, int y1){
+        this.game.addBackup(this.game.clone());
+
         // doesn't count as an invalid position,
         // because there's no way from the UI to do so
         ArrayList<Square> squares = this.game.getSquares();
@@ -148,8 +150,8 @@ public class GameManager {
 
             destinyPiece.killPosition();
             playingTeam.incrementKillsAndScore(destinyPiece.getValue());
-            this.game.resetRoundsWithoutKills();
-        } else { this.game.incrementRoundsWithoutKills(); }
+            this.game.resetMovesWithoutKills();
+        } else { this.game.incrementMovesWithoutKills(); }
 
         // update playing piece position
         playingPiece.setPosition(x1, y1);
@@ -163,7 +165,6 @@ public class GameManager {
 
         this.game.togglePlayingTeamId();
         this.game.incrementValidRounds();
-        this.game.addBackup(this.game.clone());
 
         return true;
     }
@@ -196,7 +197,7 @@ public class GameManager {
 
                 return new String[]{
                     String.valueOf(piece.getId()),
-                    piece.getTypeName(),
+                    String.valueOf(piece.getTypeId()),
                     String.valueOf(piece.getTeamId()),
                     piece.getNickname(),
                     isDead ? "capturado" : "em jogo",
@@ -224,11 +225,11 @@ public class GameManager {
     }
 
     public boolean gameOver(){
-        return new GameResult(this.game.getPieces(), this.game.getCountRoundsWithoutKills()).getGameOver();
+        return new GameResult(this.game.getPieces(), this.game.getCountMovesWithoutKills()).getGameOver();
     }
 
     public ArrayList<String> getGameResults(){
-        GameResult gameResult = new GameResult(this.game.getPieces(), this.game.getCountRoundsWithoutKills());
+        GameResult gameResult = new GameResult(this.game.getPieces(), this.game.getCountMovesWithoutKills());
 
         String resultMessage = "";
 

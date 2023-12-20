@@ -10,7 +10,7 @@ public class PieceJoker extends Piece{
     private Piece impersonate;
 
     PieceJoker(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 4;
         this.typeName = "Joker";
         this.initImpersonate();

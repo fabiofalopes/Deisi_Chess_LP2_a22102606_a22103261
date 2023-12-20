@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Piece implements Cloneable {
     protected int id;
+    protected int typeId;
     protected int teamId;
     protected int positionX;
     protected int positionY;
@@ -13,15 +14,16 @@ public abstract class Piece implements Cloneable {
     protected String nickname;
     protected String image;
 
-    Piece(int id, String nickname, int teamId) {
+    Piece(int id, int typeId, String nickname, int teamId) {
         this.id = id;
+        this.typeId = typeId;
         this.nickname = nickname;
         this.teamId = teamId;
         this.positionX = -1;
         this.positionY = -1;
     }
-    Piece(int id, String nickname, int teamId, String image) {
-        this(id, nickname, teamId);
+    Piece(int id, int typeId, String nickname, int teamId, String image) {
+        this(id, typeId, nickname, teamId);
 
         String teamName =
                 this.teamId == Team.BLACK_TEAM_ID ? Team.BLACK_TEAM_NAME : Team.WHITE_TEAM_NAME;
@@ -32,6 +34,8 @@ public abstract class Piece implements Cloneable {
     int getId(){
         return this.id;
     }
+
+    int getTypeId(){ return this.typeId; }
 
     int getTeamId(){
         return this.teamId;

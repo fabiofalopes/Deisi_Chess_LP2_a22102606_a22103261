@@ -7,7 +7,7 @@ public class PieceQueen extends Piece {
     public static final String PIECE_FILE_IMAGE = "queen-#.png";
 
     PieceQueen(int id, String nickname, int teamId) {
-        super(id, nickname, teamId, PIECE_FILE_IMAGE);
+        super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 8;
         this.movementLimit = 5;
         this.typeName = "Rainha";
