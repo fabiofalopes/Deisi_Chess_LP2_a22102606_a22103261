@@ -299,7 +299,58 @@ public class GameManager {
             throw new IOException();
         }
 
-        return;
+        int boardSize = this.getBoardSize();
+        ArrayList<Piece> pieces = this.game.getPieces();
+        int piecesSize = pieces.size();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(boardSize + "\n" + piecesSize + "\n");
+
+            for (int id = 1; id <= piecesSize; id++) {
+                for (Piece piece : pieces) {
+                    if(piece.getId() == id){
+                        writer.write(piece.getId() + ":" + piece.getTypeId() + ":" + piece.getTeamId() + ":" + piece.getNickname() + "\n");
+                        break;
+                    }
+                }
+            }
+
+            for (int row = 0; row < boardSize; row++) {
+                String result = "";
+
+                for (int column = 0; column < boardSize; column++){
+                    boolean hasPieceOnPosition = false;
+
+                    for (Piece piece : pieces) {
+                        if(piece.isOnPosition(column, row)){
+                            hasPieceOnPosition = true;
+                            result += piece.getId() + ":";
+                            break;
+                        }
+                    }
+
+                    if(!hasPieceOnPosition)
+                    {
+                        result += "0:";
+                    }
+
+                    // to remove the ":" from the last column
+                    if(column == boardSize -1)
+                    {
+                        result = result.substring(0, result.length() - 1);
+                        writer.write(result );
+
+                        // to break when the row is filled
+                        if(row != boardSize -1){
+                            writer.newLine();
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void undo(){
