@@ -435,15 +435,15 @@ public class GameManager {
 
     public List<Comparable> getHints(int x, int y){
         Piece piece = this.game.getPieceByPosition(x, y);
+        var result = new ArrayList<Comparable>();
 
         if(piece != null){
             ArrayList<Hint> hints = piece.getHints(this.game);
 
             if (hints != null && !hints.isEmpty()) {
-                //List<Comparable> comparableHints = new ArrayList<>(hints);
-                //Collections.sort(comparableHints);
-                //return comparableHints;
-                return new ArrayList<>(hints);
+                result.addAll(hints);
+                Collections.sort(result);
+                return result;
             }
         }
 
