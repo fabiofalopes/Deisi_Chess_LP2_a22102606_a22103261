@@ -5,14 +5,9 @@ public class Hint implements Comparable<Hint>{
     private int x;
     private int y;
 
-    Hint(int x, int y){
+    Hint(int x, int y, int value){
         this.x = x;
         this.y = y;
-        value = 0;
-    }
-
-    Hint(int x, int y, int value){
-        this(x, y);
         this.value = value;
     }
 

@@ -440,9 +440,10 @@ public class GameManager {
             ArrayList<Hint> hints = piece.getHints(this.game);
 
             if (hints != null && !hints.isEmpty()) {
-                List<Comparable> comparableHints = new ArrayList<>(hints);
-                Collections.sort(comparableHints);
-                return comparableHints;
+                //List<Comparable> comparableHints = new ArrayList<>(hints);
+                //Collections.sort(comparableHints);
+                //return comparableHints;
+                return new ArrayList<>(hints);
             }
         }
 
