@@ -13,6 +13,10 @@ public class GameManager {
         this.init();
     }
 
+    public Game getGame(){
+        return this.game;
+    }
+
     void init(){
         this.game = new Game();
     }
@@ -124,6 +128,7 @@ public class GameManager {
         //                 ii)  no current piece on (x,y)
         if((x0 == x1 && y0 == y1) || playingPiece == null) {
             playingTeam.incrementInvalidMoves();
+            playingPiece.incrementCountInvalidMoves();
             //this.game.addBackup(this.game.clone());
             return false;
         }
@@ -134,6 +139,7 @@ public class GameManager {
         // (invalid move): invalid move rule
         if(!validMove){
             playingTeam.incrementInvalidMoves();
+            playingPiece.incrementCountInvalidMoves();
             //this.game.addBackup(this.game.clone());
             return false;
         }
@@ -144,12 +150,17 @@ public class GameManager {
             // (invalid move) destiny piece from the same team
             if(destinyPiece.getTeamId() == playingPiece.teamId){
                 playingTeam.incrementInvalidMoves();
+                playingPiece.incrementCountInvalidMoves();
                 //this.game.addBackup(this.game.clone());
                 return false;
             }
 
+            int destinyPieceValue = destinyPiece.getValue();
+
             destinyPiece.killPosition();
-            playingTeam.incrementKillsAndScore(destinyPiece.getValue());
+            playingPiece.incrementCountKills();
+            playingPiece.addKillsScore(destinyPieceValue);
+            playingTeam.incrementKillsAndScore(destinyPieceValue);
             this.game.resetMovesWithoutKills();
         } else { this.game.incrementMovesWithoutKills(); }
 

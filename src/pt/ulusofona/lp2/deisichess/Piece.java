@@ -9,6 +9,10 @@ public abstract class Piece implements Cloneable {
     protected int positionX;
     protected int positionY;
     protected int value;
+    protected int countKills;
+    protected int killsScore;
+    protected int countValidMoves;
+    protected int countInvalidMoves;
     protected Integer movementLimit;
     protected String typeName;
     protected String nickname;
@@ -50,6 +54,14 @@ public abstract class Piece implements Cloneable {
     }
 
     int getValue() { return this.value; }
+
+    int getCountKills(){ return this.countKills; }
+
+    int getKillsScore() { return this.killsScore; }
+
+    int getCountValidMoves(){ return this.countValidMoves; }
+
+    int getCountInvalidMoves(){ return this.countInvalidMoves; }
 
     String getTypeName(){
         return this.typeName;
@@ -100,6 +112,22 @@ public abstract class Piece implements Cloneable {
     void killPosition() {
         this.positionX = -1;
         this.positionY = -1;
+    }
+
+    void addKillsScore(int value){
+        this.killsScore += value;
+    }
+
+    void incrementCountKills(){
+        this.countKills += 1;
+    }
+
+    void incrementCountValidMoves(){
+        this.countValidMoves += 1;
+    }
+
+    void incrementCountInvalidMoves(){
+        this.countInvalidMoves += 1;
     }
 
     static Piece create(int id, int typeId, int teamId, String nickname){
