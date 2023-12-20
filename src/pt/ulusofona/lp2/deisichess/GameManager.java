@@ -174,6 +174,7 @@ public class GameManager {
             }
         }
 
+        playingPiece.incrementCountValidMoves();
         this.game.togglePlayingTeamId();
         this.game.incrementValidRounds();
 
