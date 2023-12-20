@@ -9,7 +9,7 @@ public class PieceKing extends Piece {
     PieceKing(int id, String nickname, int teamId) {
         super(id, PIECE_TYPE_ID, nickname, teamId, PIECE_FILE_IMAGE);
         this.value = 1000;
-        this.movementLimit = 1;
+        this.movementLimit = 1; 
         this.typeName = "Rei";
     }
 
