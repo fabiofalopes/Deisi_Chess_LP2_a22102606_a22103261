@@ -40,6 +40,6 @@ public class PieceHomerSimpson extends Piece {
     }
 
     boolean isSleeping(int countValidRounds) {
-        return countValidRounds > 0 && countValidRounds % 3 == 0;
+        return countValidRounds % 3 == 0;
     }
 }
