@@ -1,78 +1,23 @@
 package pt.ulusofona.lp2.deisichess;
 
-import pt.ulusofona.lp2.deisichess.movements.BaseMovement;
-import pt.ulusofona.lp2.deisichess.pieces.BasePiece;
-import pt.ulusofona.lp2.deisichess.pieces.HomerSimpsonPiece;
-import pt.ulusofona.lp2.deisichess.pieces.JokerPiece;
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 public class GameManager {
-    private List<List<Square>> board;
-    private Team blackTeam;
-    private Team whiteTeam;
-    private int countValidRounds;
-    private int movesWithoutDefeats;
-    private List<GameManager> backup;
-    private JPanel authorsPanel;
-    private boolean tieFromFile;
+    private Game game;
 
-    public GameManager() {
+    public GameManager(){
         this.init();
     }
-    public void init(){
-        this.board = new ArrayList<>();
-        this.backup = new ArrayList<>();
-        this.blackTeam = new Team(Team.BLACK_TEAM_ID, Team.BLACK_TEAM_NAME, true);
-        this.whiteTeam = new Team(Team.WHITE_TEAM_ID, Team.WHITE_TEAM_NAME, false);
-        this.countValidRounds = 0;
-        this.movesWithoutDefeats = 0;
-    }
-    public void reInit(GameManager backup){
-        this.board = backup.board;
-        this.blackTeam = backup.blackTeam;
-        this.whiteTeam = backup.whiteTeam;
-        this.countValidRounds = backup.countValidRounds;
-        this.movesWithoutDefeats = backup.movesWithoutDefeats;
-        this.backup = backup.backup;
-        this.authorsPanel = backup.authorsPanel;
-        this.tieFromFile = backup.tieFromFile;
-    }
-    public void buildBoard(int dimension){
-        for (int rowIndex = 0; rowIndex < dimension; rowIndex++) {
-            List<Square> row = new ArrayList<>();
-            for(int columnIndex = 0; columnIndex < dimension; columnIndex++) {
-                row.add(new Square(columnIndex, rowIndex));
-            }
 
-            this.board.add(row);
-        }
-    }
-
-    @Override
-    protected GameManager clone() {
-        GameManager clone = new GameManager();
-        clone.board = this.board;
-        clone.blackTeam = this.whiteTeam;
-        clone.whiteTeam = this.whiteTeam;
-        clone.countValidRounds = this.countValidRounds;
-        clone.authorsPanel = this.authorsPanel;
-        clone.tieFromFile = this.tieFromFile;
-        return clone;
-    }
-    private boolean isTie(){
-        return (this.movesWithoutDefeats >= 10 && // Game over from TIE
-               (this.blackTeam.getCountDefeated() > 0 || this.whiteTeam.getCountDefeated() > 0)) ||
-               (this.blackTeam.getCountNonDefeated() == 1 && this.whiteTeam.getCountNonDefeated() == 1);
-    }
-    private void evaluateTieFromFile(){
-        this.tieFromFile = !this.blackTeam.getIsDefeated() &&
-                           !this.whiteTeam.getIsDefeated() &&
-                            this.blackTeam.getCountNonDefeated() == 1 &&
-                            this.whiteTeam.getCountNonDefeated() == 1;
+    void init(){
+        this.game = new Game();
     }
 
     public void loadGame(File file) throws InvalidGameInputException, IOException {
@@ -80,271 +25,242 @@ public class GameManager {
             return;
         }
 
+        final int COUNT_COLUMNS_COUNT = 4;
+        int countRead = 2;
+        HashMap<Integer, Piece> loadedPieces = new HashMap<>();
+
         this.init();
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
-        /* set board */
         int boardDimension = Integer.parseInt(reader.readLine().trim());
-        this.buildBoard(boardDimension);
-        int fileLineNumber = 2;
+        int numberOfPieces = Integer.parseInt(reader.readLine().trim());
 
-        /* read and load pieces info */
-        HashMap<Integer, BasePiece> loadedPieces = new HashMap<>();
-        int nrPieces = Integer.parseInt(reader.readLine().trim());
-        for(int i = 0; i < nrPieces; i++){
-            fileLineNumber++;
+        // read and load pieces info
+        for (int i = 0; i < numberOfPieces; i++){
+            countRead++;
 
-            /* piece info */
             String pieceInfo = reader.readLine();
             String[] pieceData = pieceInfo.split(":");
 
-            /* handle invalid data format exceptions */
-            if(pieceData.length < 4){
-                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getLessDataErrorDescription(
-                        4, pieceData.length));
+            // handle invalid data format exceptions
+            if(pieceData.length < COUNT_COLUMNS_COUNT)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
+                        COUNT_COLUMNS_COUNT, pieceData.length));
             }
-            else if (pieceData.length > 4){
-                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getMoreDataErrorDescription(
-                        4, pieceData.length));
+            else if (pieceData.length > COUNT_COLUMNS_COUNT)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
+                        COUNT_COLUMNS_COUNT, pieceData.length));
             }
 
-            /* create piece and set piece on team */
+            // create piece
             int id = Integer.parseInt(pieceData[0].trim());
             int typeId = Integer.parseInt(pieceData[1].trim());
             int teamId = Integer.parseInt(pieceData[2].trim());
             String nickname = pieceData[3].trim();
 
-            Team team = teamId == Team.BLACK_TEAM_ID ? this.blackTeam : this.whiteTeam;
-            BasePiece newPiece = BasePiece.create(id, typeId, nickname, team);
-            team.addPiece(newPiece);
-            loadedPieces.put(id, newPiece);
+            Piece piece = Piece.create(id, typeId, teamId, nickname);
+            this.game.addPiece(piece);
+            loadedPieces.put(id, piece);
         }
 
-        /* read and load board positions */
-        final int BOARD_SIZE = this.board.size();
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            fileLineNumber++;
+        // read and load board info
+        for(int row = 0; row < boardDimension; row++){
+            countRead++;
 
-            /* board info */
-            String boardRowInfo = reader.readLine();
-            String[] boardRowData = boardRowInfo.split(":");
+            String squareInfo = reader.readLine();
+            String[] squareData = squareInfo.split(":");
 
-            /* handle invalid data format exceptions */
-            if(boardRowData.length < BOARD_SIZE){
-                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getLessDataErrorDescription(
-                        BOARD_SIZE, boardRowData.length));
+            // handle invalid data format exceptions
+            if(squareData.length < boardDimension)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getLessDataErrorDescription(
+                        boardDimension, squareData.length));
             }
-            else if (boardRowData.length > BOARD_SIZE){
-                throw new InvalidGameInputException(fileLineNumber, InvalidGameInputException.getMoreDataErrorDescription(
-                        BOARD_SIZE, boardRowData.length));
+            else if (squareData.length > boardDimension)
+            {
+                throw new InvalidGameInputException(countRead, InvalidGameInputException.getMoreDataErrorDescription(
+                        boardDimension, squareData.length));
             }
 
-            for (int column = 0; column < boardRowData.length; column++){
-                int boardSquarePieceId = Integer.parseInt(boardRowData[column].trim());
-                if(boardSquarePieceId != 0){
-                    Square boardSquare = this.board.get(row).get(column);
+            // create square
+            for(int column = 0; column < boardDimension; column++){
+                int pieceId = Integer.parseInt(squareData[column].trim());
 
-                    BasePiece piece = loadedPieces.get(boardSquarePieceId);
-                    piece.revive();
-                    piece.setSquare(boardSquare);
-                    boardSquare.setPiece(piece);
+                this.game.addSquare(new Square(column, row));
+
+                if(pieceId != 0){
+                    Piece piece = loadedPieces.get(pieceId);
+                    piece.setPosition(column, row);
                 }
             }
         }
+
+        this.game.addBackup(this.game.clone());
     }
-    public int getBoardSize(){ return this.board.size(); }
+
+    public int getBoardSize(){
+        return (int) Math.sqrt(this.game.getSquares().size());
+    }
+
     public boolean move(int x0, int y0, int x1, int y1){
-        /* doesn't count as an invalid position,
-           because there's no way from the UI to do so */
-        if(!BaseMovement.isWithinBounds(board, x0, y0) || //
-           !BaseMovement.isWithinBounds(board, x1, y1)) { //
+        // doesn't count as an invalid position,
+        // because there's no way from the UI to do so
+        ArrayList<Square> squares = this.game.getSquares();
+        if(!Movement.isWithinBounds(squares, x0, y0) ||
+           !Movement.isWithinBounds(squares, x1, y1)) {
             return false;
         }
 
-        Team playingTeam =
-                this.blackTeam.getIsPlaying() ?
-                        this.blackTeam :
-                        this.whiteTeam;
+        Team playingTeam = this.game.getPlayingTeam();
+        Piece playingPiece = this.game.getPlayingPiece(x0, y0, playingTeam.getId());
 
-        // (invalid move): same position in both coordinates
-        if(x0 == x1 && y0 == y1){
-            playingTeam.incrementInvalidMove();
-            this.backup.add(this.clone());
+        // (invalid move): i)   same position on both coordinates
+        //                 ii)  no current piece on (x,y)
+        if((x0 == x1 && y0 == y1) || playingPiece == null) {
+            playingTeam.incrementInvalidMoves();
+            this.game.addBackup(this.game.clone());
             return false;
         }
 
-        /* validate/simulate piece move rules (WITHOUT MOVING)
-           i)  validate piece move range and type of move
-           ii) validate overlapping */
-        Square currentSquare = this.board.get(y0).get(x0);
-        BasePiece currentPiece = currentSquare.getPiece();
+        ArrayList<Piece> pieces = this.game.getPieces();
 
-        // (invalid move): current piece isn't from this playing team
-        if(currentPiece.getTeamId() != playingTeam.getId()){
-            playingTeam.incrementInvalidMove();
-            this.backup.add(this.clone());
+        boolean validMove = playingPiece.validMoveRules(pieces, x1, y1, this.game.getCountValidRounds());
+        // (invalid move): invalid move rule
+        if(!validMove){
+            playingTeam.incrementInvalidMoves();
+            this.game.addBackup(this.game.clone());
             return false;
         }
 
-        boolean validMoveRule = currentPiece.validMoveRules(board, x1, y1);
-        // (invalid move): current piece rules not respected
-        if(!validMoveRule){
-            playingTeam.incrementInvalidMove();
-            this.backup.add(this.clone());
-            return false;
-        }
-
-        Square destinySquare = this.board.get(y1).get(x1);
-        BasePiece destinyPiece = destinySquare.getPiece();
+        Piece destinyPiece = this.game.getDestinyPiece(x1, y1);
         if(destinyPiece != null){
-            // (invalid move): trying to "hunt" destiny piece from the same team
-            if(currentPiece.getTeamId() == destinyPiece.getTeamId()){
-                playingTeam.incrementInvalidMove();
-                this.backup.add(this.clone());
+
+            // (invalid move) destiny piece from the same team
+            if(destinyPiece.getTeamId() == playingPiece.teamId){
+                playingTeam.incrementInvalidMoves();
+                this.game.addBackup(this.game.clone());
                 return false;
             }
 
-            // hunt and feed the statistics
-            destinyPiece.defeatMe();
-            destinyPiece.removeSquare();
-            destinySquare.removePiece();
+            destinyPiece.killPosition();
             playingTeam.incrementKillsAndScore(destinyPiece.getValue());
-            this.movesWithoutDefeats = 0;
-        } else { this.movesWithoutDefeats++; }
+            this.game.resetRoundsWithoutKills();
+        } else { this.game.incrementRoundsWithoutKills(); }
 
-       /* update piece position
-          i)  set current piece with destiny square
-          ii) set destiny square with current piece*/
-        currentSquare.removePiece();
-        currentPiece.setSquare(destinySquare);
-        destinySquare.setPiece(currentPiece);
+        // update playing piece position
+        playingPiece.setPosition(x1, y1);
 
-        /* ensure both jokers clone next piece */
-        JokerPiece whiteTeamJoker = whiteTeam.getJoker();
-        JokerPiece blackTeamJoker = blackTeam.getJoker();
-        if(whiteTeamJoker != null){
-            whiteTeamJoker.cloneNext();
-        }
-        if(blackTeamJoker != null){
-            blackTeamJoker.cloneNext();
+        // ensure joker's clone next piece
+        for (Piece piece : pieces) {
+            if(piece.isJoker()){
+                ((PieceJoker)piece).nextImpersonate();
+            }
         }
 
-        /* ensure homer sleeping status */
-        HomerSimpsonPiece whiteTeamHomerSimpson = whiteTeam.getHomer();
-        HomerSimpsonPiece blackTeamHomerSimpson = blackTeam.getHomer();
-        if(whiteTeamHomerSimpson != null){
-            whiteTeamHomerSimpson.setSleeping(this.countValidRounds);
-        }
-        if(blackTeamHomerSimpson != null){
-            blackTeamHomerSimpson.setSleeping(this.countValidRounds);
-        }
+        this.game.togglePlayingTeamId();
+        this.game.incrementValidRounds();
+        this.game.addBackup(this.game.clone());
 
-        this.countValidRounds++;
-        playingTeam.incrementValidMove();
-        blackTeam.toggleIsPlaying();
-        whiteTeam.toggleIsPlaying();
-
-        this.backup.add(this.clone());
         return true;
     }
-    public String[] getSquareInfo(int x, int y) {
-        boolean coordinatesWithinBounds = BaseMovement.isWithinBounds(this.board, x, y);
+
+    public String[] getSquareInfo(int x, int y){
+        boolean coordinatesWithinBounds = Movement.isWithinBounds(this.game.getSquares(), x, y);
         if(!coordinatesWithinBounds){
             return null;
         }
 
-        Square square = board.get(y).get(x);
-
-        BasePiece piece = square.getPiece();
-        if (piece == null) {
-            return new String[]{};
+        for (Piece piece : this.game.getPieces()) {
+            if(piece.isOnPosition(x, y)){
+                return new String[]{
+                    String.valueOf(piece.getId()),
+                    piece.getTypeName(),
+                    String.valueOf(piece.getTeamId()),
+                    piece.getNickname(),
+                    piece.getImage()
+                };
+            }
         }
 
-        /* return the information about the piece */
-        return new String[]{
-                String.valueOf(piece.getId()),
-                piece.getTypeName(),
-                String.valueOf(piece.getTeamId()),
-                piece.getNickname(),
-                piece.getImage()
-        };
+        return new String[]{};
     }
+
     public String[] getPieceInfo(int id){
-        /* try fetch piece from id on both teams */
-        BasePiece piece = this.blackTeam.getPieceById(id);
-        if(piece == null){
-            piece = this.whiteTeam.getPieceById(id);
+        for (Piece piece : this.game.getPieces()) {
+            if(piece.getId() == id){
+                boolean isDead = piece.isDead();
+
+                return new String[]{
+                    String.valueOf(piece.getId()),
+                    piece.getTypeName(),
+                    String.valueOf(piece.getTeamId()),
+                    piece.getNickname(),
+                    isDead ? "capturado" : "em jogo",
+                    String.valueOf(isDead ? "" : piece.getPositionX()),
+                    String.valueOf(isDead ? "" : piece.getPositionY())
+                };
+            }
         }
 
-        if(piece == null) {
-            return null;
-        }
-
-        Square square = piece.getSquare();
-
-        return new String[]{
-                piece.getId() + "",
-                piece.getTypeName(),
-                piece.getTeamId() + "",
-                piece.getNickname(),
-                piece.getIsDefeated() ? "capturado" : "em jogo",
-                square != null ? square.getX() + "" : "",
-                square != null ? square.getY() + "" : ""
-        };
+        return null;
     }
-    public String getPieceInfoAsString(int id) {
-        /* try fetch piece from id on both teams */
-        BasePiece piece = this.blackTeam.getPieceById(id);
-        if(piece == null){
-            piece = this.whiteTeam.getPieceById(id);
+
+    public String getPieceInfoAsString(int id){
+        for (Piece piece : this.game.getPieces()) {
+            if(piece.getId() == id){
+                return piece.printInfo(this.game.getCountValidRounds());
+            }
         }
 
-        if(piece == null) {
-            return "";
-        }
+        return "";
+    }
 
-        return piece.printInfo();
+    public int getCurrentTeamID(){
+        return this.game.getPlayingTeamId();
     }
-    public int getCurrentTeamID() {
-        return this.blackTeam.getIsPlaying() ? this.blackTeam.getId() : this.whiteTeam.getId();
-    }
-    public boolean gameOver() {
-        if(this.tieFromFile || this.isTie()){
-            return true;
-        }
 
-        return this.blackTeam.getIsDefeated() || this.whiteTeam.getIsDefeated();
+    public boolean gameOver(){
+        return new GameResult(this.game.getPieces(), this.game.getCountRoundsWithoutKills()).getGameOver();
     }
+
     public ArrayList<String> getGameResults(){
+        GameResult gameResult = new GameResult(this.game.getPieces(), this.game.getCountRoundsWithoutKills());
+
         String resultMessage = "";
 
-        if(this.tieFromFile || this.isTie()){
-            resultMessage = GameStaticData.RESULT_TIE_MESSAGE;
-        } else {
-            resultMessage = GameStaticData.RESULT_WIN_MESSAGE +
-                    (this.blackTeam.getIsDefeated() ?
-                            this.whiteTeam.getName().toUpperCase() :
-                            this.blackTeam.getName().toUpperCase());
+        if(gameResult.getIsTie())
+        {
+            resultMessage = "EMPATE";
+        }
+        else
+        {
+            resultMessage = "VENCERAM AS ";
+            resultMessage += gameResult.getBlackTeamWins() ?
+                                Team.BLACK_TEAM_NAME.toUpperCase() :
+                                    Team.WHITE_TEAM_NAME.toUpperCase();
         }
 
         ArrayList<String> message = new ArrayList<>();
-        message.add(GameStaticData.RESULT_GAME_TITLE);
-        message.add(GameStaticData.RESULT_LABEL_TITLE + resultMessage);
+        message.add("JOGO DE CRAZY CHESS");
+        message.add("Resultado: " + resultMessage);
         message.add("---");
-        message.addAll(Arrays.asList(this.blackTeam.getScore()));
-        message.addAll(Arrays.asList(this.whiteTeam.getScore()));
+        message.addAll(Arrays.asList(this.game.getBlackTeam().getScore()));
+        message.addAll(Arrays.asList(this.game.getWhiteTeam().getScore()));
 
         return message;
     }
+
     public JPanel getAuthorsPanel(){
-        this.authorsPanel = new JPanel();
-        this.authorsPanel.setLayout(new BoxLayout(this.authorsPanel,BoxLayout.Y_AXIS));
+        JPanel authorsPanel = new JPanel();
+        authorsPanel.setLayout(new BoxLayout(authorsPanel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Créditos");
         title.setFont(new Font("Arial", Font.BOLD,24));
         title.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        this.authorsPanel.add(title);
+        authorsPanel.add(title);
 
         String[] authors = {"a22102606 - Marcos Gil", "a22103261 - Fábio Lopes"};
         for (String author : authors){
@@ -352,27 +268,28 @@ public class GameManager {
             label.setFont(new Font("Arial", Font.PLAIN,18));
             label.setHorizontalAlignment(JLabel.CENTER);
             label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-            this.authorsPanel.add(label);
+            authorsPanel.add(label);
         }
 
-        return this.authorsPanel;
+        return authorsPanel;
     }
-    public void saveGame(File file) throws IOException{
-        //TODO: implement
+
+    public void saveGame(File file){
+        return;
     }
+
     public void undo(){
-        if(this.backup.isEmpty()){
-            return;
+        Game lastBackup = this.game.getAndRemoveLastBackup();
+
+        if (lastBackup != null) {
+            this.game = lastBackup;
         }
-        int lastBackupIndex = backup.size() - 1;
-        GameManager lastBackupGameClone = backup.get(lastBackupIndex).clone();
-        this.reInit(lastBackupGameClone);
-        this.backup.remove(lastBackupIndex);
     }
+
     List<Comparable> getHints(int x, int y){
-        //TODO: implement
         return null;
     }
+
     public Map<String, String> customizeBoard() {
         return new HashMap<>();
     }

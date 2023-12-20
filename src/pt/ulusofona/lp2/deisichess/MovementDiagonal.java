@@ -1,21 +1,17 @@
-package pt.ulusofona.lp2.deisichess.movements;
+package pt.ulusofona.lp2.deisichess;
 
-import pt.ulusofona.lp2.deisichess.Square;
-import java.util.List;
+import java.util.ArrayList;
 
-public class DiagonalMovement extends BaseMovement{
-    public DiagonalMovement(){
-        super();
-        this.diagonal = true;
-    }
+public class MovementDiagonal extends Movement {
+    @Override
+    public boolean isDiagonal(){ return true; }
 
     @Override
-    public boolean isOverlapping(List<List<Square>> board,
+    public boolean isOverlapping(ArrayList<Piece> pieces,
                                  int currentX,
                                  int currentY,
                                  int destinyX,
                                  int destinyY) {
-
         // Integer compare (on equals) = 0; (on <) - 1; (on >) 1
         int xDir = Integer.compare(destinyX, currentX);
         int yDir = Integer.compare(destinyY, currentY);
@@ -23,9 +19,10 @@ public class DiagonalMovement extends BaseMovement{
         int y = currentY + yDir;
 
         while (x != destinyX || y != destinyY) {
-            Square square = board.get(y).get(x);
-            if (square.hasPiece()) {
-                return true; // overlap found
+            for (Piece piece : pieces) {
+                if(piece.isOnPosition(x, y)){
+                    return true; // overlap found
+                }
             }
 
             x += xDir;

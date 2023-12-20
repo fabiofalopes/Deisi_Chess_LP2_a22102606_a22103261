@@ -1,21 +1,17 @@
-package pt.ulusofona.lp2.deisichess.movements;
+package pt.ulusofona.lp2.deisichess;
 
-import pt.ulusofona.lp2.deisichess.Square;
-import java.util.List;
+import java.util.ArrayList;
 
-public class HorizontalMovement extends BaseMovement{
-    public HorizontalMovement(){
-        super();
-        this.horizontal = true;
-    }
+public class MovementHorizontal extends Movement{
+    @Override
+    public boolean isHorizontal(){ return true; }
 
     @Override
-    public boolean isOverlapping(List<List<Square>> board,
+    public boolean isOverlapping(ArrayList<Piece> pieces,
                                  int currentX,
                                  int currentY,
                                  int destinyX,
                                  int destinyY) {
-
         int start = currentX;
         int end = destinyX;
 
@@ -28,9 +24,10 @@ public class HorizontalMovement extends BaseMovement{
         }
 
         for (int i = start; i < end; i++) {
-            Square square = board.get(destinyY).get(i);
-            if (square.hasPiece()) {
-                return true; // overlap found
+            for (Piece piece : pieces) {
+                if(piece.isOnPosition(i, destinyY)){
+                    return true; // overlap found
+                }
             }
         }
 

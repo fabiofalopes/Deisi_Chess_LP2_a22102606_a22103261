@@ -1,35 +1,24 @@
 package pt.ulusofona.lp2.deisichess;
 
-import pt.ulusofona.lp2.deisichess.pieces.BasePiece;
-
-public class Square {
+public class Square implements Cloneable {
     private int x;
     private int y;
-    private BasePiece piece;
 
     Square(int x, int y){
         this.x = x;
         this.y = y;
     }
 
-    public int getX(){
-        return this.x;
-    }
-    public int getY(){
-        return this.y;
-    }
-    public BasePiece getPiece(){
-        return this.piece;
+    public boolean equals(int x, int y){
+        return this.x == x && this.y == y;
     }
 
-    public void removePiece(){
-        this.piece = null;
-    }
-
-    public boolean hasPiece(){
-        return this.piece != null;
-    }
-    public void setPiece(BasePiece piece){
-        this.piece = piece;
+    @Override
+    public Square clone() {
+        try {
+            return (Square) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 }

@@ -1,12 +1,6 @@
 package pt.ulusofona.lp2.deisichess;
 
-import pt.ulusofona.lp2.deisichess.pieces.BasePiece;
-import pt.ulusofona.lp2.deisichess.pieces.HomerSimpsonPiece;
-import pt.ulusofona.lp2.deisichess.pieces.JokerPiece;
-
-import java.util.ArrayList;
-
-public class Team {
+public class Team implements Cloneable{
     public static final int BLACK_TEAM_ID = 10;
     public static final String BLACK_TEAM_NAME = "Pretas";
     public static final int WHITE_TEAM_ID = 20;
@@ -14,105 +8,52 @@ public class Team {
 
     private int id;
     private String name;
-    private int validMoves = 0;
-    private int invalidMoves = 0;
-    private int kills = 0;
-    private  int score = 0;
-    private boolean isPlaying;
-    private ArrayList<BasePiece> pieces;
+    private int countValidMoves;
+    private int countInvalidMoves;
+    private int kills;
+    private int score;
 
-    public Team(int id, String name, boolean isPlaying){
+    Team(int id, String name){
         this.id = id;
         this.name = name;
-        this.isPlaying = isPlaying;
-        this.pieces = new ArrayList<>();
+        this.countValidMoves = 0;
+        this.countInvalidMoves = 0;
+        this.kills = 0;
+        this.score = 0;
     }
 
     public int getId(){
         return this.id;
     }
-    public String getName(){
-        return this.name;
-    }
-    public BasePiece getPieceById(int id){
-        for (BasePiece piece : pieces) {
-            if(piece.getId() == id){
-                return piece;
-            }
-        }
 
-        return null;
-    }
-    public int getCountNonDefeated(){
-        int count = 0;
-
-        for (BasePiece piece : pieces) {
-            if(!piece.getIsDefeated()){
-                count++;
-            }
-        }
-        return count;
-    }
-    public int getCountDefeated(){
-        int count = 0;
-
-        for (BasePiece piece : pieces) {
-            if(piece.getIsDefeated()){
-                count++;
-            }
-        }
-
-        return count;
-    }
-    public boolean getIsDefeated(){
-        return this.getCountDefeated() == pieces.size();
-    }
-    public boolean getIsPlaying(){
-        return this.isPlaying;
-    }
-    public HomerSimpsonPiece getHomer(){
-        for (BasePiece piece : pieces) {
-            if(piece.getIsHomerSimpson()){
-                return (HomerSimpsonPiece) piece;
-            }
-        }
-
-        return null;
-    }
-    public JokerPiece getJoker(){
-        for (BasePiece piece : pieces) {
-            if(piece.getIsJoker() && !piece.getIsDefeated()){
-                return (JokerPiece) piece;
-            }
-        }
-
-        return null;
-    }
-
-    public void addPiece(BasePiece piece){
-        this.pieces.add(piece);
-    }
-    public void incrementValidMove(){
-        this.validMoves++;
-    }
-    public void incrementInvalidMove(){
-        this.invalidMoves++;
-    }
-    public void incrementKillsAndScore(int pieceScore){
-        this.score += score;
-        this.kills++;
-    }
-    public void toggleIsPlaying(){
-        this.isPlaying = !this.isPlaying;
-    }
-
-    String[] getScore(){
+    public String[] getScore(){
         return new String[] {
-                GameStaticData.RESULT_TEAM_MESSAGE + this.name,
+                "Equipa das " + this.name,
                 this.kills + "",
-                this.validMoves + "",
-                this.invalidMoves + ""
+                this.countValidMoves + "",
+                this.countInvalidMoves + ""
         };
     }
 
+    @Override
+    public Team clone() {
+        try {
+            return (Team) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    public void incrementValidMoves(){
+        this.countValidMoves += 1;
+    }
+
+    public void incrementInvalidMoves(){
+        this.countInvalidMoves += 1;
+    }
+
+    public void incrementKillsAndScore(int score){
+        this.kills += 1;
+        this.score += score;
+    }
 }

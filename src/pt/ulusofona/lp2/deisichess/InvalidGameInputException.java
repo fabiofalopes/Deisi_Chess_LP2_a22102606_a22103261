@@ -9,16 +9,19 @@ public class InvalidGameInputException extends Exception{
         this.problemDescription = errorDescription;
     }
 
-    public static String getMoreDataErrorDescription(int expected, int obtained){
-        return "DADOS A MAIS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
-    }
-    public static String getLessDataErrorDescription(int expected, int obtained){
-        return "DADOS A MENOS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
-    }
     public int getLineWithError(){
         return this.lineWithError;
     }
+
     public String getProblemDescription(){
         return this.problemDescription;
+    }
+
+    public static String getMoreDataErrorDescription(int expected, int obtained){
+        return "DADOS A MAIS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
+    }
+
+    public static String getLessDataErrorDescription(int expected, int obtained){
+        return "DADOS A MENOS (Esperava: " + expected + " ; Obtive: " + obtained + ")";
     }
 }
