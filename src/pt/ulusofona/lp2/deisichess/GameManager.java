@@ -156,6 +156,14 @@ public class GameManager {
                 return false;
             }
 
+            // (invalid move) playing piece is trying to kill joker,
+            //                that is impersonating a queen at the moment
+            if(playingPiece.isQueen() && destinyPiece.isJoker() && ((PieceJoker)destinyPiece).impersonateIsQueen()){
+                playingTeam.incrementInvalidMoves();
+                playingPiece.incrementCountInvalidMoves();
+                return false;
+            }
+
             int destinyPieceValue = destinyPiece.getValue();
 
             destinyPiece.killPosition();

@@ -30,7 +30,7 @@ fun top5Captures(gameManager: GameManager): ArrayList<String> {
     return ArrayList(gameManager.game.pieces
             .sortedByDescending { it.getCountKills() }
             .take(5)
-            .map {"${it.nickname} (${getTeamName(it.teamId)}) fez ${it.countKills} capturas" }
+            .map {"${it.getNickname()} (${getTeamName(it.getTeamId())}) fez ${it.getCountKills()} capturas" }
     )
 }
 
@@ -39,7 +39,7 @@ fun top3PiecesWithInvalidMoves(gameManager: GameManager): ArrayList<String> {
             .filter { it.getCountInvalidMoves() > 0 }
             .sortedByDescending { it.getCountInvalidMoves().toDouble() / (it.getCountInvalidMoves() + it.getCountValidMoves()) }
             .take(3)
-            .map {"${getTeamName(it.teamId)}:${it.nickname}:${it.getCountInvalidMoves()}:${it.getCountValidMoves()}"}
+            .map {"${it.getTeamId()}:${it.getNickname()}:${it.getCountInvalidMoves()}:${it.getCountValidMoves()}"}
     )
 }
 
@@ -47,16 +47,16 @@ fun top5PiecesKillsScore(gameManager: GameManager): ArrayList<String> {
     return ArrayList(gameManager.game.pieces
             .filter { it.getKillsScore() > 0 }
             .sortedWith(compareByDescending<Piece> { it.getKillsScore() }
-            .thenBy { it.nickname })
+            .thenBy { it.getNickname() })
             .take(5)
-            .map {"${it.nickname} (${getTeamName(it.teamId)}) tem ${it.getKillsScore()} pontos"}
+            .map {"${it.getNickname()} (${getTeamName(it.getTeamId())}) tem ${it.getKillsScore()} pontos"}
     )
 }
 
 fun top5PiecesWithMoreThen5Captures(gameManager: GameManager): ArrayList<String> {
     return ArrayList(gameManager.game.pieces
         .filter { it.getCountKills() > 5 }
-        .map {"${getTeamName(it.teamId)}:${it.nickname}:${it.getCountKills()}"}
+        .map {"${getTeamName(it.getTeamId())}:${it.getNickname()}:${it.getCountKills()}"}
     )
 }
 

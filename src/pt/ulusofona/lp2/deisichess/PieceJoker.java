@@ -55,6 +55,10 @@ public class PieceJoker extends Piece{
         return true;
     }
 
+    public boolean impersonateIsQueen(){
+        return this.impersonate.isQueen();
+    }
+
     @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
         return this.impersonate.validMoveRules(pieces, destinyX, destinyY, countValidRounds);
