@@ -147,7 +147,7 @@ public abstract class Piece implements Cloneable {
     public String printInfo(int countValidRounds) {
         StringBuilder result = new StringBuilder();
         result.append(this.id + " | ");
-        result.append(this.typeName + " | ");
+        result.append(this.getTypeName() + " | ");
         result.append(this.value + " | ");
         result.append(this.teamId + " | ");
         result.append(this.nickname + " @ (");

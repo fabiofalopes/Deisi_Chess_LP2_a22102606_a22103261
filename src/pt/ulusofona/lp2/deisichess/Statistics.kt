@@ -81,7 +81,11 @@ fun top5PiecesWithMoreThen5Captures(gameManager: GameManager): ArrayList<String>
 }
 
 fun capturedPieces(gameManager: GameManager): ArrayList<String> {
-    return ArrayList()
+    return ArrayList(gameManager.game.pieces
+            .filter { it.isDead() }
+            .distinctBy { it.getTypeId() }
+            .map { it.getTypeName() }
+            .sorted())
 }
 
 

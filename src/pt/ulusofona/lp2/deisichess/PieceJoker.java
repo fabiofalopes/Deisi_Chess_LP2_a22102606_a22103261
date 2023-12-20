@@ -16,6 +16,11 @@ public class PieceJoker extends Piece{
         this.initImpersonate();
     }
 
+    @Override
+    String getTypeName(){
+        return this.typeName + "/" + this.impersonate.getTypeName();
+    }
+
     public void initImpersonate(){
         this.countImpersonate = PieceQueen.PIECE_TYPE_ID;
         this.impersonate = new PieceQueen(-1, "", this.teamId);
@@ -53,18 +58,5 @@ public class PieceJoker extends Piece{
     @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
         return this.impersonate.validMoveRules(pieces, destinyX, destinyY, countValidRounds);
-    }
-
-    @Override
-    public String printInfo(int countValidRounds) {
-        StringBuilder result = new StringBuilder();
-        result.append(this.id + " | ");
-        result.append(this.typeName + "/");
-        result.append(this.impersonate.typeName + " | ");
-        result.append(this.value + " | ");
-        result.append(this.teamId + " | ");
-        result.append(this.nickname + " @ (");
-        result.append((this.isDead() ? "n/a" : (this.positionX + ", " + this.positionY)) + ")");
-        return result.toString();
     }
 }
