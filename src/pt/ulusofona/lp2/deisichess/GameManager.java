@@ -128,8 +128,11 @@ public class GameManager {
         //                 ii)  no current piece on (x,y)
         if((x0 == x1 && y0 == y1) || playingPiece == null) {
             playingTeam.incrementInvalidMoves();
-            playingPiece.incrementCountInvalidMoves();
-            //this.game.addBackup(this.game.clone());
+
+            if(playingPiece != null)
+            {
+                playingPiece.incrementCountInvalidMoves();
+            }
             return false;
         }
 
@@ -140,7 +143,6 @@ public class GameManager {
         if(!validMove){
             playingTeam.incrementInvalidMoves();
             playingPiece.incrementCountInvalidMoves();
-            //this.game.addBackup(this.game.clone());
             return false;
         }
 
@@ -151,7 +153,6 @@ public class GameManager {
             if(destinyPiece.getTeamId() == playingPiece.teamId){
                 playingTeam.incrementInvalidMoves();
                 playingPiece.incrementCountInvalidMoves();
-                //this.game.addBackup(this.game.clone());
                 return false;
             }
 

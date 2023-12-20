@@ -17,7 +17,7 @@ public class Game implements Cloneable{
         this.pieces = new ArrayList<>();
         this.backup = new ArrayList<>();
         this.blackTeam = new Team(Team.BLACK_TEAM_ID, Team.BLACK_TEAM_NAME);
-        this.whiteTeam = new Team(Team.WHITE_TEAM_ID, Team.BLACK_TEAM_NAME);
+        this.whiteTeam = new Team(Team.WHITE_TEAM_ID, Team.WHITE_TEAM_NAME);
         this.countValidRounds = 0;
         this.countMovesWithoutKills = 0;
         this.playingTeamId = Team.BLACK_TEAM_ID;
