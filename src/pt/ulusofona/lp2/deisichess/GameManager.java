@@ -275,7 +275,11 @@ public class GameManager {
         return authorsPanel;
     }
 
-    public void saveGame(File file){
+    public void saveGame(File file) throws IOException {
+        if(file == null){
+            throw new IOException();
+        }
+
         return;
     }
 
