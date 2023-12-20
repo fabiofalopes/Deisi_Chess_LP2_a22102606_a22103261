@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 public class MovementDiagonal extends Movement {
     @Override
-    public boolean isDiagonal(){ return true; }
-
-    @Override
     public boolean isOverlapping(ArrayList<Piece> pieces,
                                  int currentX,
                                  int currentY,

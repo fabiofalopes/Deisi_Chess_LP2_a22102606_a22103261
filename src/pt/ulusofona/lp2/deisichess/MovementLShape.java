@@ -3,9 +3,6 @@ package pt.ulusofona.lp2.deisichess;
 import java.util.ArrayList;
 
 public class MovementLShape extends Movement{
-    @Override
-    public boolean isLShape(){ return true; }
-
     private boolean isOverlappingFromSectionA(ArrayList<Piece> pieces,
                                               int minX,
                                               int maxX,
