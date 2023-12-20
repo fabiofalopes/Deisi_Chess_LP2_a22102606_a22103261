@@ -111,7 +111,7 @@ public class GameManager {
     }
 
     public boolean move(int x0, int y0, int x1, int y1){
-        // [TEMPORARY] this.game.addBackup(this.game.clone());
+        this.game.addBackup(this.game.clone());
 
         // doesn't count as an invalid position,
         // because there's no way from the UI to do so
@@ -298,13 +298,11 @@ public class GameManager {
     }
 
     public void undo(){
-        return;
-        // [TEMPORARY]
-        /*Game lastBackup = this.game.getAndRemoveLastBackup();
+        Game lastBackup = this.game.getAndRemoveLastBackup();
 
         if (lastBackup != null) {
             this.game = lastBackup;
-        }*/
+        }
     }
 
     List<Comparable> getHints(int x, int y){

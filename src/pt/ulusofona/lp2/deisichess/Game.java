@@ -89,20 +89,20 @@ public class Game implements Cloneable{
         try {
             Game clonedGame = (Game) super.clone();
 
-            clonedGame.squares = new ArrayList<>();
+            /*clonedGame.squares = new ArrayList<>();
             for (Square square : this.squares) {
                 clonedGame.addSquare(square.clone());
-            }
+            }*/
 
             clonedGame.pieces = new ArrayList<>();
             for (Piece piece : this.pieces) {
                 clonedGame.addPiece(piece.clone());
             }
 
-            clonedGame.backup = new ArrayList<>();
+            /*clonedGame.backup = new ArrayList<>();
             for (Game backupGame : this.backup) {
                 clonedGame.backup.add(backupGame.clone());
-            }
+            }*/
 
             clonedGame.blackTeam = this.blackTeam.clone();
             clonedGame.whiteTeam = this.whiteTeam.clone();
