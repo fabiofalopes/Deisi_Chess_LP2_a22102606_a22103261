@@ -43,7 +43,8 @@ public class GameResult {
         }
 
         this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1 && blackTeamHasKing && whiteTeamHasKing)
-                        || ((countMovesWithoutKills / 2) >= this.tieGameRule);
+                        || ((countMovesWithoutKills / 2) >= this.tieGameRule)
+                        || (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1); // tie from file
 
         this.blackTeamWins = (this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0) ||
                              (blackTeamHasKing && !whiteTeamHasKing);
