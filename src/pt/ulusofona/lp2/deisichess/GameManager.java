@@ -95,7 +95,9 @@ public class GameManager {
 
                     if(pieceId != 0){
                         Piece piece = loadedPieces.get(pieceId);
-                        piece.setPosition(column, row);
+                        if(piece != null){
+                            piece.setPosition(column, row);
+                        }
                     }
                 }
             }
