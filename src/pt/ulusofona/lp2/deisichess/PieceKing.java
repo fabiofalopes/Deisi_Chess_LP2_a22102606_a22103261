@@ -36,15 +36,19 @@ public class PieceKing extends Piece {
         ArrayList<Square> squares = game.getSquares();
 
         for (int row = this.positionY - this.movementLimit; row <= this.positionY + this.movementLimit; row++) {
-            for (int column = this.positionX - this.movementLimit; column <= this.positionX + this.movementLimit; column++) {
-                if(!(row == this.positionY && column == this.positionX)){ // ignore same position
-                    if(Movement.isWithinBounds(squares, column, row)) {
-                        Piece piece = game.getPieceByPosition(column, row);
-                        if(piece == null){
-                            results.add(new Hint(column, row, 0));
-                        }
-                        else if (piece != null && piece.getTeamId() != this.getTeamId()){
-                            results.add(new Hint(column, row, piece.getValue()));
+            if(row >= 0){
+                for (int column = this.positionX - this.movementLimit; column <= this.positionX + this.movementLimit; column++) {
+                    if(column >= 0){
+                        if(!(row == this.positionY && column == this.positionX)){ // ignore same position
+                            if(Movement.isWithinBounds(squares, column, row)) {
+                                Piece piece = game.getPieceByPosition(column, row);
+                                if(piece == null){
+                                    results.add(new Hint(column, row, 0));
+                                }
+                                else if (piece != null && piece.getTeamId() != this.getTeamId()){
+                                    results.add(new Hint(column, row, piece.getValue()));
+                                }
+                            }
                         }
                     }
                 }
