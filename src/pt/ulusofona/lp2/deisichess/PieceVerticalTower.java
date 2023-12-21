@@ -37,12 +37,16 @@ public class PieceVerticalTower extends Piece{
         for (int row = 0; row < game.getBoardSize(); row++) {
             if(!(row == this.positionY)){ // ignore same position
                 if(Movement.isWithinBounds(squares, this.positionX, row)) {
-                    Piece piece = game.getPieceByPosition(this.positionX, row);
-                    if(piece == null){
-                        results.add(new Hint(this.positionX, row, 0));
-                    }
-                    else if (piece != null && piece.getTeamId() != this.getTeamId()){
-                        results.add(new Hint(this.positionX, row, piece.getValue()));
+
+                    boolean isOverlapping = new MovementVertical().isOverlapping(game.getPieces(), this.positionX, this.positionY, this.positionX, row);
+                    if(!isOverlapping){
+                        Piece piece = game.getPieceByPosition(this.positionX, row);
+                        if(piece == null){
+                            results.add(new Hint(this.positionX, row, 0));
+                        }
+                        else if (piece != null && piece.getTeamId() != this.getTeamId()){
+                            results.add(new Hint(this.positionX, row, piece.getValue()));
+                        }
                     }
                 }
             }
