@@ -154,7 +154,7 @@ public class GameManager {
     }
 
     public int getBoardSize(){
-        return (int) Math.sqrt(this.game.getSquares().size());
+        return this.game.getBoardSize();
     }
 
     public boolean move(int x0, int y0, int x1, int y1){

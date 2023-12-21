@@ -110,6 +110,10 @@ public class Game implements Cloneable{
         return null; // return null if there are no backups
     }
 
+    int getBoardSize(){
+        return (int) Math.sqrt(this.squares.size());
+    }
+
     @Override
     public Game clone() {
         try {

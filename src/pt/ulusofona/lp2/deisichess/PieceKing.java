@@ -35,9 +35,9 @@ public class PieceKing extends Piece {
         ArrayList<Hint> results = new ArrayList<>();
         ArrayList<Square> squares = game.getSquares();
 
-        for (int row = this.positionY - 1; row <= this.positionY + 1; row++) {
-            for (int column = this.positionX - 1; column <= this.positionX + 1; column++) {
-                if(!(row == this.positionY && column == this.positionX)){ // if not on same position
+        for (int row = this.positionY - this.movementLimit; row <= this.positionY + this.movementLimit; row++) {
+            for (int column = this.positionX - this.movementLimit; column <= this.positionX + this.movementLimit; column++) {
+                if(!(row == this.positionY && column == this.positionX)){ // ignore same position
                     if(Movement.isWithinBounds(squares, column, row)) {
                         Piece piece = game.getPieceByPosition(column, row);
                         if(piece == null){

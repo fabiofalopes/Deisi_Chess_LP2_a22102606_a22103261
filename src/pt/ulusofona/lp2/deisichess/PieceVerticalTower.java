@@ -28,4 +28,26 @@ public class PieceVerticalTower extends Piece{
 
         return !new MovementVertical().isOverlapping(pieces, this.positionX, this.positionY, destinyX, destinyY);
     }
+
+    @Override
+    public ArrayList<Hint> getHints(Game game){
+        ArrayList<Hint> results = new ArrayList<>();
+        ArrayList<Square> squares = game.getSquares();
+
+        for (int row = 0; row < game.getBoardSize(); row++) {
+            if(!(row == this.positionY)){ // ignore same position
+                if(Movement.isWithinBounds(squares, this.positionX, row)) {
+                    Piece piece = game.getPieceByPosition(this.positionX, row);
+                    if(piece == null){
+                        results.add(new Hint(this.positionX, row, 0));
+                    }
+                    else if (piece != null && piece.getTeamId() != this.getTeamId()){
+                        results.add(new Hint(this.positionX, row, piece.getValue()));
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
 }
