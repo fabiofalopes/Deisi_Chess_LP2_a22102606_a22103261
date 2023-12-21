@@ -26,10 +26,6 @@ public class GameManager {
             throw new IOException();
         }
 
-        if(this.gameOver()){
-            return;
-        }
-
         try {
             final int COUNT_COLUMNS_COUNT = 4;
             int countRead = 2;
@@ -164,6 +160,10 @@ public class GameManager {
     }
 
     public boolean move(int x0, int y0, int x1, int y1){
+        if(this.gameOver()){
+            return false;
+        }
+
         this.game.addBackup(this.game.clone());
 
         Team playingTeam = this.game.getPlayingTeam();

@@ -42,7 +42,9 @@ public class GameResult {
             }
         }
 
-        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1 && blackTeamHasKing && whiteTeamHasKing ) || (countMovesWithoutKills / 2) >= this.tieGameRule;
+        this.isTie = (this.blackTeamLivePieces == 1 && this.whiteTeamLivePieces == 1 && blackTeamHasKing && whiteTeamHasKing )
+                        || ((countMovesWithoutKills / 2) >= this.tieGameRule)
+                        || (this.blackTeamLivePieces == 0 && this.whiteTeamLivePieces == 0);
 
         this.blackTeamWins = (this.whiteTeamLivePieces == 0 && this.blackTeamLivePieces > 0) ||
                              (blackTeamHasKing && !whiteTeamHasKing);
