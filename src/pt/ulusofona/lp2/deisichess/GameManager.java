@@ -26,6 +26,10 @@ public class GameManager {
             throw new IOException();
         }
 
+        if(this.gameOver()){
+            return;
+        }
+
         try {
             final int COUNT_COLUMNS_COUNT = 4;
             int countRead = 2;
@@ -346,6 +350,10 @@ public class GameManager {
     public void saveGame(File file) throws IOException {
         if(file == null){
             throw new IOException();
+        }
+
+        if(this.gameOver()){
+            return;
         }
 
         int boardSize = this.getBoardSize();
