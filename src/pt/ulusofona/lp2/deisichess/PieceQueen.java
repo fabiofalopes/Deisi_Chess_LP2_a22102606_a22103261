@@ -27,43 +27,26 @@ public class PieceQueen extends Piece {
     }
 
     @Override
-    public ArrayList<Hint> getHints(Game game){
+    public ArrayList<Hint> getHints(Game game) {
         ArrayList<Hint> results = new ArrayList<>();
         ArrayList<Square> squares = game.getSquares();
 
         for (int row = this.positionY - this.movementLimit; row <= this.positionY + this.movementLimit; row++) {
-            if (row >= 0) {
-                // vertical
-                if(Movement.isWithinBounds(squares, this.positionX, row)) {
-                    Piece piece = game.getPieceByPosition(this.positionX, row);
-                    if(piece == null){
-                        results.add(new Hint(this.positionX, row, 0));
-                    }
-                    else if (piece != null && piece.getTeamId() != this.getTeamId()){
-                        results.add(new Hint(this.positionX, row, piece.getValue()));
-                    }
-                }
-                // diagonal
-                int leftDiagonalX = this.positionX - row,
-                    rightDiagonalX = this.positionX + row;
-
-                if(Movement.isWithinBounds(squares, leftDiagonalX, row)) {
-                    Piece piece = game.getPieceByPosition(leftDiagonalX, row);
-                    if(piece == null){
-                        results.add(new Hint(leftDiagonalX, row, 0));
-                    }
-                    else if (piece != null && piece.getTeamId() != this.getTeamId()){
-                        results.add(new Hint(leftDiagonalX, row, piece.getValue()));
-                    }
-                }
-
-                if(Movement.isWithinBounds(squares, rightDiagonalX, row)) {
-                    Piece piece = game.getPieceByPosition(rightDiagonalX, row);
-                    if(piece == null){
-                        results.add(new Hint(rightDiagonalX, row, 0));
-                    }
-                    else if (piece != null && piece.getTeamId() != this.getTeamId()){
-                        results.add(new Hint(rightDiagonalX, row, piece.getValue()));
+            for (int col = this.positionX - this.movementLimit; col <= this.positionX + this.movementLimit; col++) {
+                if (row >= 0 && col >= 0) {
+                    if (row != this.positionY || col != this.positionX) {
+                        if (Movement.isWithinBounds(squares, col, row)) {
+                            Piece piece = game.getPieceByPosition(col, row);
+                            if (col == this.positionX || row == this.positionY ||
+                                    Math.abs(this.positionX - col) == Math.abs(this.positionY - row)) {
+                                if (piece == null) {
+                                    results.add(new Hint(col, row, 0));
+                                } else if (piece.getTeamId() != this.getTeamId() && !piece.isQueen() &&
+                                          !((PieceJoker)piece).impersonateIsQueen()) {
+                                    results.add(new Hint(col, row, piece.getValue()));
+                                }
+                            }
+                        }
                     }
                 }
             }
