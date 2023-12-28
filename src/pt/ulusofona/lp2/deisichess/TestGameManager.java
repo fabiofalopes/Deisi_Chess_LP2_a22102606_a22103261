@@ -83,7 +83,7 @@ public class TestGameManager {
 
         Assertions.assertNotNull(squareInfo);
         Assertions.assertEquals("1", squareInfo[0]); // KingPieceID
-        Assertions.assertTrue(squareInfo[1].contains("Black"));
+        Assertions.assertTrue(squareInfo[1].contains("Rei"));
     }
 
     @Test
