@@ -17,11 +17,14 @@ public class PieceKing extends Piece {
     public boolean isKing(){ return true; }
 
     @Override
-    public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
-        boolean validMove = Math.abs(this.positionX - destinyX) <= this.movementLimit &&
-                            Math.abs(this.positionY - destinyY) <= this.movementLimit;
+    public boolean validMoveDeltas(int destinyX, int destinyY) {
+        return Math.abs(this.positionX - destinyX) <= this.movementLimit &&
+               Math.abs(this.positionY - destinyY) <= this.movementLimit;
+    }
 
-        if(!validMove){
+    @Override
+    public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
+        if(!this.validMoveDeltas(destinyX, destinyY)){
             return false;
         }
 

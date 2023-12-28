@@ -23,14 +23,6 @@ public class PieceVillagePriest extends Piece{
 
     @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
-        /*int deltaX = Math.abs(this.positionX - destinyX),
-            deltaY = Math.abs(this.positionY - destinyY);
-
-        // means the piece didn't move diagonally
-        if(deltaX != deltaY || deltaX > this.movementLimit || deltaY > this.movementLimit) {
-            return false;
-        }*/
-
         if(!this.validMoveDeltas(destinyX, destinyY)){
             return false;
         }

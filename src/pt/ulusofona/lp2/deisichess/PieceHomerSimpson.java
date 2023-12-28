@@ -24,15 +24,18 @@ public class PieceHomerSimpson extends Piece {
     }
 
     @Override
+    public boolean validMoveDeltas(int destinyX, int destinyY) {
+        return Math.abs(this.positionX - destinyX) == this.movementLimit &&
+               Math.abs(this.positionY - destinyY) == this.movementLimit;
+    }
+
+    @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
         if(this.isSleeping(countValidRounds)){
             return false;
         }
 
-        boolean validMove = Math.abs(this.positionX - destinyX) == this.movementLimit &&
-                            Math.abs(this.positionY - destinyY) == this.movementLimit;
-
-        if(!validMove){
+        if(!this.validMoveDeltas(destinyX, destinyY)){
             return false;
         }
 

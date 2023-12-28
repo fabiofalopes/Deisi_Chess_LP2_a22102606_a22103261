@@ -14,11 +14,16 @@ public class PieceMagicLittleHorse extends Piece{
     }
 
     @Override
-    public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
+    public boolean validMoveDeltas(int destinyX, int destinyY) {
         int deltaX = Math.abs(this.positionX - destinyX),
             deltaY = Math.abs(this.positionY - destinyY);
 
-        if (deltaX != this.movementLimit && deltaY != this.movementLimit){
+        return deltaX == this.movementLimit && deltaY == this.movementLimit;
+    }
+
+    @Override
+    public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
+        if (!this.validMoveDeltas(destinyX, destinyY)){
             return false;
         }
 
