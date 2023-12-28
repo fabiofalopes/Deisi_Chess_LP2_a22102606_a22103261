@@ -172,6 +172,8 @@ public abstract class Piece implements Cloneable {
         return result.toString();
     }
 
+    public boolean validMoveDeltas(int destinyX, int destinyY) { return false; }
+
     public abstract boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds);
 
     public ArrayList<Hint> getHints(Game game){
