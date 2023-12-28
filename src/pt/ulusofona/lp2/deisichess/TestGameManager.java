@@ -53,7 +53,6 @@ public class TestGameManager {
 
         Assertions.assertEquals(0, whiteKing.getPositionX());
         Assertions.assertEquals(6, whiteKing.getPositionY());
-
     }
 
     @Test
@@ -71,7 +70,6 @@ public class TestGameManager {
         // Após undo tem que ficar no mesmo estado incial
 
         Assertions.assertEquals(initialGame.getPlayingTeamId(), revertedGame.getPlayingTeamId());
-
     }
 
     @Test
@@ -163,7 +161,5 @@ public class TestGameManager {
         this.gameManager.move(blackQueen.getPositionX(), blackQueen.getPositionY(), 0, 6);
 
         Assertions.assertTrue(this.gameManager.gameOver());
-
-
     }
 }
