@@ -35,17 +35,18 @@ public class PieceQueen extends Piece {
             for (int col = this.positionX - this.movementLimit; col <= this.positionX + this.movementLimit; col++) {
                 if (row >= 0 && col >= 0) {
                     if (row != this.positionY || col != this.positionX) {
-                        if (Movement.isWithinBounds(squares, col, row)) {
-                            Piece piece = game.getPieceByPosition(col, row);
-                            if (col == this.positionX || row == this.positionY ||
-                                    Math.abs(this.positionX - col) == Math.abs(this.positionY - row)) {
-                                if (piece == null) {
+                        Piece piece = game.getPieceByPosition(col, row);
+                        if (col == this.positionX || row == this.positionY ||
+                            Math.abs(this.positionX - col) == Math.abs(this.positionY - row)) {
+                                if (piece == null)
+                                {
                                     results.add(new Hint(col, row, 0));
-                                } else if (piece.getTeamId() != this.getTeamId() && !piece.isQueen() &&
-                                        (!piece.isJoker() || !((PieceJoker)piece).impersonateIsQueen())) {
+                                }
+                                else if (piece.getTeamId() != this.getTeamId() &&
+                                         !piece.isQueen() &&
+                                         (!piece.isJoker() || !((PieceJoker)piece).impersonateIsQueen())) {
                                     results.add(new Hint(col, row, piece.getValue()));
                                 }
-                            }
                         }
                     }
                 }
