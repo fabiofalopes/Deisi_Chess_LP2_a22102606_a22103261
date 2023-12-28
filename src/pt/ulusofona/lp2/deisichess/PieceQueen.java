@@ -42,7 +42,7 @@ public class PieceQueen extends Piece {
                                 if (piece == null) {
                                     results.add(new Hint(col, row, 0));
                                 } else if (piece.getTeamId() != this.getTeamId() && !piece.isQueen() &&
-                                          !((PieceJoker)piece).impersonateIsQueen()) {
+                                        (!piece.isJoker() || !((PieceJoker)piece).impersonateIsQueen())) {
                                     results.add(new Hint(col, row, piece.getValue()));
                                 }
                             }
