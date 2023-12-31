@@ -27,36 +27,6 @@ public class PieceQueen extends Piece {
     }
 
     @Override
-    public ArrayList<Hint> getHints(Game game) {
-        ArrayList<Hint> results = new ArrayList<>();
-        ArrayList<Square> squares = game.getSquares();
-
-        for (int row = this.positionY - this.movementLimit; row <= this.positionY + this.movementLimit; row++) {
-            for (int col = this.positionX - this.movementLimit; col <= this.positionX + this.movementLimit; col++) {
-                if (row >= 0 && col >= 0) {
-                    if (row != this.positionY || col != this.positionX) {
-                        Piece piece = game.getPieceByPosition(col, row);
-                        if (col == this.positionX || row == this.positionY ||
-                            Math.abs(this.positionX - col) == Math.abs(this.positionY - row)) {
-                                if (piece == null)
-                                {
-                                    results.add(new Hint(col, row, 0));
-                                }
-                                else if (piece.getTeamId() != this.getTeamId() &&
-                                         !piece.isQueen() &&
-                                         (!piece.isJoker() || !((PieceJoker)piece).impersonateIsQueen())) {
-                                    results.add(new Hint(col, row, piece.getValue()));
-                                }
-                        }
-                    }
-                }
-            }
-        }
-
-        return results;
-    }
-
-    @Override
     public boolean validMoveRules(ArrayList<Piece> pieces, int destinyX, int destinyY, int countValidRounds) {
         if(!this.validMoveDeltas(destinyX, destinyY)){
             return false;
